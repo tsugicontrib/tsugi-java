@@ -9,8 +9,8 @@
   <inceptionYear>2014</inceptionYear>
   <packaging>jar</packaging>
 
-  <name>LTI Library</name>
-  <description>LTI Library</description>
+  <name>Tsugi Java LTI Library</name>
+  <description>Tsugi Java LTI Library</description>
 
   <dependencies>
 
