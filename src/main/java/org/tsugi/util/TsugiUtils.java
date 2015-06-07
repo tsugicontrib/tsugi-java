@@ -8,7 +8,7 @@ import java.io.IOException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-class TsugiUtils {
+public class TsugiUtils {
 
     private static Log log = LogFactory.getLog(TsugiUtils.class);
 
