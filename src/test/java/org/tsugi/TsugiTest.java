@@ -4,22 +4,22 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import org.tsugi.LTIX;
-import org.tsugi.impl.LTIX_JDBC;
+import org.tsugi.Tsugi;
+import org.tsugi.impl.Tsugi_JDBC;
 
 
-public class LTIXTest {
+public class TsugiTest {
 
-    LTIX ltix = null;
+    Tsugi tsugi = null;
 
     @Before
     public void setUp() throws Exception {
-        ltix = new LTIX_JDBC();
+        tsugi = new Tsugi_JDBC();
     }
     
     @Test
     public void testImpl() {
-        System.out.println("YOYO "+ltix.customGet("a","b"));
+        System.out.println("YOYO "+tsugi.getVersion());
     }
 
 }

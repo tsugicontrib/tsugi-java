@@ -1,6 +1,6 @@
-package org.tsugi.lti.impl;
+package org.tsugi.impl;
 
-import org.tsugi.lti.LTIX;
+import org.tsugi.LTIX;
 
 public class LTIX_JDBC implements LTIX 
 {

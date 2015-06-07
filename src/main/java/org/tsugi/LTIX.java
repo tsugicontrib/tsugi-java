@@ -1,5 +1,5 @@
 
-package org.tsugi.lti;
+package org.tsugi;
 
 /**
  * This an opinionated LTI class that defines how Tsugi tools interact with LTI
