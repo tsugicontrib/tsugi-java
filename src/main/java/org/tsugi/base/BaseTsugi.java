@@ -59,6 +59,9 @@ public abstract class BaseTsugi implements Tsugi
             return null;
         }
         Properties row = extractPost(props);
+        String x = TsugiUtils.dumpProperties(row);
+        System.out.println("Prpoperties:");
+        System.out.println(x);
         return null;
     }
 
