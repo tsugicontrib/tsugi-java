@@ -1,6 +1,8 @@
 
 package org.tsugi;
 
+import java.util.Properties;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -29,4 +31,9 @@ public interface Tsugi {
      * Get the launch information for the current session
      */
     public Launch getLaunch(HttpServletRequest req, HttpServletResponse res);
+
+   /**
+     * Get the launch information for the current session
+     */
+    public Launch getLaunch(Properties props);
 }
