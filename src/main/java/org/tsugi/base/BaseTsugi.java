@@ -1,8 +1,7 @@
-package org.tsugi.impl.jdbc;
+package org.tsugi.base;
 
 import org.tsugi.Tsugi;
 import org.tsugi.Launch;
-import org.tsugi.base.BaseTsugi;
 
 import org.tsugi.util.TsugiUtils;
 
@@ -17,10 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log; 
 import org.apache.commons.logging.LogFactory;
 
-public class Tsugi_JDBC extends BaseTsugi implements Tsugi
+public abstract class BaseTsugi implements Tsugi 
 {
 
-    private Log log = LogFactory.getLog(Tsugi_JDBC.class);
+    private Log log = LogFactory.getLog(BaseTsugi.class);
 
     private String version = "201506070900";
 
