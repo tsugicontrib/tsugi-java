@@ -1,10 +1,10 @@
-package org.tsugi.impl;
+package org.tsugi.impl.jdbc;
 
 import org.tsugi.Tsugi;
-import java.util.Properties;
-import java.sql.DriverManager;
-import java.sql.Connection;
-import java.sql.SQLException;
+import org.tsugi.Launch;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log; 
 import org.apache.commons.logging.LogFactory;
@@ -21,7 +21,10 @@ public class Tsugi_JDBC implements Tsugi
         return version;
     }
 
-    public Connection getConnection()
+   /**
+     * Get the launch information for the current session
+     */
+    public Launch getLaunch(HttpServletRequest req, HttpServletResponse res)
     {
         return null;
     }

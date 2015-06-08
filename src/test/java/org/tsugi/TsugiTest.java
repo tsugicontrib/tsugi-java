@@ -5,8 +5,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import org.tsugi.Tsugi;
-import org.tsugi.impl.Tsugi_JDBC;
-
 
 public class TsugiTest {
 
@@ -14,7 +12,7 @@ public class TsugiTest {
 
     @Before
     public void setUp() throws Exception {
-        tsugi = new Tsugi_JDBC();
+        tsugi = new org.tsugi.impl.jdbc.Tsugi_JDBC();
     }
     
     @Test

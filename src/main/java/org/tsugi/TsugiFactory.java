@@ -2,7 +2,6 @@
 package org.tsugi;
 
 import org.tsugi.Tsugi;
-import org.tsugi.impl.Tsugi_JDBC;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,7 +17,7 @@ public class TsugiFactory {
      * Return the implementation.
      */
     public static Tsugi getTsugi() {
-        Tsugi tsugi = new Tsugi_JDBC();
+        Tsugi tsugi = new org.tsugi.impl.jdbc.Tsugi_JDBC();
         log.trace("Returning a Tsugi implementation="+tsugi);
         return tsugi;
     }

@@ -1,11 +1,12 @@
 
 package org.tsugi;
 
-import java.sql.Connection;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
- * This in effect the Tsugi "Session Context" that provides applications with 
- * the implementations of the Tsugi APIs once properly provisioned and set up.
+ * This in effect the Tsugi "Launch Factory" that allows an application to 
+ * setup the launch for each request/response cycle.
  */
 public interface Tsugi {
    /**
@@ -14,7 +15,7 @@ public interface Tsugi {
     public String getVersion();
 
    /**
-     * Return the database connection used by Tsugi.
+     * Get the launch information for the current session
      */
-    public Connection getConnection();
+    public Launch getLaunch(HttpServletRequest req, HttpServletResponse res);
 }
