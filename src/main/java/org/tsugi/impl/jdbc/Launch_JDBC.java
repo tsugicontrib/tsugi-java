@@ -5,6 +5,8 @@ import org.tsugi.User;
 import org.tsugi.Context;
 import org.tsugi.Link;
 
+import org.tsugi.base.BaseLaunch;
+
 import java.util.Properties;
 import java.sql.DriverManager;
 import java.sql.Connection;
@@ -13,7 +15,7 @@ import java.sql.SQLException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class Launch_JDBC implements Launch 
+public class Launch_JDBC extends BaseLaunch 
 {
 
     private Log log = LogFactory.getLog(Launch_JDBC.class);

@@ -1,9 +1,10 @@
 
-package org.tsugi;
+package org.tsugi.base;
 
 import org.tsugi.Context;
 import org.tsugi.User;
 import org.tsugi.Link;
+import org.tsugi.Launch;
 
 import java.sql.Connection;
 
@@ -12,7 +13,7 @@ import java.sql.Connection;
  * interact with LTI.
  */
 
-public abstract class BaseLaunch implements  Launch {
+public abstract class BaseLaunch implements Launch {
 
     public User user;
     public Link link;

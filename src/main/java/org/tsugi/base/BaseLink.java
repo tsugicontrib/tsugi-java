@@ -1,7 +1,8 @@
 
-package org.tsugi;
+package org.tsugi.base;
 
 import org.tsugi.Link;
+import org.tsugi.Result;
 
 /**
  */

@@ -1,5 +1,5 @@
 
-package org.tsugi;
+package org.tsugi.base;
 
 import org.tsugi.Result;
 import org.tsugi.Service;
