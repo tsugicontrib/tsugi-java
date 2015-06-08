@@ -20,6 +20,14 @@ public abstract class BaseLaunch implements Launch {
     public Context context;
     public Connection connection;
 
+    public BaseLaunch()
+    {
+        user = null;
+        link = null;
+        context = null;
+        connection = null;
+    }
+
    /**
      * Get the User associated with the launch.
      */
