@@ -1,6 +1,6 @@
 package org.tsugi;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -19,16 +19,17 @@ import org.apache.commons.lang3.StringUtils;
 
 public class TsugiTest {
 
+    public static boolean setupDone = false;
     public final String unitTestKey = "unit-test-xyzzy-key";
     public final String unitTestKeySha256 = org.apache.commons.codec.digest.DigestUtils.sha256Hex(unitTestKey);
-    Tsugi tsugi = null;
-    Connection c = null;
-    DatabaseMetaData meta = null;
-    boolean localhost = false;
-    Long key_id = null;;
+    static Tsugi tsugi = null;
+    static Connection c = null;
+    static DatabaseMetaData meta = null;
+    static boolean localhost = false;
+    static Long key_id = null;;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void setup() throws Exception {
         tsugi = TsugiFactory.getTsugi();
         if ( tsugi == null ) return;
         c = tsugi.getConnection();
