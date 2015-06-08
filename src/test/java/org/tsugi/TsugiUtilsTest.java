@@ -13,6 +13,12 @@ public class TsugiUtilsTest {
     @Before
     public void setUp() throws Exception {
     }
+
+    @Test
+    public void testSystemProps() {
+        String tsugiDataSource = System.getProperty("tsugi.datasource.url");
+        System.out.println("System property tsugi.datasource.url="+tsugiDataSource);
+    }
     
     @Test
     public void testUtils() {

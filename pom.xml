@@ -82,12 +82,24 @@
           <target>1.7</target>
         </configuration>
       </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.12.4</version>
+        <configuration>
+          <systemPropertyVariables>
+            <tsugi.datasource.url>jdbc:mysql://localhost:8889/tsugi</tsugi.datasource.url>
+            <tsugi.datasource.username>tsugiuser</tsugi.datasource.username>
+            <tsugi.datasource.password>tsugipass</tsugi.datasource.userpass>
+            <tsugi.datasource.driverClassName>com.mysql.jdbc.Driver</tsugi.datasource.driverClassName>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
     </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
+    <resources>
+        <resource>
+            <directory>src/main/resources</directory>
+        </resource>
+    </resources>
   </build>
 
   <developers>
