@@ -20,6 +20,11 @@ public interface Result {
     public String getURL();
 
     /**
+     * The SourceDID associated with this result (LTI 1.x)
+     */
+    public String getSourceDID();
+
+    /**
      * The Service associated with this result (LTI 1.x)
      */
     public Service getService();

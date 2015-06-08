@@ -15,11 +15,6 @@ public interface Link extends Settings {
     public String getTitle();
 
     /**
-     * Current grade for the link
-     */
-    public Double getGrade();
-
-    /**
      * The result associated with this link.
      */
     public Result getResult();
