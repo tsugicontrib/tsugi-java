@@ -50,26 +50,7 @@ public abstract class BaseTsugi implements Tsugi
         return getLaunch(null, props, null);
     }
 
-   /**
-     * This should be private
-     */
-    private Launch getLaunch(HttpServletRequest req, Properties props, HttpServletResponse res)
-    {
-        if ( ! TsugiLTIUtils.isRequest(props) ) {
-            return null;
-        }
-        Properties row = extractPost(props);
-        String x = TsugiUtils.dumpProperties(row);
-        System.out.println("Prpoperties:");
-        System.out.println(x);
-        return null;
-    }
-
-
-    public String customGet(String varname, String def)
-    {
-        return "Yo";
-    }
+    public abstract Launch getLaunch(HttpServletRequest req, Properties props, HttpServletResponse res);
 
 
     /**
@@ -87,6 +68,7 @@ public abstract class BaseTsugi implements Tsugi
         setp(o,"link_id",i.getProperty("resource_link_id"));
         setp(o,"user_id",i.getProperty("user_id"));
 
+        // Test for the required parameters.
         if ( o.getProperty("key") != null && o.getProperty("nonce") != null && o.getProperty("context_id") != null &&
             o.getProperty("link_id") != null  && o.getProperty("user_id") != null  ) {
             // OK To Continue

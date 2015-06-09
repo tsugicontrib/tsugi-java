@@ -9,6 +9,7 @@ import static org.junit.Assert.*;
 import org.tsugi.Tsugi;
 import org.tsugi.TsugiFactory;
 import org.tsugi.Launch;
+import org.tsugi.util.TsugiUtils;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -24,7 +25,7 @@ public class TsugiTest {
 
     public static boolean setupDone = false;
     public static final String unitTestKey = "unit-test-xyzzy-key";
-    public static final String unitTestKeySha256 = org.apache.commons.codec.digest.DigestUtils.sha256Hex(unitTestKey);
+    public static final String unitTestKeySha256 = TsugiUtils.sha256(unitTestKey);
     static Tsugi tsugi = null;
     static Connection c = null;
     static DatabaseMetaData meta = null;
