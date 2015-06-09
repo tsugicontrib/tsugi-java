@@ -18,6 +18,8 @@ import java.sql.ResultSet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.apache.commons.logging.Log; 
 import org.apache.commons.logging.LogFactory;
 
@@ -161,7 +163,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
             "m.membership_id, m.role, m.role_override,\n"+
             "r.result_id, r.grade, r.result_url, r.sourcedid";
 
-        if ( post.getProperty("service") != null ) {
+        if ( ! StringUtils.isBlank(post.getProperty("service")) ) {
             sql += ",\n"+
             "s.service_id, s.service_key AS service";
         }
@@ -174,7 +176,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
             "LEFT JOIN {p}lti_membership AS m ON u.user_id = m.user_id AND c.context_id = m.context_id\n" +
             "LEFT JOIN {p}lti_result AS r ON u.user_id = r.user_id AND l.link_id = r.link_id";
 
-        if ( post.getProperty("service") != null) {
+        if ( ! StringUtils.isBlank(post.getProperty("service")) ) {
             sql += "\n"+
             "LEFT JOIN {p}lti_service AS s ON k.key_id = s.key_id AND s.service_sha256 = ?"; // :service 5
         }
@@ -191,7 +193,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
             stmt.setString(2, TsugiUtils.sha256(post.getProperty("context_key")));
             stmt.setString(3, TsugiUtils.sha256(post.getProperty("link_key")));
             stmt.setString(4, TsugiUtils.sha256(post.getProperty("user_key")));
-            if ( post.getProperty("service") == null) {
+            if ( StringUtils.isBlank(post.getProperty("service")) ) {
                 stmt.setString(5, TsugiUtils.sha256(post.getProperty("key_key")));
             } else {
                 stmt.setString(5, TsugiUtils.sha256(post.getProperty("service")));
@@ -229,7 +231,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
     {
         String sql = null;
 
-        if ( row.getProperty("context_id").length() == 0) {
+        if ( StringUtils.isBlank(row.getProperty("context_id")) ) {
             sql = "INSERT INTO {p}lti_context \n" +
                 " ( context_key, context_sha256, settings_url, title, key_id, created_at, updated_at ) VALUES \n" +
                 " ( ?,            ?,               ?,             ?,      ?,       NOW(), NOW() )";
