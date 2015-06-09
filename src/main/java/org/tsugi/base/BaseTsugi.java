@@ -62,65 +62,65 @@ public abstract class BaseTsugi implements Tsugi
     public Properties extractPost(Properties i) {
         Properties o = new Properties();
 
-        setp(o,"key",i.getProperty("oauth_consumer_key"));
-        setp(o,"nonce",i.getProperty("oauth_nonce"));
-        setp(o,"context_id",i.getProperty("context_id"));
-        setp(o,"link_id",i.getProperty("resource_link_id"));
-        setp(o,"user_id",i.getProperty("user_id"));
+        TsugiUtils.copy(o,"key_key",i,"oauth_consumer_key");
+        TsugiUtils.copy(o,"nonce",i,"oauth_nonce");
+        TsugiUtils.copy(o,"context_key",i,"context_id");
+        TsugiUtils.copy(o,"link_key",i,"resource_link_id");
+        TsugiUtils.copy(o,"user_key",i,"user_id");
 
         // Test for the required parameters.
-        if ( o.getProperty("key") != null && o.getProperty("nonce") != null && o.getProperty("context_id") != null &&
-            o.getProperty("link_id") != null  && o.getProperty("user_id") != null  ) {
+        if ( o.getProperty("key_key") != null && o.getProperty("nonce") != null && o.getProperty("context_key") != null &&
+            o.getProperty("link_key") != null  && o.getProperty("user_key") != null  ) {
             // OK To Continue
         } else {
             return null;
         }
 
         // LTI 1.x settings and Outcomes
-        setp(o,"service",i.getProperty("lis_outcome_service_url"));
-        setp(o,"sourcedid",i.getProperty("lis_result_sourcedid"));
+        TsugiUtils.copy(o,"service",i,"lis_outcome_service_url");
+        TsugiUtils.copy(o,"sourcedid",i,"lis_result_sourcedid");
 
         // LTI 2.x settings and Outcomes
-        setp(o,"result_url",i.getProperty("custom_result_url"));
-        setp(o,"link_settings_url",i.getProperty("custom_link_settings_url"));
-        setp(o,"context_settings_url",i.getProperty("custom_context_settings_url"));
+        TsugiUtils.copy(o,"result_url",i,"custom_result_url");
+        TsugiUtils.copy(o,"link_settings_url",i,"custom_link_settings_url");
+        TsugiUtils.copy(o,"context_settings_url",i,"custom_context_settings_url");
 
-        setp(o,"context_title",i.getProperty("context_title"));
-        setp(o,"link_title",i.getProperty("resource_link_title"));
+        TsugiUtils.copy(o,"context_title",i,"context_title");
+        TsugiUtils.copy(o,"link_title",i,"resource_link_title");
 
         // Getting email from LTI 1.x and LTI 2.x
         String email = i.getProperty("lis_person_contact_email_primary");
         if ( email == null ) i.getProperty("custom_person_email_primary");
-        setp(o,"user_email",email);
+        if ( email != null ) o.setProperty("user_email", email);
 
         // Displayname from LTI 2.x
         if ( i.getProperty("person_name_full") != null ) {
-            setp(o,"user_displayname",i.getProperty("custom_person_name_full"));
+            TsugiUtils.copy(o,"user_displayname",i,"custom_person_name_full");
         } else if ( i.getProperty("custom_person_name_given") != null && i.getProperty("custom_person_name_family") != null ) {
-            setp(o,"user_displayname",i.getProperty("custom_person_name_given")+" "+i.getProperty("custom_person_name_family"));
+            o.setProperty("user_displayname",i.getProperty("custom_person_name_given")+" "+i.getProperty("custom_person_name_family"));
         } else if ( i.getProperty("custom_person_name_given") != null ) {
-            setp(o,"user_displayname",i.getProperty("custom_person_name_given"));
+            TsugiUtils.copy(o,"user_displayname",i,"custom_person_name_given");
         } else if ( i.getProperty("custom_person_name_family") != null ) {
-            setp(o,"user_displayname",i.getProperty("custom_person_name_family"));
+            TsugiUtils.copy(o,"user_displayname",i,"custom_person_name_family");
 
         // Displayname from LTI 1.x
         } else if ( i.getProperty("lis_person_name_full") != null ) {
-            setp(o,"user_displayname",i.getProperty("lis_person_name_full"));
+            TsugiUtils.copy(o,"user_displayname",i,"lis_person_name_full");
         } else if ( i.getProperty("lis_person_name_given") != null && i.getProperty("lis_person_name_family") != null ) {
-            setp(o,"user_displayname",i.getProperty("lis_person_name_given")+" "+i.getProperty("lis_person_name_family"));
+            o.setProperty("user_displayname",i.getProperty("lis_person_name_given")+" "+i.getProperty("lis_person_name_family"));
         } else if ( i.getProperty("lis_person_name_given") != null ) {
-            setp(o,"user_displayname",i.getProperty("lis_person_name_given"));
+            TsugiUtils.copy(o,"user_displayname",i,"lis_person_name_given");
         } else if ( i.getProperty("lis_person_name_family") != null ) {
-            setp(o,"user_displayname",i.getProperty("lis_person_name_family"));
+            TsugiUtils.copy(o,"user_displayname",i,"lis_person_name_family");
         }
 
         // Trim out repeated spaces and/or weird whitespace from the user_displayname
         // if ( o.getProperty("user_displayname") ) {
-            // setp(o,"user_displayname"] = trim(preg_replace("/\s+/", " ",$retval["user_displayname"]));
+            // TsugiUtils.copy(o,"user_displayname"] = trim(preg_replace("/\s+/", " ",$retval["user_displayname"]));
         // }
 
         // Get the role
-        setp(o,"role","0");
+        o.setProperty("role", "0");
         String roles = "";
         if ( i.getProperty("custom_membership_role") != null ) { // From LTI 2.x
             roles = i.getProperty("custom_membership_role");
@@ -130,15 +130,10 @@ public abstract class BaseTsugi implements Tsugi
 
         if ( roles.length() > 0 ) {
             roles = roles.toLowerCase();
-            if ( roles.indexOf("instructor") > 0 ) setp(o,"role","1");
-            if ( roles.indexOf("administrator") > 0 ) setp(o,"role","1");
+            if ( roles.indexOf("instructor") > 0 ) o.setProperty("role", "1");
+            if ( roles.indexOf("administrator") > 0 ) o.setProperty("role", "1");
         }
         return o;
-    }
-
-    public static void setp(Properties o, String key, String value ) {
-        if ( value == null ) return;
-        o.setProperty(key, value);
     }
 
 }

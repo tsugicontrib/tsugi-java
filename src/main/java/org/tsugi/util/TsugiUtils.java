@@ -51,7 +51,7 @@ public class TsugiUtils {
     }
 
     /*
-     ** Scan a result set and return a Properties object with tentries for each column.
+     ** Scan a result set and return a Properties object with entries for each column.
      */
     public static Properties resultsetToProperties(ResultSet rs)
         throws SQLException
@@ -87,6 +87,28 @@ public class TsugiUtils {
         }
         if ( sb.length() < 1 ) sb.append("Empty Properties");
         return sb.toString();
+    }
+
+    /*
+     ** Copy a property from one list to another
+     */
+    public static void copy(Properties to, Properties from, String key) 
+    {
+        copy(to,key,from,key);
+    }
+
+    /*
+     ** Copy a property from one list to another
+     */
+    public static void copy(Properties to, String to_key, Properties from, String from_key) 
+    {
+        if ( from_key == null || to_key == null) return;
+        String value = from.getProperty(from_key);
+        if ( value == null ) {
+            to.remove(to_key);
+        } else {
+            to.setProperty(to_key, value);
+        }
     }
 
 }
