@@ -28,15 +28,8 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
 
     private Log log = LogFactory.getLog(Tsugi_JDBC.class);
 
-    private String version = "201506070900";
-
     // The prefix for all of the tables
     private String prefix = null;
-
-    public String getVersion()
-    {
-        return version;
-    }
 
    /**
      * Get a tsugi-suitable connection
@@ -125,14 +118,34 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
             return null;
         }
 
-        // TODO: Check OAuth
-        System.out.println("TODO: OAUTH Checking...");
-
         x = TsugiUtils.dumpProperties(row);
         System.out.println("Database Properties:");
         System.out.println(x);
 
+        if ( req != null ) {
+System.out.println("TODO: OAUTH Checking...");
+            String key = StringUtils.stripToNull(row.getProperty("key_key"));
+            String secret = StringUtils.stripToNull(row.getProperty("secret"));
+            String new_secret = StringUtils.stripToNull(row.getProperty("new_secret"));
+            boolean success = false;
+            if ( new_secret != null ) {
+                success = checkOAuthSignature(req, key, new_secret);
+            }   
+            if ( !success && secret != null ) {
+                success = checkOAuthSignature(req, key, secret);
+            }
+            if ( !success ) {
+                log.error("OAuth error: "+error_message);
+                log.error("Base string: "+base_string);
+                return null;
+            }
+        } else {
+            log.warn("HttpServletRequest is null - test only");
+        }
+
         adjustData(c, row, post);
+
+System.out.println("TODO: NONCE cleanup...");
 
         // Create our new objects
         Service service = null;

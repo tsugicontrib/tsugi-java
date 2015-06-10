@@ -13,10 +13,6 @@ import java.sql.Connection;
  * setup the launch for each request/response cycle.
  */
 public interface Tsugi {
-   /**
-     * Return the version of this application.
-     */
-    public String getVersion();
 
    /**
      * Return a database connection for use by Tsugi.

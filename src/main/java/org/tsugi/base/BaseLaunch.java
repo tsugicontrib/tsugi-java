@@ -8,16 +8,6 @@ import org.tsugi.util.TsugiUtils;
 
 import java.sql.Connection;
 
-import javax.servlet.http.HttpServletRequest;
-
-import net.oauth.OAuthAccessor;
-import net.oauth.OAuthConsumer;
-import net.oauth.OAuthMessage;
-import net.oauth.OAuthValidator;
-import net.oauth.SimpleOAuthValidator;
-import net.oauth.server.OAuthServlet;
-import net.oauth.signature.OAuthSignatureMethod;
-
 /**
  * This an opinionated LTI class that defines how Tsugi tools 
  * interact with LTI.
@@ -46,35 +36,6 @@ public class BaseLaunch implements Launch {
         this.context = context;
         this.link = link;
         this.result = result;
-    }
-
-    /**
-     * Check the OAuth Signature
-     */
-    public boolean checkOAuthSignature(HttpServletRequest request, String oauth_secret, String oauth_consumer_key)
-    {
-        String URL = TsugiUtils.getOurServletPath(request);
-        OAuthMessage oam = OAuthServlet.getMessage(request, URL);
-        OAuthValidator oav = new SimpleOAuthValidator();
-        OAuthConsumer cons = new OAuthConsumer("about:blank#OAuth+CallBack+NotUsed", oauth_consumer_key,oauth_secret, null);
-
-        OAuthAccessor acc = new OAuthAccessor(cons);
-
-        base_string = null;
-        error_message = null;
-        try {
-            base_string = OAuthSignatureMethod.getBaseString(oam);
-        } catch (Exception e) {
-            base_string = null;
-        }
-
-        try {
-            oav.validateMessage(oam, acc);
-        } catch (Exception e) {
-            error_message = "Provider failed to validate message";
-            return false;
-        }
-        return true;
     }
 
     /**

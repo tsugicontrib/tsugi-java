@@ -13,6 +13,14 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import net.oauth.OAuthAccessor;
+import net.oauth.OAuthConsumer;
+import net.oauth.OAuthMessage;
+import net.oauth.OAuthValidator;
+import net.oauth.SimpleOAuthValidator;
+import net.oauth.server.OAuthServlet;
+import net.oauth.signature.OAuthSignatureMethod;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -31,12 +39,8 @@ public abstract class BaseTsugi implements Tsugi
 
     private Log log = LogFactory.getLog(BaseTsugi.class);
 
-    private String version = "201506070900";
-
-    public String getVersion()
-    {
-        return version;
-    }
+    public String base_string = null;
+    public String error_message = null;
 
    /**
      * Get the launch information for the current session
@@ -146,6 +150,36 @@ public abstract class BaseTsugi implements Tsugi
         }
 
         return o;
+    }
+
+
+    /**
+     * Check the OAuth Signature
+     */
+    public boolean checkOAuthSignature(HttpServletRequest request, String oauth_secret, String oauth_consumer_key)
+    {
+        String URL = TsugiUtils.getOurServletPath(request);
+        OAuthMessage oam = OAuthServlet.getMessage(request, URL);
+        OAuthValidator oav = new SimpleOAuthValidator();
+        OAuthConsumer cons = new OAuthConsumer("about:blank#OAuth+CallBack+NotUsed", oauth_consumer_key,oauth_secret, null);
+
+        OAuthAccessor acc = new OAuthAccessor(cons);
+
+        base_string = null;
+        error_message = null;
+        try {
+            base_string = OAuthSignatureMethod.getBaseString(oam);
+        } catch (Exception e) {
+            base_string = null;
+        }
+
+        try {
+            oav.validateMessage(oam, acc);
+        } catch (Exception e) {
+            error_message = "Provider failed to validate message";
+            return false;
+        }
+        return true;
     }
 
 }
