@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;  
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -90,13 +91,36 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
      */
     public Launch getLaunch(HttpServletRequest req, Properties props, HttpServletResponse res)
     {
+        
+        HttpSession session = null;
+        if ( req != null ) {  // Allow for testing
+            session = req.getSession();
+        }
+
         BaseLaunch launch = new BaseLaunch();
+        String x = null;
+
         if ( ! TsugiLTIUtils.isRequest(props) ) {
             System.out.println("TODO: Pull in from session");
-            launch.error_message = "This tool must be launched using LTI";
+            if ( session == null ) {  // Test harness
+                launch.error_message = "This tool must be launched using LTI";
+                return launch;
+            }
+            // Pull in the previous row if it is in the session
+            Properties sess_row = (Properties) session.getAttribute("lti_row");
+            if ( sess_row == null ) {
+                launch.error_message = "This tool must be launched using LTI";
+                return launch;
+            }
+            x = TsugiUtils.dumpProperties(sess_row);
+            System.out.println("Session Properties:");
+            System.out.println(x);
+            buildLaunch(launch, sess_row);
             return launch;
         }
-        String x = null;
+
+        // Start fresh
+        if ( session != null ) session.removeAttribute("lti_row");
         // x = TsugiUtils.dumpProperties(props);
         // System.out.println("Input POST Properties:");
         // System.out.println(x);
@@ -155,6 +179,17 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
 
 System.out.println("TODO: Make sure to do NONCE cleanup...");
 
+        buildLaunch(launch, row);
+
+        // TODO: Maybe not
+        launch.database = new BaseDatabase(c, prefix);
+
+        if ( session != null ) session.setAttribute("lti_row", row);
+        return launch;
+    }
+
+    private void buildLaunch(BaseLaunch launch, Properties row)
+    {
         // Create our new objects
         Service service = null;
         if ( StringUtils.isNotBlank(row.getProperty("service_id")) ) {
@@ -165,14 +200,8 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
         launch.context = new BaseContext(row);
         launch.user = new BaseUser(row);
 
-        // TODO: Maybe not
-        launch.database = new BaseDatabase(c, prefix);
-
         launch.valid = true;
-
-        return launch;
     }
-
 
     public String customGet(String varname, String def)
     {

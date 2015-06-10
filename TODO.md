@@ -7,7 +7,7 @@ List of thing TODO
 
 * Make sure table prefix works
 
-* Store/retrieve the row information in the session
+* Store/retrieve the row information in the session intelligently based on URL formatting
 
 * Come up with URL pattern
 
