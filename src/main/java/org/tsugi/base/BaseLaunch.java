@@ -28,6 +28,8 @@ public class BaseLaunch implements Launch {
     public boolean valid = false;
     public boolean complete = false;
 
+    public BaseLaunch() { }
+
     public BaseLaunch(Connection connection, Database database, User user, Context context, Link link, Result result)
     {
         this.connection = connection;

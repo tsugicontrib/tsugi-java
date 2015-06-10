@@ -122,6 +122,8 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
         System.out.println("Database Properties:");
         System.out.println(x);
 
+        BaseLaunch launch = new BaseLaunch();
+        launch.connection = c;
         if ( req != null ) {
             String key = StringUtils.stripToNull(row.getProperty("key_key"));
             String secret = StringUtils.stripToNull(row.getProperty("secret"));
@@ -136,7 +138,9 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
             if ( !success ) {
                 log.error("OAuth error: "+error_message);
                 log.error("Base string: "+base_string);
-                return null;
+                launch.error_message = error_message;
+                launch.base_string = base_string;
+                return launch;
             }
         } else {
             log.warn("HttpServletRequest is null - test only");
@@ -144,21 +148,22 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
 
         adjustData(c, row, post);
 
-System.out.println("TODO: NONCE cleanup...");
+System.out.println("TODO: Make sure to do NONCE cleanup...");
 
         // Create our new objects
         Service service = null;
         if ( StringUtils.isNotBlank(row.getProperty("service_id")) ) {
             service = new BaseService(row);
         }
-        Result result = new BaseResult(row, service);
-        Link link = new BaseLink(row, result);
-        Context context = new BaseContext(row);
-        User user = new BaseUser(row);
+        launch.result = new BaseResult(row, service);
+        launch.link = new BaseLink(row, launch.result);
+        launch.context = new BaseContext(row);
+        launch.user = new BaseUser(row);
 
-        Database database = new BaseDatabase(c, prefix);
+        // TODO: Maybe not
+        launch.database = new BaseDatabase(c, prefix);
 
-        Launch launch = new BaseLaunch(c, database, user, context, link, result);
+        launch.valid = true;
 
         return launch;
     }
