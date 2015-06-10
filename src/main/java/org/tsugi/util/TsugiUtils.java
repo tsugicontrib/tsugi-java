@@ -11,6 +11,9 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -97,8 +100,8 @@ public class TsugiUtils {
         copy(to,key,from,key);
     }
 
-    /*
-     ** Copy a property from one list to another
+    /**
+     * Copy a property from one list to another
      */
     public static void copy(Properties to, String to_key, Properties from, String from_key) 
     {
@@ -109,6 +112,33 @@ public class TsugiUtils {
         } else {
             to.setProperty(to_key, value);
         }
+    }
+
+    /**
+     * Allow the server's view of the URL to be overridden
+     *
+     * This can be configured from a global system property named
+     * tsugi.server.url or from that properti from the /tsugi.properties
+     * file in the classpath.
+     *
+     * This is most valuable if our server is behind some kind of load balancer
+     * that obscures the request URL.
+     */
+    public static String getOurServletPath(HttpServletRequest request)
+    {
+        String URLstr = request.getRequestURL().toString();
+        String newPrefix = System.getProperty("tsugi.server.url");
+        if ( newPrefix == null ) {
+            Properties props = TsugiUtils.loadProperties("/tsugi.properties");
+            if ( props != null ) {
+                newPrefix = props.getProperty("tsugi.server.url");
+            }
+        }
+    
+        if ( newPrefix != null ) {
+            URLstr = URLstr.replaceFirst("^https??://[^/]*",newPrefix);
+        }
+        return URLstr;
     }
 
 }
