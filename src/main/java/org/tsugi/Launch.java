@@ -43,6 +43,6 @@ public interface Launch {
    /**
      * Return the database helper class used by Tsugi.
      */
-    public Database getDatabase();
+    public Database DB();
 
 }

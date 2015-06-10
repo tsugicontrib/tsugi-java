@@ -83,7 +83,7 @@ public class BaseLaunch implements Launch {
    /**
      * Return the database helper used by Tsugi.
      */
-    public Database getDatabase()
+    public Database DB()
     {
         return database;
     }
