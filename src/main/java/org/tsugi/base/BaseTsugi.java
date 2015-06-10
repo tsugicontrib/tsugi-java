@@ -156,7 +156,7 @@ public abstract class BaseTsugi implements Tsugi
     /**
      * Check the OAuth Signature
      */
-    public boolean checkOAuthSignature(HttpServletRequest request, String oauth_secret, String oauth_consumer_key)
+    public boolean checkOAuthSignature(HttpServletRequest request, String oauth_consumer_key, String oauth_secret)
     {
         String URL = TsugiUtils.getOurServletPath(request);
         OAuthMessage oam = OAuthServlet.getMessage(request, URL);

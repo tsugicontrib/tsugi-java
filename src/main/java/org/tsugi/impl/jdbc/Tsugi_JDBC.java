@@ -123,7 +123,6 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
         System.out.println(x);
 
         if ( req != null ) {
-System.out.println("TODO: OAUTH Checking...");
             String key = StringUtils.stripToNull(row.getProperty("key_key"));
             String secret = StringUtils.stripToNull(row.getProperty("secret"));
             String new_secret = StringUtils.stripToNull(row.getProperty("new_secret"));
