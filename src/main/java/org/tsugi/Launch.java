@@ -40,4 +40,9 @@ public interface Launch {
      */
     public Connection getConnection();
 
+   /**
+     * Return the database helper class used by Tsugi.
+     */
+    public Database getDatabase();
+
 }

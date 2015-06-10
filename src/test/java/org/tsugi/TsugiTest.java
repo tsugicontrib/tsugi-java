@@ -14,6 +14,7 @@ import org.tsugi.User;
 import org.tsugi.Link;
 import org.tsugi.Result;
 import org.tsugi.Service;
+import org.tsugi.Database;
 import org.tsugi.util.TsugiUtils;
 
 import java.sql.Connection;

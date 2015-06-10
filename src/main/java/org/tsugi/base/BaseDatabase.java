@@ -1,5 +1,5 @@
 
-package org.tsugi;
+package org.tsugi.base;
 
 import java.util.Properties;
 import java.util.List;
@@ -28,7 +28,7 @@ public class BaseDatabase implements Database {
     /**
      * Constructor 
      */
-    public void BaseDatabase(Connection c, String prefix)
+    public BaseDatabase(Connection c, String prefix)
     {
         this.c = c;
         this.prefix = prefix;

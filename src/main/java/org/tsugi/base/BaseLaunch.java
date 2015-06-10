@@ -3,12 +3,7 @@ package org.tsugi.base;
 
 import java.util.Properties;
 
-import org.tsugi.Context;
-import org.tsugi.User;
-import org.tsugi.Link;
-import org.tsugi.Result;
-import org.tsugi.Service;
-import org.tsugi.Launch;
+import org.tsugi.*;
 
 import java.sql.Connection;
 
@@ -24,11 +19,13 @@ public class BaseLaunch implements Launch {
     public Context context;
     public Link link;
     public Result result;
+    public Database database;
 
-    public BaseLaunch(Connection connection, User user, Context context, Link link, Result result)
+    public BaseLaunch(Connection connection, Database database, User user, Context context, Link link, Result result)
     {
-        this.user = user;
         this.connection = connection;
+        this.database = database;
+        this.user = user;
         this.context = context;
         this.link = link;
         this.result = result;
@@ -81,6 +78,14 @@ public class BaseLaunch implements Launch {
     public Connection getConnection()
     {
         return connection;
+    }
+
+   /**
+     * Return the database helper used by Tsugi.
+     */
+    public Database getDatabase()
+    {
+        return database;
     }
 
 }
