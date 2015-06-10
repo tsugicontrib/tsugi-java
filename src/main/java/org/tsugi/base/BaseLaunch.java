@@ -7,6 +7,7 @@ import org.tsugi.Context;
 import org.tsugi.User;
 import org.tsugi.Link;
 import org.tsugi.Result;
+import org.tsugi.Service;
 import org.tsugi.Launch;
 
 import java.sql.Connection;
@@ -63,6 +64,15 @@ public class BaseLaunch implements Launch {
     public Result getResult()
     {
         return result;
+    }
+
+   /**
+     * Get the Service associated with the launch.
+     */
+    public Service getService()
+    {
+        if ( result == null ) return null;
+        return result.getService();
     }
 
    /**

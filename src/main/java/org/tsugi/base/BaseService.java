@@ -24,7 +24,7 @@ public class BaseService implements Service {
     {
         // Note - not all rows will have a service - this may throw NPE
         id = new Long(row.getProperty("service_id"));
-        URL = StringUtils.stripToNull(row.getProperty("service_url"));
+        URL = StringUtils.stripToNull(row.getProperty("service"));
     }
 
     /**

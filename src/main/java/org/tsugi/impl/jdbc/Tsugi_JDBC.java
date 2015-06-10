@@ -102,9 +102,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
         }
 
         return connection;
-
     }
-
 
    /**
      * Fire up the launch.  If req is null - we behave as if this is a test.

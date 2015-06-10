@@ -100,9 +100,16 @@ public class TsugiTest {
     @Test
     public void testThing() {
         Properties f = fakePost();
+        assertTrue(launch.getContext().getId() > 0 );
+        assertTrue(launch.getUser().getId() > 0 );
+        assertTrue(launch.getLink().getId() > 0 );
+        assertTrue(launch.getResult().getId() > 0 );
+        assertTrue(launch.getService().getId() > 0 );
         assertEquals(f.getProperty("context_title"), launch.getContext().getTitle());
         assertEquals(f.getProperty("lis_person_contact_email_primary"), launch.getUser().getEmail());
         assertEquals(f.getProperty("resource_link_title"), launch.getLink().getTitle());
+        assertEquals(f.getProperty("lis_result_sourcedid"), launch.getResult().getSourceDID());
+        assertEquals(f.getProperty("lis_outcome_service_url"), launch.getService().getURL());
     }
 
     public static Properties fakePost() {
