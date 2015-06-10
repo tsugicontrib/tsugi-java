@@ -1,8 +1,6 @@
 List of thing TODO
 ------------------
 
-* Write Database library
-
 * Write Output library
 
 * Add OAuth checking on input
@@ -26,4 +24,7 @@ List of thing TODO
 * Unit tests for the data absorber by changing launch data and checking tables 
 
 * H2 unit tests
+
+
+* Look at the database library - might not have been such a good idea after all.
 
