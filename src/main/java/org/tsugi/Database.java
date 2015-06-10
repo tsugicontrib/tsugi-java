@@ -14,29 +14,27 @@ import java.sql.SQLException;
 public interface Database {
 
     /**
-     * Prepare and execute an SQL query and return the error
+     * Prepare and execute a SELECT query or die() in the attempt.
      *
      * @param sql The SQL to execute in a string.  If the SQL is badly formed this function will die.
      * @param arr An optional array of the substitition values if needed by the query
-     * @param error_log Indicates whether or not errors are to be logged. Default is TRUE.
+     * @return \ResultSet  This is the ResultSet from the query or
+     * or the error is logged and a RuntimeException is thrown.
+     */
+    public ResultSet selectDie(String sql, List<String> arr);
+
+    /**
+     * Prepare and execute a SELECT query and return the error
+     *
+     * @param sql The SQL to execute in a string.  If the SQL is badly formed this function will die.
+     * @param arr An optional array of the substitition values if needed by the query
      * @return \ResultSet  This is either the real ResultSet from the query call
      * or an SQLErrror is thrown.
      */
-    public ResultSet queryReturnError(String sql, List<String> arr, boolean error_log)
-        throws SQLException;
+    public ResultSet selectReturnError(String sql, List<String> arr) throws SQLException;
 
     /**
-     * Prepare and execute an SQL query or die() in the attempt.
-     *
-     * @param sql The SQL to execute in a string.  If the SQL is badly formed this function will die.
-     * @param arr An optional array of the substitition values if needed by the query
-     * @return \ResultSet  This is either the real PDOStatement from the prepare() call
-     * or the error is logged and a RuntimeException is thrown.
-     */
-    public ResultSet queryDie(String sql, List<String> arr);
-
-    /**
-     * Prepare and execute an SQL insert query and return the new primary key.
+     * Prepare and execute an INSERT primary key query and return the new primary key.
      *
      * @param sql The SQL to execute in a string.  If the SQL is badly formed this function will die.
      * @param arr An optional array of the substitition values if needed by the query
@@ -44,6 +42,34 @@ public interface Database {
      * If anything goes wrong the errors are logged and a runtime exception is thrown.
      */
     public Long insertDie(String sql, List<String> arr);
+
+    /**
+     * Prepare and execute an INSERT primary key query and return the new primary key.
+     *
+     * @param sql The SQL to execute in a string.  If the SQL is badly formed this function will die.
+     * @param arr An optional array of the substitition values if needed by the query
+     * @return Long This is the new primary key of the inserted row if the insert was successful.
+     */
+    public Long insertReturnError(String sql, List<String> arr) throws SQLException;
+
+    /**
+     * Prepare and execute an UPDATE, DELETE or INSERT without a primary key 
+     *
+     * @param sql The SQL to execute in a string.  If the SQL is badly formed this function will die.
+     * @param arr An optional array of the substitition values if needed by the query
+     * @return int The number of rows affected (may be zero)
+     * If anything goes wrong the errors are logged and a runtime exception is thrown.
+     */
+    public int updateDie(String sql, List<String> arr);
+
+    /**
+     * Prepare and execute an UPDATE, DELETE or INSERT without a primary key 
+     *
+     * @param sql The SQL to execute in a string.  If the SQL is badly formed this function will die.
+     * @param arr An optional array of the substitition values if needed by the query
+     * @return int The number of rows affected (may be zero)
+     */
+    public int updateReturnError(String sql, List<String> arr) throws SQLException;
 
     /**
      * Prepare and execute an SQL query and retrieve a single row.

@@ -35,15 +35,9 @@ public class BaseDatabase implements Database {
     }
 
     /**
-     * Prepare and execute an SQL query and return the error
      *
-     * @param sql The SQL to execute in a string.  If the SQL is badly formed this function will die.
-     * @param arr An optional array of the substitition values if needed by the query
-     * @param error_log Indicates whether or not errors are to be logged. Default is TRUE.
-     * @return \ResultSet  This is either the real ResultSet from the query call
-     * or an SQLErrror is thrown.
      */
-    public ResultSet queryReturnError(String sql, List<String> arr, boolean error_log)
+    public ResultSet selectReturnError(String sql, List<String> arr)
         throws SQLException
     {
         sql = setPrefix(sql);
@@ -55,22 +49,13 @@ public class BaseDatabase implements Database {
         try {
             boolean inserting = StringUtils.trim(sql).toLowerCase().startsWith("insert");
 
-            if ( inserting ) {
-                stmt = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            } else {
-                stmt = c.prepareStatement(sql);
-            }
+            stmt = c.prepareStatement(sql);
 
             if ( arr != null ) for ( int i=0; i < arr.size(); i++) {
                 stmt.setString(i+1, arr.get(i));
             }
 
-            if ( inserting ) {
-                stmt.executeUpdate();
-                rs = stmt.getGeneratedKeys();
-            } else {
-                rs = stmt.executeQuery();
-            }
+            rs = stmt.executeQuery();
             stmt.close();
             return rs;
         // If the closes generate throws, we let them happen
@@ -83,17 +68,81 @@ public class BaseDatabase implements Database {
     }
 
     /**
-     * Prepare and execute an SQL query or die() in the attempt.
      *
-     * @param sql The SQL to execute in a string.  If the SQL is badly formed this function will die.
-     * @param arr An optional array of the substitition values if needed by the query
-     * @return \ResultSet  This is either the real PDOStatement from the prepare() call
-     * or the error is logged and a RuntimeException is thrown.
      */
-    public ResultSet queryDie(String sql, List<String> arr)
+    public Long insertReturnError(String sql, List<String> arr)
+        throws SQLException
+    {
+        sql = setPrefix(sql);
+        log.trace(sql);
+
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            stmt = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            if ( arr != null ) for ( int i=0; i < arr.size(); i++) {
+                stmt.setString(i+1, arr.get(i));
+            }
+
+            stmt.executeUpdate();
+            rs = stmt.getGeneratedKeys();
+            Long retval = null;
+            if (rs.next()) {
+                retval = rs.getLong(1);
+                System.out.println("Inserted new key="+retval);
+            }
+            rs.close();
+            return retval;
+
+        // If the closes generate throws, we let them happen
+        // http://stackoverflow.com/questions/321418/where-to-close-java-preparedstatements-and-resultsets
+        } catch(SQLException ex) {
+            if ( stmt != null ) stmt.close();
+            if ( rs != null ) rs.close();
+            throw ex;
+        }
+    }
+
+    /**
+     *
+     */
+    public int updateReturnError(String sql, List<String> arr)
+        throws SQLException
+    {
+        sql = setPrefix(sql);
+        log.trace(sql);
+
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            stmt = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            if ( arr != null ) for ( int i=0; i < arr.size(); i++) {
+                stmt.setString(i+1, arr.get(i));
+            }
+
+            int retval = stmt.executeUpdate();
+            stmt.close();
+            return retval;
+        // If the closes generate throws, we let them happen
+        // http://stackoverflow.com/questions/321418/where-to-close-java-preparedstatements-and-resultsets
+        } catch(SQLException ex) {
+            if ( stmt != null ) stmt.close();
+            if ( rs != null ) rs.close();
+            throw ex;
+        }
+    }
+
+    /**
+     *
+     */
+    public ResultSet selectDie(String sql, List<String> arr)
     {
         try {
-            ResultSet rs = queryReturnError(sql, arr, true);
+            ResultSet rs = selectReturnError(sql, arr);
             return rs;
         } catch ( SQLException e ) {
             log.error("Failed SQL: "+sql);
@@ -102,41 +151,39 @@ public class BaseDatabase implements Database {
     }
 
     /**
-     * Prepare and execute an SQL insert query and return the new primary key.
      *
-     * @param sql The SQL to execute in a string.  If the SQL is badly formed this function will die.
-     * @param arr An optional array of the substitition values if needed by the query
-     * @return Long This is the new primary key of the inserted row if the insert was successful.
-     * If anything goes wrong the errors are logged and a runtime exception is thrown.
      */
     public Long insertDie(String sql, List<String> arr)
     {
-        ResultSet rs = queryDie(sql, arr);
         try {
-            if (rs.next()) {
-                Long retval = rs.getLong(1);
-                System.out.println("Inserted new key="+retval);
-                rs.close();
-                return retval;
-            } else {
-                throw new RuntimeException("Insert failed: "+sql);
+            Long retval = insertReturnError(sql,arr);
+            if ( retval == null ) {
+                throw new RuntimeException("INSERT did not produce key:"+sql);
             }
+            return retval;
         } catch (SQLException ex) {
-            throw new RuntimeException("RecordSet close failed:"+sql);
+            throw new RuntimeException("RecordSet close failed: "+sql);
         }
     }
 
     /**
-     * Prepare and execute an SQL query and retrieve a single row.
      *
-     * @param sql The SQL to execute in a string.  If the SQL is badly formed this function will die.
-     * @param arr An optional array of the substitition values if needed by the query
-     * @return Properties This is either the row that was returned or null if no row was returned.
-     * If anything goes wrong the errors are logged and a runtime exception is thrown.
+     */
+    public int updateDie(String sql, List<String> arr)
+    {
+        try {
+            return updateReturnError(sql,arr);
+        } catch (SQLException ex) {
+            throw new RuntimeException("Update failed: "+sql);
+        }
+    }
+
+    /**
+     *
      */
     public Properties rowDie(String sql, List<String> arr)
     {
-        ResultSet rs = queryDie(sql, arr);
+        ResultSet rs = selectDie(sql, arr);
         try {
             if (rs.next()) {
                 Properties retval =  resultsetToProperties(rs);
@@ -152,21 +199,7 @@ public class BaseDatabase implements Database {
     }
 
     /**
-     * Prepare and execute an SQL query and retrieve all the rows as an array
      *
-     * While this might seem like a bad idea, the coding style for Tsugi is
-     * to make every query a paged query with a limited number of records to
-     * be retrieved to in most cases, it is quite reasonable to retrieve
-     * 10-30 rows into an array.
-     *
-     * If code wants to stream the results of a query, they should do their
-     * own query and loop through the rows in their own code.
-     *
-     * @param sql The SQL to execute in a string.  If the SQL is badly formed this function will die.
-     * @param arr An optional array of the substitition values if needed by the query
-     * @param error_log Indicates whether or not errors are to be logged. Default is TRUE.
-     * @return List<Propertiesi> This is either the rows that was returned or null if no rows were returned.
-     * If anything goes wrong the errors are logged and a runtime exception is thrown.
      */
     public List<Properties> allRowsDie(String sql, List<String> arr)
     {
@@ -174,8 +207,8 @@ public class BaseDatabase implements Database {
     }
 
 
-    /*
-     ** Scan a result set and return a Properties object with entries for each column.
+    /**
+     * Scan a result set and return a Properties object with entries for each column.
      */
     public static Properties resultsetToProperties(ResultSet rs)
         throws SQLException
