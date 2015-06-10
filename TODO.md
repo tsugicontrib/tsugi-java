@@ -1,7 +1,17 @@
 List of thing TODO
 ------------------
 
-* Write PDOX library
+* Write Database library
+
+* Write Output library
+
+* Add OAuth checking on input
+
+* Make jars provided
+
+* Factory class in properties
+
+* Make sure table prefix works
 
 * Store/retrieve the row information in the session
 
