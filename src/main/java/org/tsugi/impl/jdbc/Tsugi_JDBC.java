@@ -144,7 +144,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
         Context context = new BaseContext(row);
         User user = new BaseUser(row);
 
-        Database database = new BaseDatabase(c, "");
+        Database database = new BaseDatabase(c, prefix);
 
         Launch launch = new BaseLaunch(c, database, user, context, link, result);
 
