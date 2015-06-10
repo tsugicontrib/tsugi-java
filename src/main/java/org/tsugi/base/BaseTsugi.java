@@ -6,6 +6,7 @@ import org.tsugi.util.TsugiUtils;
 import org.tsugi.util.TsugiLTIUtils;
 
 import java.util.Properties;
+import java.util.Enumeration;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -15,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log; 
 import org.apache.commons.logging.LogFactory;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.imsglobal.basiclti.BasicLTIUtil;
 
@@ -90,7 +93,7 @@ public abstract class BaseTsugi implements Tsugi
 
         // Getting email from LTI 1.x and LTI 2.x
         String email = i.getProperty("lis_person_contact_email_primary");
-        if ( email == null ) i.getProperty("custom_person_email_primary");
+        if ( email == null ) email = i.getProperty("custom_person_email_primary");
         if ( email != null ) o.setProperty("user_email", email);
 
         // Displayname from LTI 2.x
@@ -114,11 +117,6 @@ public abstract class BaseTsugi implements Tsugi
             TsugiUtils.copy(o,"user_displayname",i,"lis_person_name_family");
         }
 
-        // Trim out repeated spaces and/or weird whitespace from the user_displayname
-        // if ( o.getProperty("user_displayname") ) {
-            // TsugiUtils.copy(o,"user_displayname"] = trim(preg_replace("/\s+/", " ",$retval["user_displayname"]));
-        // }
-
         // Get the role
         o.setProperty("role", "0");
         String roles = "";
@@ -133,6 +131,18 @@ public abstract class BaseTsugi implements Tsugi
             if ( roles.indexOf("instructor") > 0 ) o.setProperty("role", "1");
             if ( roles.indexOf("administrator") > 0 ) o.setProperty("role", "1");
         }
+
+        // Lets trim whitespace from all of these properties
+        Enumeration keys = o.keys();
+        while (keys.hasMoreElements()) {
+            String key = (String) keys.nextElement();
+            String value = o.getProperty(key);
+            if ( value == null ) continue;
+            String newValue = StringUtils.strip(value);
+            if ( value.equals(newValue) ) continue;
+            o.setProperty(key,newValue);
+        }
+
         return o;
     }
 

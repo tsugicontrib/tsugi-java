@@ -241,7 +241,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
                 "( user_key, user_sha256, displayname, email, key_id, created_at, updated_at ) VALUES \n" +
                 "( ?,        ?,           ?,           ?,     ?,      NOW(), NOW() )";
             sql = setPrefix(sql);
-            log.error(sql);
+            log.debug(sql);
 
             try {
                 PreparedStatement stmt = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -275,7 +275,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
                 " ( ?,            ?,               ?,             ?,      ?,       NOW(), NOW() )";
                 //( :context_key, :context_sha256, :settings_url, :title, :key_id, NOW(), NOW() )";
             sql = setPrefix(sql);
-            log.error(sql);
+            log.debug(sql);
 
             try {
                 PreparedStatement stmt = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -309,7 +309,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
                 "( link_key, link_sha256, settings_url, title, context_id, created_at, updated_at ) VALUES \n" +
                 "( ?,        ?,           ?,            ?,     ?,          NOW(), NOW() )";
             sql = setPrefix(sql);
-            log.error(sql);
+            log.debug(sql);
 
             try {
                 PreparedStatement stmt = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -345,7 +345,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
                 "( context_id, user_id, role, created_at, updated_at ) VALUES \n" +
                 "( ?,          ?,       ?,    NOW(), NOW() )";
             sql = setPrefix(sql);
-            log.error(sql);
+            log.debug(sql);
 
             try {
                 PreparedStatement stmt = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -378,7 +378,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
                     "( service_key, service_sha256, key_id, created_at, updated_at ) VALUES \n" +
                     "( ?,           ?,              ?,      NOW(), NOW() )";
                 sql = setPrefix(sql);
-                log.error(sql);
+                log.debug(sql);
 
                 try {
                     PreparedStatement stmt = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -409,7 +409,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
                 StringUtils.isNotBlank(row.getProperty("result_id")) ) {
                 sql = "UPDATE {p}lti_result SET service_id = ? WHERE result_id = ?";
                 sql = setPrefix(sql);
-                log.error(sql);
+                log.debug(sql);
 
                 try {
                     PreparedStatement stmt = c.prepareStatement(sql);
@@ -434,7 +434,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
                 " ( link_id, user_id, created_at, updated_at ) VALUES \n" +
                 " ( ?,       ?,       NOW(), NOW() )";
             sql = setPrefix(sql);
-            log.error(sql);
+            log.debug(sql);
 
             try {
                 PreparedStatement stmt = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -474,7 +474,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
                 "SET sourcedid = ?, result_url = ?, service_id = ? \n" +
                 "WHERE result_id = ?";
             sql = setPrefix(sql);
-            log.error(sql);
+            log.debug(sql);
 
             try {
                 PreparedStatement stmt = c.prepareStatement(sql);
@@ -499,7 +499,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
 
             sql = "UPDATE {p}lti_context SET title = ? WHERE context_id = ?";
             sql = setPrefix(sql);
-            log.error(sql);
+            log.debug(sql);
 
             try {
                 PreparedStatement stmt = c.prepareStatement(sql);
@@ -520,7 +520,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
 
             sql = "UPDATE {p}lti_link SET title = ? WHERE link_id = ?";
             sql = setPrefix(sql);
-            log.error(sql);
+            log.debug(sql);
 
             try {
                 PreparedStatement stmt = c.prepareStatement(sql);
@@ -541,7 +541,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
 
             sql = "UPDATE {p}lti_user SET displayname = ? WHERE user_id = ?";
             sql = setPrefix(sql);
-            log.error(sql);
+            log.debug(sql);
 
             try {
                 PreparedStatement stmt = c.prepareStatement(sql);
@@ -562,7 +562,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
 
             sql = "UPDATE {p}lti_user SET email = ? WHERE user_id = ?";
             sql = setPrefix(sql);
-            log.error(sql);
+            log.debug(sql);
 
             try {
                 PreparedStatement stmt = c.prepareStatement(sql);
@@ -584,7 +584,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
 
             sql = "UPDATE {p}lti_membership SET role = ? WHERE membership_id = ?";
             sql = setPrefix(sql);
-            log.error(sql);
+            log.debug(sql);
 
             try {
                 PreparedStatement stmt = c.prepareStatement(sql);
