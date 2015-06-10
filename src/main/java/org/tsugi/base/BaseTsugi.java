@@ -1,5 +1,7 @@
 package org.tsugi.base;
 
+import java.util.Properties;
+
 import org.tsugi.Tsugi;
 import org.tsugi.Launch;
 import org.tsugi.util.TsugiUtils;

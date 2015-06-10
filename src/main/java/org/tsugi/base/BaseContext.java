@@ -1,7 +1,11 @@
 
 package org.tsugi.base;
 
+import java.util.Properties;
+
 import org.tsugi.Context;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * This is a class to provide access to the resource context level data.
@@ -15,12 +19,21 @@ import org.tsugi.Context;
  *
  */
 
-public abstract class BaseContext implements Context {
+public class BaseContext implements Context {
 
     // TODO: - $Context->lang - The context language choice.
 
     public Long id;
     public String title;
+
+    /**
+     * Constructor 
+     */
+    public BaseContext(Properties row) 
+    {
+        id = new Long(row.getProperty("context_id"));
+        title = StringUtils.stripToNull(row.getProperty("context_title"));
+    }
 
     /**
      * The integer primary key for this context in the 'lti_context' table.

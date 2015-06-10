@@ -26,14 +26,13 @@ public interface Launch {
     public Link getLink();
 
    /**
+     * Get the Result associated with the launch.
+     */
+    public Result getResult();
+
+   /**
      * Return the database connection used by Tsugi.
      */
     public Connection getConnection();
-
-   /**
-     * Pull out a custom variable from the Launch session. Do not
-     * include the "custom_" prefix - this is automatic.
-     */
-    public String customGet(String varname, String def);
 
 }

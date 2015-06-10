@@ -2,7 +2,19 @@ package org.tsugi.impl.jdbc;
 
 import org.tsugi.Tsugi;
 import org.tsugi.Launch;
+import org.tsugi.Context;
+import org.tsugi.User;
+import org.tsugi.Link;
+import org.tsugi.Result;
+import org.tsugi.Service;
+
 import org.tsugi.base.BaseTsugi;
+import org.tsugi.base.BaseContext;
+import org.tsugi.base.BaseLaunch;
+import org.tsugi.base.BaseLink;
+import org.tsugi.base.BaseService;
+import org.tsugi.base.BaseUser;
+import org.tsugi.base.BaseResult;
 
 import org.tsugi.util.TsugiUtils;
 import org.tsugi.util.TsugiLTIUtils;
@@ -136,7 +148,19 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
 
         adjustData(c, row, post);
 
-        return null;
+        // Create our new objects
+        Service service = null;
+        if ( StringUtils.isNotBlank(row.getProperty("service_id")) ) {
+            service = new BaseService(row);
+        }
+        Result result = new BaseResult(row, service);
+        Link link = new BaseLink(row, result);
+        Context context = new BaseContext(row);
+        User user = new BaseUser(row);
+
+        Launch launch = new BaseLaunch(c, user, context, link, result);
+
+        return launch;
     }
 
 

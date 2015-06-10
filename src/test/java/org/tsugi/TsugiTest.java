@@ -9,6 +9,11 @@ import static org.junit.Assert.*;
 import org.tsugi.Tsugi;
 import org.tsugi.TsugiFactory;
 import org.tsugi.Launch;
+import org.tsugi.Context;
+import org.tsugi.User;
+import org.tsugi.Link;
+import org.tsugi.Result;
+import org.tsugi.Service;
 import org.tsugi.util.TsugiUtils;
 
 import java.sql.Connection;
@@ -93,8 +98,11 @@ public class TsugiTest {
     }
     
     @Test
-    public void testVersion() {
-        System.out.println("YOYO "+tsugi.getVersion());
+    public void testThing() {
+        Properties f = fakePost();
+        assertEquals(f.getProperty("context_title"), launch.getContext().getTitle());
+        assertEquals(f.getProperty("lis_person_contact_email_primary"), launch.getUser().getEmail());
+        assertEquals(f.getProperty("resource_link_title"), launch.getLink().getTitle());
     }
 
     public static Properties fakePost() {
