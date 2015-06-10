@@ -90,7 +90,9 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
      */
     public Launch getLaunch(HttpServletRequest req, Properties props, HttpServletResponse res)
     {
+        BaseLaunch launch = new BaseLaunch();
         if ( ! TsugiLTIUtils.isRequest(props) ) {
+            System.out.println("TODO: Pull in from session");
             return null;
         }
         String x = null;
@@ -101,7 +103,8 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
         Properties post = extractPost(props);
         if ( post == null ) {
             log.error("Missing essential POST data");
-            return null;
+            launch.error_message = "Missing essential POST data";
+            return launch;
         }
         x = TsugiUtils.dumpProperties(post);
         System.out.println("Extracted POST Properties:");
@@ -110,19 +113,20 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
         Connection c = getConnection();
         if ( c == null ) {
             log.error("Unable to upen database connection");
-            return null;
+            launch.error_message = "Unable to upen database connection";
+            return launch;
         }
         Properties row = loadAllData(c, post);
         if ( row == null ) {
             log.error("Key not found");
-            return null;
+            launch.error_message = "Key not found";
+            return launch;
         }
 
         x = TsugiUtils.dumpProperties(row);
         System.out.println("Database Properties:");
         System.out.println(x);
 
-        BaseLaunch launch = new BaseLaunch();
         launch.connection = c;
         if ( req != null ) {
             String key = StringUtils.stripToNull(row.getProperty("key_key"));
