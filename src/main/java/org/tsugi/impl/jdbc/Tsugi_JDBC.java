@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.apache.commons.logging.Log; 
+import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class Tsugi_JDBC extends BaseTsugi implements Tsugi
@@ -70,7 +70,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
             log.error("tsugi.datasource.driverClassName="+className);
             log.error("tsugi.datasource.tablePrefix="+prefix);
             throw new java.lang.RuntimeException("Missing essential Tsugi JDBC properties:");
-        } 
+        }
 
         try {
             Class.forName(className);
@@ -82,7 +82,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(jdbc, username, password);
-    
+
         } catch (SQLException e) {
             log.error("Your database server may be down.  Or if it is up your database is missing or inaccessible.");
             log.error("Install the PHP version of Tsugi from www.tsugi.org and use that tool to provision an empty tsugi database.");
@@ -151,9 +151,9 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
      * This data may or may not exist - hence the use of the long
      * LEFT JOIN.
      */
-    public Properties loadAllData(Connection c, Properties post) 
+    public Properties loadAllData(Connection c, Properties post)
     {
-        String sql = 
+        String sql =
             "SELECT k.key_id, k.key_key, k.secret, k.new_secret, c.settings_url AS key_settings_url, \n" +
             "n.nonce, \n" +
             "c.context_id, c.title AS context_title, context_sha256, c.settings_url AS context_settings_url,\n"+
@@ -163,7 +163,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
             "m.membership_id, m.role, m.role_override,\n"+
             "r.result_id, r.grade, r.result_url, r.sourcedid";
 
-        if ( ! StringUtils.isBlank(post.getProperty("service")) ) {
+        if ( StringUtils.isNotBlank(post.getProperty("service")) ) {
             sql += ",\n"+
             "s.service_id, s.service_key AS service";
         }
@@ -176,7 +176,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
             "LEFT JOIN {p}lti_membership AS m ON u.user_id = m.user_id AND c.context_id = m.context_id\n" +
             "LEFT JOIN {p}lti_result AS r ON u.user_id = r.user_id AND l.link_id = r.link_id";
 
-        if ( ! StringUtils.isBlank(post.getProperty("service")) ) {
+        if ( StringUtils.isNotBlank(post.getProperty("service")) ) {
             sql += "\n"+
             "LEFT JOIN {p}lti_service AS s ON k.key_id = s.key_id AND s.service_sha256 = ?"; // :service 5
         }
@@ -227,10 +227,48 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
      * any new or updated data and so this code just falls through and
      * does absolutely no SQL.
      */
-    public void adjustData(Connection c, Properties row, Properties post) 
+    public void adjustData(Connection c, Properties row, Properties post)
     {
         String sql = null;
 
+        // Connect the user to the key
+        String user_displayname = StringUtils.stripToNull(post.getProperty("user_displayname"));
+        String user_email = StringUtils.stripToNull(post.getProperty("user_email"));
+
+        if ( StringUtils.isBlank(row.getProperty("user_id")) &&
+            StringUtils.isNotBlank(post.getProperty("link_key") )) {
+            sql = "INSERT INTO {p}lti_user \n" +
+                "( user_key, user_sha256, displayname, email, key_id, created_at, updated_at ) VALUES \n" +
+                "( ?,        ?,           ?,           ?,     ?,      NOW(), NOW() )";
+            sql = setPrefix(sql);
+            log.error(sql);
+
+            try {
+                PreparedStatement stmt = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                stmt.setString(1, post.getProperty("user_key"));
+                stmt.setString(2, TsugiUtils.sha256(post.getProperty("user_key")));
+                stmt.setString(3, user_displayname);
+                stmt.setString(4, user_email);
+                stmt.setString(5, row.getProperty("key_id"));
+
+                stmt.executeUpdate();
+                ResultSet rs = stmt.getGeneratedKeys();
+                if (rs.next()) {
+                    Long user_id = rs.getLong(1);
+                    System.out.println("Inserted user_id="+user_id);
+                    row.setProperty("user_id",user_id+"");
+                    TsugiUtils.copy(row, post, "link_title");
+                    TsugiUtils.copy(row, post, "link_settings_url");
+                } else {
+                    throw new RuntimeException("Insert failed "+sql);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                return;
+            }
+        }
+
+        // Connect the context to the key
         if ( StringUtils.isBlank(row.getProperty("context_id")) ) {
             sql = "INSERT INTO {p}lti_context \n" +
                 " ( context_key, context_sha256, settings_url, title, key_id, created_at, updated_at ) VALUES \n" +
@@ -264,175 +302,302 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
             }
         }
 
-/*
+        // Connect the link to the context
+        if ( StringUtils.isBlank(row.getProperty("link_id")) &&
+            StringUtils.isNotBlank(post.getProperty("link_key") )) {
+            sql = "INSERT INTO {p}lti_link \n" +
+                "( link_key, link_sha256, settings_url, title, context_id, created_at, updated_at ) VALUES \n" +
+                "( ?,        ?,           ?,            ?,     ?,          NOW(), NOW() )";
+            sql = setPrefix(sql);
+            log.error(sql);
 
-        if ( row["link_id"] === null && isset(post["link_id"]) ) {
-            sql = "INSERT INTO {p}lti_link
-                ( link_key, link_sha256, settings_url, title, context_id, created_at, updated_at ) VALUES
-                    ( :link_key, :link_sha256, :settings_url, :title, :context_id, NOW(), NOW() )";
-            PDOX->queryDie(sql, array(
-                ":link_key" => post["link_id"],
-                ":link_sha256" => lti_sha256(post["link_id"]),
-                ":settings_url" => post["link_settings_url"],
-                ":title" => post["link_title"],
-                ":context_id" => row["context_id"]));
-            row["link_id"] = PDOX->lastInsertId();
-            row["link_title"] = post["link_title"];
-            row["link_settings_url"] = post["link_settings_url"];
-            actions[] = "=== Inserted link id=".row["link_id"]." ".row["link_title"];
+            try {
+                PreparedStatement stmt = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                stmt.setString(1, post.getProperty("link_key"));
+                stmt.setString(2, TsugiUtils.sha256(post.getProperty("link_key")));
+                stmt.setString(3, post.getProperty("link_settings_url"));
+                stmt.setString(4, post.getProperty("link_title"));
+                stmt.setString(5, row.getProperty("context_id"));
+
+                stmt.executeUpdate();
+                ResultSet rs = stmt.getGeneratedKeys();
+                if (rs.next()) {
+                    Long link_id = rs.getLong(1);
+                    System.out.println("Inserted link_id="+link_id);
+                    row.setProperty("link_id",link_id+"");
+                    TsugiUtils.copy(row, post, "link_title");
+                    TsugiUtils.copy(row, post, "link_settings_url");
+                } else {
+                    throw new RuntimeException("Insert failed "+sql);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                return;
+            }
         }
 
-        user_displayname = isset(post["user_displayname"]) ? post["user_displayname"] : null;
-        user_email = isset(post["user_email"]) ? post["user_email"] : null;
-        if ( row["user_id"] === null && isset(post["user_id"]) ) {
-            sql = "INSERT INTO {p}lti_user
-                ( user_key, user_sha256, displayname, email, key_id, created_at, updated_at ) VALUES
-                ( :user_key, :user_sha256, :displayname, :email, :key_id, NOW(), NOW() )";
-            PDOX->queryDie(sql, array(
-                ":user_key" => post["user_id"],
-                ":user_sha256" => lti_sha256(post["user_id"]),
-                ":displayname" => user_displayname,
-                ":email" => user_email,
-                ":key_id" => row["key_id"]));
-            row["user_id"] = PDOX->lastInsertId();
-            row["user_email"] = user_email;
-            row["user_displayname"] = user_displayname;
-            row["user_key"] = post["user_id"];
-            actions[] = "=== Inserted user id=".row["user_id"]." ".row["user_email"];
+        // Connect the user and context via the membership
+        if ( StringUtils.isBlank(row.getProperty("membership_id")) &&
+            StringUtils.isNotBlank(row.getProperty("context_id")) &&
+            StringUtils.isNotBlank(row.getProperty("user_id")) ) {
+
+            sql = "INSERT INTO {p}lti_membership \n" +
+                "( context_id, user_id, role, created_at, updated_at ) VALUES \n" +
+                "( ?,          ?,       ?,    NOW(), NOW() )";
+            sql = setPrefix(sql);
+            log.error(sql);
+
+            try {
+                PreparedStatement stmt = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                stmt.setString(1, row.getProperty("context_id"));
+                stmt.setString(2, row.getProperty("user_id"));
+                stmt.setString(3, post.getProperty("role"));
+
+                stmt.executeUpdate();
+                ResultSet rs = stmt.getGeneratedKeys();
+                if (rs.next()) {
+                    Long membership_id = rs.getLong(1);
+                    System.out.println("Inserted membership_id="+membership_id);
+                    row.setProperty("membership_id",membership_id+"");
+                    TsugiUtils.copy(row, post, "role");
+                } else {
+                    throw new RuntimeException("Insert failed "+sql);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                return;
+            }
         }
 
-        if ( row["membership_id"] === null && row["context_id"] !== null && row["user_id"] !== null ) {
-            sql = "INSERT INTO {p}lti_membership
-                ( context_id, user_id, role, created_at, updated_at ) VALUES
-                ( :context_id, :user_id, :role, NOW(), NOW() )";
-            PDOX->queryDie(sql, array(
-                ":context_id" => row["context_id"],
-                ":user_id" => row["user_id"],
-                ":role" => post["role"]));
-            row["membership_id"] = PDOX->lastInsertId();
-            row["role"] = post["role"];
-            actions[] = "=== Inserted membership id=".row["membership_id"]." role=".row["role"].
-                " user=".row["user_id"]." context=".row["context_id"];
-        }
+        // Connect an LTI 1.x service URL to the key
+        String oldserviceid = StringUtils.stripToNull(row.getProperty("service_id"));
+        if ( StringUtils.isNotBlank(row.getProperty("service")) ) {
 
-        if ( isset(post["service"])) {
-            // We need to handle the case where the service URL changes but we already have a sourcedid
-            // This is for LTI 1.x only as service is not used for LTI 2.x
-            oldserviceid = row["service_id"];
-            if ( row["service_id"] === null && post["service"] ) {
-                sql = "INSERT INTO {p}lti_service
-                    ( service_key, service_sha256, key_id, created_at, updated_at ) VALUES
-                    ( :service_key, :service_sha256, :key_id, NOW(), NOW() )";
-                PDOX->queryDie(sql, array(
-                    ":service_key" => post["service"],
-                    ":service_sha256" => lti_sha256(post["service"]),
-                    ":key_id" => row["key_id"]));
-                row["service_id"] = PDOX->lastInsertId();
-                row["service"] = post["service"];
-                actions[] = "=== Inserted service id=".row["service_id"]." ".post["service"];
+            if ( oldserviceid == null ) {
+                sql = "INSERT INTO {p}lti_service \n" +
+                    "( service_key, service_sha256, key_id, created_at, updated_at ) VALUES \n" +
+                    "( ?,           ?,              ?,      NOW(), NOW() )";
+                sql = setPrefix(sql);
+                log.error(sql);
+
+                try {
+                    PreparedStatement stmt = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                    stmt.setString(1, post.getProperty("service"));
+                    stmt.setString(2, TsugiUtils.sha256(post.getProperty("service")));
+                    stmt.setString(3, row.getProperty("key_id"));
+
+                    stmt.executeUpdate();
+                    ResultSet rs = stmt.getGeneratedKeys();
+                    if (rs.next()) {
+                        Long service_id = rs.getLong(1);
+                        System.out.println("Inserted service_id="+service_id);
+                        row.setProperty("service_id",service_id+"");
+                        TsugiUtils.copy(row, post, "service");
+                    } else {
+                        throw new RuntimeException("Insert failed "+sql);
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    return;
+                }
             }
 
             // If we just created a new service entry but we already had a result entry, update it
             // This is for LTI 1.x only as service is not used for LTI 2.x
-            if ( oldserviceid === null && row["result_id"] !== null && row["service_id"] !== null && post["service"] ) {
-                sql = "UPDATE {p}lti_result SET service_id = :service_id WHERE result_id = :result_id";
-                PDOX->queryDie(sql, array(
-                    ":service_id" => row["service_id"],
-                    ":result_id" => row["result_id"]));
-                actions[] = "=== Updated result id=".row["result_id"]." service=".row["service_id"];
+            if ( oldserviceid == null &&
+                StringUtils.isNotBlank(row.getProperty("service_id")) &&
+                StringUtils.isNotBlank(row.getProperty("result_id")) ) {
+                sql = "UPDATE {p}lti_result SET service_id = ? WHERE result_id = ?";
+                sql = setPrefix(sql);
+                log.error(sql);
+
+                try {
+                    PreparedStatement stmt = c.prepareStatement(sql);
+                    stmt.setString(1, row.getProperty("service_id"));
+                    stmt.setString(2, row.getProperty("result_id"));
+
+                    stmt.executeUpdate();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    return;
+                }
             }
         }
 
         // We always insert a result row if we have a link - we will store
         // grades locally in this row - even if we cannot send grades
-        if ( row["result_id"] === null && row["link_id"] !== null && row["user_id"] !== null ) {
-            sql = "INSERT INTO {p}lti_result
-                ( link_id, user_id, created_at, updated_at ) VALUES
-                ( :link_id, :user_id, NOW(), NOW() )";
-            PDOX->queryDie(sql, array(
-                ":link_id" => row["link_id"],
-                ":user_id" => row["user_id"]));
-            row["result_id"] = PDOX->lastInsertId();
-            actions[] = "=== Inserted result id=".row["result_id"];
-       }
+        if ( StringUtils.isBlank(row.getProperty("result_id")) &&
+            StringUtils.isNotBlank(row.getProperty("link_id")) &&
+            StringUtils.isNotBlank(row.getProperty("user_id")) ) {
 
-        // Set these values to null if they were not in the post
-        if ( ! isset(post["sourcedid"]) ) post["sourcedid"] = null;
-        if ( ! isset(post["service"]) ) post["service"] = null;
-        if ( ! isset(row["service"]) ) row["service"] = null;
-        if ( ! isset(post["result_url"]) ) post["result_url"] = null;
+            sql = "INSERT INTO {p}lti_result \n" +
+                " ( link_id, user_id, created_at, updated_at ) VALUES \n" +
+                " ( ?,       ?,       NOW(), NOW() )";
+            sql = setPrefix(sql);
+            log.error(sql);
 
-        // Here we handle updates to sourcedid or result_url including if we
-        // just inserted the result row
-        if ( row["result_id"] != null &&
-            (post["sourcedid"] != row["sourcedid"] || post["result_url"] != row["result_url"] ||
-            post["service"] != row["service"] )
-        ) {
-            sql = "UPDATE {p}lti_result
-                SET sourcedid = :sourcedid, result_url = :result_url, service_id = :service_id
-                WHERE result_id = :result_id";
-            PDOX->queryDie(sql, array(
-                ":result_url" => post["result_url"],
-                ":sourcedid" => post["sourcedid"],
-                ":service_id" => row["service_id"],
-                ":result_id" => row["result_id"]));
-            row["sourcedid"] = post["sourcedid"];
-            row["service"] = post["service"];
-            row["result_url"] = post["result_url"];
-            actions[] = "=== Updated result id=".row["result_id"]." result_url=".row["result_url"].
-                " sourcedid=".row["sourcedid"]." service_id=".row["service_id"];
+            try {
+                PreparedStatement stmt = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                stmt.setString(1, row.getProperty("link_id"));
+                stmt.setString(2, row.getProperty("user_id"));
+
+                stmt.executeUpdate();
+                ResultSet rs = stmt.getGeneratedKeys();
+                if (rs.next()) {
+                    Long result_id = rs.getLong(1);
+                    System.out.println("Inserted result_id="+result_id);
+                    row.setProperty("result_id",result_id+"");
+                } else {
+                    throw new RuntimeException("Insert failed "+sql);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                return;
+            }
+        }
+
+        // Here we handle mismatches of sourcedid or result_url
+        // including if we just inserted the result row
+        boolean mismatch = StringUtils.isNotBlank(post.getProperty("sourcedid")) &&
+            ( ! StringUtils.equals(post.getProperty("sourcedid"), row.getProperty("sourcedid")) );
+        mismatch = mismatch ||
+                ( StringUtils.isNotBlank(post.getProperty("result_url")) &&
+                    ( ! StringUtils.equals(post.getProperty("result_url"), row.getProperty("result_url")) )
+                );
+        mismatch = mismatch ||
+                ( StringUtils.isNotBlank(post.getProperty("service_id")) &&
+                    ( ! StringUtils.equals(post.getProperty("service_id"), row.getProperty("service_id")) )
+                );
+
+        if ( mismatch && StringUtils.isNotBlank(row.getProperty("result_id")) ) {
+            sql = "UPDATE {p}lti_result \n" +
+                "SET sourcedid = ?, result_url = ?, service_id = ? \n" +
+                "WHERE result_id = ?";
+            sql = setPrefix(sql);
+            log.error(sql);
+
+            try {
+                PreparedStatement stmt = c.prepareStatement(sql);
+                stmt.setString(1, StringUtils.stripToNull(post.getProperty("sourcedid")));
+                stmt.setString(2, StringUtils.stripToNull(post.getProperty("result_url")));
+                stmt.setString(3, StringUtils.stripToNull(row.getProperty("service_id")));
+                stmt.setString(4, row.getProperty("result_id"));
+
+                stmt.executeUpdate();
+                TsugiUtils.copy(row, post, "sourcedid");
+                TsugiUtils.copy(row, post, "result_url");
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                return;
+            }
         }
 
         // Here we handle updates to context_title, link_title, user_displayname, user_email, or role
-        if ( isset(post["context_title"]) && post["context_title"] != row["context_title"] ) {
-            sql = "UPDATE {p}lti_context SET title = :title WHERE context_id = :context_id";
-            PDOX->queryDie(sql, array(
-                ":title" => post["context_title"],
-                ":context_id" => row["context_id"]));
-            row["context_title"] = post["context_title"];
-            actions[] = "=== Updated context=".row["context_id"]." title=".post["context_title"];
+        if ( StringUtils.isNotBlank(row.getProperty("context_id")) &&
+             StringUtils.isNotBlank(post.getProperty("context_title")) &&
+            ! StringUtils.equals(row.getProperty("context_title"), post.getProperty("context_title")) ) {
+
+            sql = "UPDATE {p}lti_context SET title = ? WHERE context_id = ?";
+            sql = setPrefix(sql);
+            log.error(sql);
+
+            try {
+                PreparedStatement stmt = c.prepareStatement(sql);
+                stmt.setString(1, post.getProperty("context_title"));
+                stmt.setString(2, row.getProperty("context_id"));
+
+                stmt.executeUpdate();
+                TsugiUtils.copy(row, post, "context_title");
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                return;
+            }
         }
 
-        if ( isset(post["link_title"]) && post["link_title"] != row["link_title"] ) {
-            sql = "UPDATE {p}lti_link SET title = :title WHERE link_id = :link_id";
-            PDOX->queryDie(sql, array(
-                ":title" => post["link_title"],
-                ":link_id" => row["link_id"]));
-            row["link_title"] = post["link_title"];
-            actions[] = "=== Updated link=".row["link_id"]." title=".post["link_title"];
+        if ( StringUtils.isNotBlank(row.getProperty("link_id")) &&
+             StringUtils.isNotBlank(post.getProperty("link_title")) &&
+            ! StringUtils.equals(row.getProperty("link_title"), post.getProperty("link_title")) ) {
+
+            sql = "UPDATE {p}lti_link SET title = ? WHERE link_id = ?";
+            sql = setPrefix(sql);
+            log.error(sql);
+
+            try {
+                PreparedStatement stmt = c.prepareStatement(sql);
+                stmt.setString(1, post.getProperty("link_title"));
+                stmt.setString(2, row.getProperty("link_id"));
+
+                stmt.executeUpdate();
+                TsugiUtils.copy(row, post, "link_title");
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                return;
+            }
         }
 
-        if ( isset(post["user_displayname"]) && post["user_displayname"] != row["user_displayname"] && strlen(post["user_displayname"]) > 0 ) {
-            sql = "UPDATE {p}lti_user SET displayname = :displayname WHERE user_id = :user_id";
-            PDOX->queryDie(sql, array(
-                ":displayname" => post["user_displayname"],
-                ":user_id" => row["user_id"]));
-            row["user_displayname"] = post["user_displayname"];
-            actions[] = "=== Updated user=".row["user_id"]." displayname=".post["user_displayname"];
+        if ( StringUtils.isNotBlank(row.getProperty("user_id")) &&
+             StringUtils.isNotBlank(post.getProperty("user_displayname")) &&
+            ! StringUtils.equals(row.getProperty("user_displayname"), post.getProperty("user_displayname") )) {
+
+            sql = "UPDATE {p}lti_user SET displayname = ? WHERE user_id = ?";
+            sql = setPrefix(sql);
+            log.error(sql);
+
+            try {
+                PreparedStatement stmt = c.prepareStatement(sql);
+                stmt.setString(1, post.getProperty("user_displayname"));
+                stmt.setString(2, row.getProperty("user_id"));
+
+                stmt.executeUpdate();
+                TsugiUtils.copy(row, post, "user_displayname");
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                return;
+            }
         }
 
-        if ( isset(post["user_email"]) && post["user_email"] != row["user_email"] && strlen(post["user_email"]) > 0 ) {
-            sql = "UPDATE {p}lti_user SET email = :email WHERE user_id = :user_id";
-            PDOX->queryDie(sql, array(
-                ":email" => post["user_email"],
-                ":user_id" => row["user_id"]));
-            row["user_email"] = post["user_email"];
-            actions[] = "=== Updated user=".row["user_id"]." email=".post["user_email"];
+        if ( StringUtils.isNotBlank(row.getProperty("user_id")) &&
+             StringUtils.isNotBlank(post.getProperty("user_email")) &&
+            ! StringUtils.equals(row.getProperty("user_email"), post.getProperty("user_email")) ) {
+
+            sql = "UPDATE {p}lti_user SET email = ? WHERE user_id = ?";
+            sql = setPrefix(sql);
+            log.error(sql);
+
+            try {
+                PreparedStatement stmt = c.prepareStatement(sql);
+                stmt.setString(1, post.getProperty("user_email"));
+                stmt.setString(2, row.getProperty("user_id"));
+
+                stmt.executeUpdate();
+                TsugiUtils.copy(row, post, "user_email");
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                return;
+            }
         }
 
-        if ( isset(post["role"]) && post["role"] != row["role"] ) {
-            sql = "UPDATE {p}lti_membership SET role = :role WHERE membership_id = :membership_id";
-            PDOX->queryDie(sql, array(
-                ":role" => post["role"],
-                ":membership_id" => row["membership_id"]));
-            row["role"] = post["role"];
-            actions[] = "=== Updated membership=".row["membership_id"]." role=".post["role"];
-        }
 
-        // Restore ERRMODE
-        PDOX->setAttribute(\PDO::ATTR_ERRMODE, errormode);
-        return actions;
-*/
+        if ( StringUtils.isNotBlank(row.getProperty("membership_id")) &&
+             StringUtils.isNotBlank(post.getProperty("role")) &&
+            ! StringUtils.equals(row.getProperty("role"), post.getProperty("role")) ) {
+
+            sql = "UPDATE {p}lti_membership SET role = ? WHERE membership_id = ?";
+            sql = setPrefix(sql);
+            log.error(sql);
+
+            try {
+                PreparedStatement stmt = c.prepareStatement(sql);
+                stmt.setString(1, post.getProperty("role"));
+                stmt.setString(2, row.getProperty("membership_id"));
+
+                stmt.executeUpdate();
+                TsugiUtils.copy(row, post, "role");
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                return;
+            }
+        }
     }
 
     /*

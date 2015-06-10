@@ -60,7 +60,7 @@ public class TsugiUtils {
         int count = rsmd.getColumnCount();
         Properties props = new Properties();
         for ( int i=1; i<=count; i++ ) {
-            String key = rsmd.getColumnName(i);
+            String key = rsmd.getColumnLabel(i);
             String value = rs.getString(i);
             if ( value == null ) value = "";
             props.setProperty(key,value);
