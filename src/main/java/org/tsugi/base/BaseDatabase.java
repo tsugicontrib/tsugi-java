@@ -191,7 +191,7 @@ public class BaseDatabase implements Database {
                 return retval;
             } else {
                 rs.close();
-                return new Properties();
+                return null;
             }
         } catch (SQLException ex) {
             throw new RuntimeException("RecordSet close failed:"+sql);
