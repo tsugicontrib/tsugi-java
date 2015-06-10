@@ -93,7 +93,8 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
         BaseLaunch launch = new BaseLaunch();
         if ( ! TsugiLTIUtils.isRequest(props) ) {
             System.out.println("TODO: Pull in from session");
-            return null;
+            launch.error_message = "This tool must be launched using LTI";
+            return launch;
         }
         String x = null;
         // x = TsugiUtils.dumpProperties(props);
