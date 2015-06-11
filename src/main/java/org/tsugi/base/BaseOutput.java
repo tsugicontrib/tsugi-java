@@ -59,26 +59,37 @@ public class BaseOutput implements Output {
         }
     }
 
-    public void header(PrintWriter out)
+    public Properties header(PrintWriter out)
     {
         if ( response != null ) response.setContentType("text/html; charset=utf-8");
-        String statpath = request.getContextPath();
-System.out.println("statpath="+statpath);
+
+        Properties props = new Properties();
+        props.setProperty(Output.HANDLEBARS,"3.0.3"); // JavaScript
+        props.setProperty(Output.JQUERY,"1.10.2"); // JavaScript
+
         out.println("<!DOCTYPE html>");
         out.println("<html>");
         out.println("<head>");
         out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" >");
         out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
-        out.println("<title>Tsugi Java</title>");
+
+        // Path to static assets
+        String statpath = request.getContextPath();
+
         out.print("<link href=\"");
         out.print(statpath);
         out.println("/static/css/custom-theme/jquery-ui-1.10.0.custom.css\" rel=\"stylesheet\">");
+        props.setProperty(Output.JQUERY_UI,"1.10.0");
+
         out.print("<link href=\"");
         out.print(statpath);
         out.println("/static/bootstrap-3.1.1/css/bootstrap.min.css\" rel=\"stylesheet\">");
+        props.setProperty(Output.BOOTSTRAP,"3.1.1");
+
         out.print("<link href=\"");
         out.print(statpath);
         out.println("/static/bootstrap-3.1.1/css/bootstrap-theme.min.css\" rel=\"stylesheet\">");
+
         out.println("<style> <!-- from navbar.css -->");
         out.println(" body { padding-top: 20px; padding-bottom: 20px; }");
         out.println(" .navbar { margin-bottom: 20px; }");
@@ -105,6 +116,7 @@ System.out.println("statpath="+statpath);
         if ( ! done ) {
             out.println("<script type=\"text/javascript\">CSRF_TOKEN = \"TODORemoveThis\";</script>");
         }
+        return props;
     }
 
     public void bodyStart(PrintWriter out)
@@ -115,16 +127,31 @@ System.out.println("statpath="+statpath);
         // TODO: Complain about post data?
     }
 
+    public void navStart(PrintWriter out)
+    {
+        // Placeholder for Nico
+    }
+    
+    public void navEnd(PrintWriter out)
+    {
+        // Placeholder for Nico
+    }
+
     public void footerStart(PrintWriter out)
     {
         String statpath = request.getContextPath();
-System.out.println("statpath="+statpath);
+
         out.print("<script src=\"");
         out.print(statpath);
         out.println("/static/js/jquery-1.10.2.min.js\"></script>");
+
         out.print("<script src=\"");
         out.print(statpath);
         out.println("/static/bootstrap-3.1.1/js/bootstrap.min.js\"></script>");
+
+        out.print("<script src=\"");
+        out.print(statpath);
+        out.println("/static/js/handlebars-v3.0.3.js\"></script>");
 
         // Serve this locally during early development - Move to CDN when stable
         out.print("<script src=\"");
