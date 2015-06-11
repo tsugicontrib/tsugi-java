@@ -115,7 +115,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
             x = TsugiUtils.dumpProperties(sess_row);
             System.out.println("Session Properties:");
             System.out.println(x);
-            buildLaunch(launch, sess_row);
+            buildLaunch(launch, req, res, sess_row);
             return launch;
         }
 
@@ -179,7 +179,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
 
 System.out.println("TODO: Make sure to do NONCE cleanup...");
 
-        buildLaunch(launch, row);
+        buildLaunch(launch, req, res, row);
 
         // TODO: Maybe not
         launch.database = new BaseDatabase(c, prefix);
@@ -188,8 +188,11 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
         return launch;
     }
 
-    private void buildLaunch(BaseLaunch launch, Properties row)
+    private void buildLaunch(BaseLaunch launch, HttpServletRequest req, 
+        HttpServletResponse res, Properties row)
     {
+        launch.request = req;
+        launch.response = res;
         // Create our new objects
         Service service = null;
         if ( StringUtils.isNotBlank(row.getProperty("service_id")) ) {
@@ -199,6 +202,7 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
         launch.link = new BaseLink(row, launch.result);
         launch.context = new BaseContext(row);
         launch.user = new BaseUser(row);
+        launch.output = new BaseOutput(req, res);
 
         launch.valid = true;
     }

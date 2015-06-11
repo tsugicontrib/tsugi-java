@@ -6,6 +6,10 @@ import java.util.Properties;
 import org.tsugi.*;
 import org.tsugi.util.TsugiUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import java.sql.Connection;
 
 /**
@@ -15,12 +19,16 @@ import java.sql.Connection;
 
 public class BaseLaunch implements Launch {
 
-    public Connection connection;
-    public User user;
-    public Context context;
-    public Link link;
-    public Result result;
-    public Database database;
+    public HttpServletRequest request = null;
+    public HttpServletResponse response = null;
+
+    public Connection connection = null;
+    public User user = null;
+    public Context context = null;
+    public Link link = null;
+    public Result result = null;
+    public Output output = null;
+    public Database database = null;
 
     public String base_string = null;
     public String error_message = null;
@@ -28,16 +36,25 @@ public class BaseLaunch implements Launch {
     public boolean valid = false;
     public boolean complete = false;
 
+    /**
+     * Basic constructor 
+     */
     public BaseLaunch() { }
 
-    public BaseLaunch(Connection connection, Database database, User user, Context context, Link link, Result result)
+    /**
+     * Get the HttpRequest associated with the launch.
+     */
+    public HttpServletRequest getRequest()
     {
-        this.connection = connection;
-        this.database = database;
-        this.user = user;
-        this.context = context;
-        this.link = link;
-        this.result = result;
+        return request;
+    }
+
+    /**
+     * Get the HttpResponse associated with the launch.
+     */
+    public HttpServletResponse getResponse()
+    {
+        return response;
     }
 
     /**

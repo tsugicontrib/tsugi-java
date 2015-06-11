@@ -3,12 +3,25 @@ package org.tsugi;
 
 import java.sql.Connection;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * This an opinionated LTI class that defines how Tsugi tools 
  * interact with LTI.
  */
 
 public interface Launch {
+
+    /**
+     * Get the HttpRequest associated with the launch.
+     */
+    public HttpServletRequest getRequest();
+
+    /**
+     * Get the HttpResponse associated with the launch.
+     */
+    public HttpServletResponse getResponse();
 
     /**
      * Get the User associated with the launch.
