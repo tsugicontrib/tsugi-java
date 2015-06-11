@@ -3,34 +3,63 @@ package org.tsugi.base;
 
 import org.tsugi.*;
 import java.util.Properties;
+import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class BaseOutput implements Output {
 
     public HttpServletRequest request = null;
     public HttpServletResponse response = null;
+    public HttpSession session = null;
 
     public BaseOutput(HttpServletRequest request, HttpServletResponse response)
     {
         this.request = request;
         this.response = response;
+        if ( request != null ) {  // During unit tests
+            this.session = request.getSession();
+        }
+    }
+
+    public void flashSuccess(String message)
+    {
+        if ( session == null ) return;
+        session.setAttribute(Output.SESSION_SUCCESS, message);
+    }
+
+    public void flashError(String message)
+    {
+        if ( session == null ) return;
+        session.setAttribute(Output.SESSION_ERROR, message);
+    }
+
+    public void flashMessages(PrintWriter out)
+    {
+        if ( session == null ) return;
+        String error = (String) session.getAttribute(Output.SESSION_ERROR);
+        String success = (String) session.getAttribute(Output.SESSION_SUCCESS);
+        session.removeAttribute(Output.SESSION_ERROR);
+        session.removeAttribute(Output.SESSION_SUCCESS);
+
+        if ( error != null ) {
+            out.print("<div class=\"alert alert-danger\"><a href=\"#\" class=\"close\" ");
+            out.print("data-dismiss=\"alert\">&times;</a>");
+            out.print(error);
+            out.println("</div>");
+        }
+
+        if ( success != null ) {
+            out.print("<div class=\"alert alert-success\"><a href=\"#\" class=\"close\" ");
+            out.print("data-dismiss=\"alert\">&times;</a>");
+            out.print(success);
+            out.println("</div>");
+        }
     }
 
 /*
-    function flashMessages() {
-        if ( isset($_SESSION["error"]) ) {
-            echo "<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert">&times;</a>".
-            $_SESSION["error"]."</div>\n";
-            unset($_SESSION["error"]);
-        }
-        if ( isset($_SESSION["success"]) ) {
-            echo "<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert">&times;</a>".
-            $_SESSION["success"]."</div>\n";
-            unset($_SESSION["success"]);
-        }
-    }
 
     function header($headCSS=false) {
         global $HEAD_CONTENT_SENT, $CFG, $RUNNING_IN_TOOL;

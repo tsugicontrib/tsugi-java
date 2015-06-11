@@ -115,6 +115,14 @@ public class BaseLaunch implements Launch {
     }
 
     /**
+     * Return the output helper used by Tsugi.
+     */
+    public Output getOutput()
+    {
+        return output;
+    }
+
+    /**
      * Get the base string
      */
     public String getBaseString()

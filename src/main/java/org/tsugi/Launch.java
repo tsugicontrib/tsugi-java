@@ -59,6 +59,11 @@ public interface Launch {
     public Database DB();
 
     /**
+     * Return the database helper class used by Tsugi.
+     */
+    public Output getOutput();
+
+    /**
      * Get the base string
      */
     public String getBaseString();

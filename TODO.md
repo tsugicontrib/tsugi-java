@@ -1,7 +1,11 @@
 List of thing TODO
 ------------------
 
-* Write Output library
+* Write Output library - add static files
+
+* Need some kind of URL management / routing / sub-sessions
+
+* Need some kind of auto-ddl
 
 * Factory class in properties
 
