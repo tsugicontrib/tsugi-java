@@ -1,6 +1,8 @@
 List of thing TODO
 ------------------
 
+* Support settings on Link and Context
+
 * Need some kind of auto-ddl strategy
 
 * Need some kind of URL management / routing / sub-sessions and come up with URL pattern
