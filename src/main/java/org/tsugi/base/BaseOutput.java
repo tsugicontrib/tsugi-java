@@ -59,72 +59,80 @@ public class BaseOutput implements Output {
         }
     }
 
-/*
-
-    function header($headCSS=false) {
-        global $HEAD_CONTENT_SENT, $CFG, $RUNNING_IN_TOOL;
-        global $CFG;
-        if ( $HEAD_CONTENT_SENT === true ) return;
-        header("Content-Type: text/html; charset=utf-8");
-    ?><!DOCTYPE html>
-    <html>
-      <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title><?php echo($CFG->servicename); ?></title>
-        <!-- Le styles -->
-        <link href="<?php echo($CFG->staticroot); ?>/static/css/custom-theme/jquery-ui-1.10.0.custom.css" rel="stylesheet">
-        <link href="<?php echo($CFG->staticroot); ?>/static/bootstrap-3.1.1/css/bootstrap.min.css" rel="stylesheet">
-        <link href="<?php echo($CFG->staticroot); ?>/static/bootstrap-3.1.1/css/bootstrap-theme.min.css" rel="stylesheet">
-
-    <style> <!-- from navbar.css -->
-    body {
-      padding-top: 20px;
-      padding-bottom: 20px;
-    }
-
-    .navbar {
-      margin-bottom: 20px;
-    }
-    </style>
-
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn"t work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="<?php echo($CFG->wwwroot); ?>/static/html5shiv/html5shiv.js"></script>
-          <script src="<?php echo($CFG->wwwroot); ?>/static/respond/respond.min.js"></script>
-        <![endif]-->
-
-    <?php
-        if ( isset($_SESSION["CSRF_TOKEN"]) ) {
-            echo("<script type="text/javascript">CSRF_TOKEN = "".$_SESSION["CSRF_TOKEN"]."";</script>"."\n");
-        } else {
-            echo("<script type="text/javascript">CSRF_TOKEN = "TODORemoveThis";</script>"."\n");
+    public void header(PrintWriter out)
+    {
+        if ( response != null ) response.setContentType("text/html; charset=utf-8");
+        String statpath = request.getContextPath();
+System.out.println("statpath="+statpath);
+        out.println("<!DOCTYPE html>");
+        out.println("<html>");
+        out.println("<head>");
+        out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" >");
+        out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
+        out.println("<title>Tsugi Java</title>");
+        out.print("<link href=\"");
+        out.print(statpath);
+        out.println("/static/css/custom-theme/jquery-ui-1.10.0.custom.css\" rel=\"stylesheet\">");
+        out.print("<link href=\"");
+        out.print(statpath);
+        out.println("/static/bootstrap-3.1.1/css/bootstrap.min.css\" rel=\"stylesheet\">");
+        out.print("<link href=\"");
+        out.print(statpath);
+        out.println("/static/bootstrap-3.1.1/css/bootstrap-theme.min.css\" rel=\"stylesheet\">");
+        out.println("<style> <!-- from navbar.css -->");
+        out.println(" body { padding-top: 20px; padding-bottom: 20px; }");
+        out.println(" .navbar { margin-bottom: 20px; }");
+        out.println("</style>");
+        out.println("<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->");
+        out.println("<!--[if lt IE 9]>");
+        out.print("<script src=\"");
+        out.print(statpath);
+        out.println("/static/html5shiv/html5shiv.js\"></script>");
+        out.print("<script src=\"");
+        out.print(statpath);
+        out.println("/static/respond/respond.min.js\"></script>");
+        out.println("<![endif]-->");
+        boolean done = false;
+        if ( session != null ) {
+            String csrf = (String) session.getAttribute(Output.SESSION_CSRF);
+            if ( csrf != null ) {
+                done = true;
+                out.print("<script type=\"text/javascript\">CSRF_TOKEN = '");
+                out.print(csrf);
+                out.println("\";</script>");
+            }
         }
-        $HEAD_CONTENT_SENT = true;
-    }
-
-    function bodyStart($checkpost=true) {
-        echo("\n</head>\n<body style=\"padding: 15px 15px 15px 15px;\">\n");
-        if ( $checkpost && count($_POST) > 0 ) {
-            $dump = safe_var_dump($_POST);
-            echo("<p style="color:red">Error - Unhandled POST request</p>");
-            echo("\n<pre>\n");
-            echo($dump);
-            echo("\n</pre>\n");
-            error_log($dump);
-            die_with_error_log("Unhandled POST request");
+        if ( ! done ) {
+            out.println("<script type=\"text/javascript\">CSRF_TOKEN = \"TODORemoveThis\";</script>");
         }
     }
 
-    function footerStart() {
-        global $CFG;
-        echo("<script src="".$CFG->staticroot."/static/js/jquery-1.10.2.min.js"></script>"."\n");
-        echo("<script src="".$CFG->staticroot."/static/bootstrap-3.1.1/js/bootstrap.min.js"></script>"."\n");
+    public void bodyStart(PrintWriter out)
+    {
+        out.println("");
+        out.println("</head>");
+        out.println("<body style=\"padding: 15px 15px 15px 15px;\">");
+        // TODO: Complain about post data?
+    }
+
+    public void footerStart(PrintWriter out)
+    {
+        String statpath = request.getContextPath();
+System.out.println("statpath="+statpath);
+        out.print("<script src=\"");
+        out.print(statpath);
+        out.println("/static/js/jquery-1.10.2.min.js\"></script>");
+        out.print("<script src=\"");
+        out.print(statpath);
+        out.println("/static/bootstrap-3.1.1/js/bootstrap.min.js\"></script>");
 
         // Serve this locally during early development - Move to CDN when stable
-        echo("<script src="".$CFG->wwwroot."/static/js/tsugiscripts.js"></script>"."\n");
+        out.print("<script src=\"");
+        out.print(statpath);
+        out.println("/static/js/tsugiscripts.js\"></script>");
 
+        // TODO: Handle heartbeat
+        /*
         if ( isset($CFG->sessionlifetime) ) {
             $heartbeat = ( $CFG->sessionlifetime * 1000) / 2;
             // $heartbeat = 10000;
@@ -135,27 +143,23 @@ public class BaseOutput implements Output {
     </script>
     <?php
         }
+        */
 
-        $this->doAnalytics();
+        // TODO: Analytics
+        // $this->doAnalytics();
     }
 
-    function footerEnd() {
-        echo("\n</body>\n</html>\n");
+    public void footerEnd(PrintWriter out)
+    {   
+        out.println("");
+        out.println("</body>");
+        out.println("</html>");
     }
 
-    function footer($onload=false) {
-        global $CFG;
-        $this->footerStart();
-        if ( $onload !== false ) {
-            echo("\n".$onload."\n");
-        }
-        $this->footerEnd();
+    public String getSpinnerUrl() 
+    {
+        String statpath = request.getContextPath();
+        return statpath + "/static/img/spinner.gif";
     }
-
-    function getSpinnerUrl() {
-        global $CFG;
-        return $CFG->staticroot . "/static/img/spinner.gif";
-    }
-*/
 
 }
