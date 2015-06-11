@@ -15,6 +15,10 @@ List of thing TODO
 
 * Make sure table prefix works
 
+* Add LTI2 support and tool registration
+
+* Build support to pull header / footer markup from PHP tsugi to demonstrate
+
 * Unit tests for the data absorber by changing launch data and checking tables 
 
 * H2 unit tests
