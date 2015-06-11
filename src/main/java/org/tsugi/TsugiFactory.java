@@ -17,7 +17,18 @@ public class TsugiFactory {
      * Return the implementation.
      */
     public static Tsugi getTsugi() {
-        Tsugi tsugi = new org.tsugi.impl.jdbc.Tsugi_JDBC();
+        String className = System.getProperty("tsugi.factory.tsugiClassName");
+        Tsugi tsugi = null;
+        if ( className != null ) {
+            try {
+                tsugi = (Tsugi) Class.forName(className).newInstance();
+            } catch (Exception ex) {
+                log.error("Cannot create instance of "+className,ex);
+                throw new RuntimeException("Cannot create instance of "+className,ex);
+            }
+        } else {
+            tsugi = new org.tsugi.impl.jdbc.Tsugi_JDBC();
+        }
         log.trace("Returning a Tsugi implementation="+tsugi);
         return tsugi;
     }

@@ -1,8 +1,6 @@
 List of thing TODO
 ------------------
 
-* Factory class in properties
-
 * Need some kind of auto-ddl strategy
 
 * Need some kind of URL management / routing / sub-sessions and come up with URL pattern
