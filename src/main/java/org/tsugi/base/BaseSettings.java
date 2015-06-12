@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 public class BaseSettings implements Settings {
 
     // These must be set in the implementing class
-    public Properties settings = null;
+    public Properties settings = new Properties();
 
     // Constructor is only in the implementing class so as 
     // to allow flexibility in method signature

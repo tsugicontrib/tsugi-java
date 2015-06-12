@@ -20,6 +20,12 @@ public class TsugiSettingsTest {
         String json = null;
         Properties props = null;
 
+        // Check emptyness
+        String emptyJson = settings.getSettingsJson();
+        assertEquals(emptyJson,"{}");
+        props = settings.getSettings();
+        assertEquals(props.size(),0);
+
         // Make sure to catch syntax errors
         json = "parse this!";
         try {
@@ -42,6 +48,7 @@ public class TsugiSettingsTest {
             assertTrue(false);
         }
         props = settings.getSettings();
+        assertEquals(props.size(),1);
         assertEquals(props.getProperty("x"), "y");
         assertNull(props.getProperty("y"));
         assertNull(props.getProperty("z"));
@@ -63,23 +70,6 @@ public class TsugiSettingsTest {
         assertNull(props.getProperty("b"));
         assertNull(props.getProperty("c"));
 
-        // Make sure to ignore sub objects
-        json = "{ \"x\" : \"y\", \"z\" : { \"a\": \"b\" } }";
-        try {
-            settings.setSettingsJson(json);
-        } catch (Exception e) {
-            System.out.println("Unexpected error parsing JSON");
-            System.out.println(json);
-            e.printStackTrace();
-            assertTrue(false);
-        }
-        props = settings.getSettings();
-        assertEquals(props.getProperty("x"), "y");
-        assertNull(props.getProperty("y"));
-        assertNull(props.getProperty("z"));
-        assertNull(props.getProperty("a"));
-        assertNull(props.getProperty("b"));
-
         // Normal case
         json = "{ \"x\" : \"y\" }";
         try {
@@ -91,11 +81,13 @@ public class TsugiSettingsTest {
             assertTrue(false);
         }
         props = settings.getSettings();
+        assertEquals(props.size(),1);
         assertEquals(props.getProperty("x"), "y");
 
         // Pull back the settings
         String newJson = settings.getSettingsJson();
         assertEquals(newJson,"{\"x\":\"y\"}");
+
 
     }
     
