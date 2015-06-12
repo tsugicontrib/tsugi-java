@@ -200,9 +200,10 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
         }
         launch.result = new BaseResult(row, service);
         // TODO: Make settings real
-        // Settings linkSettings = new JDBC_Settings(prefix, 
-        launch.link = new BaseLink(row, launch.result, null);
-        launch.context = new BaseContext(row, null);
+        Settings linkSettings = new Settings_JDBC(row, prefix, "link", req);
+        launch.link = new BaseLink(row, launch.result, linkSettings);
+        Settings contextSettings = new Settings_JDBC(row, prefix, "context", req);
+        launch.context = new BaseContext(row, contextSettings);
         launch.user = new BaseUser(row);
         launch.output = new BaseOutput(req, res);
 
@@ -225,7 +226,7 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
         String sql =
             "SELECT k.key_id, k.key_key, k.secret, k.new_secret, c.settings_url AS key_settings_url, \n" +
             "n.nonce, \n" +
-            "c.context_id, c.title AS context_title, context_sha256, c.settings_url AS context_settings_url,\n"+
+            "c.context_id, c.title AS context_title, context_sha256, c.settings AS context_settings, c.settings_url AS context_settings_url,\n"+
             "l.link_id, l.title AS link_title, l.settings AS link_settings, l.settings_url AS link_settings_url,\n"+
             "u.user_id, u.displayname AS user_displayname, u.email AS user_email, user_key,\n"+
             "u.subscribe AS subscribe, u.user_sha256 AS user_sha256,\n"+

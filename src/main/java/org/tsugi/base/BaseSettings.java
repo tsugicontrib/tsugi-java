@@ -33,7 +33,7 @@ public class BaseSettings implements Settings {
      */
     public boolean persistSettings()
     {
-        return false;
+        return true;
     }
 
    /**
@@ -41,7 +41,7 @@ public class BaseSettings implements Settings {
      */
     public String getSettingsJson()
     {
-        if ( settings == null ) return "{ }";
+        if ( settings == null ) return "{}";
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.createObjectNode();
         Enumeration keys = settings.keys();

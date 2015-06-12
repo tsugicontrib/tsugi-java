@@ -29,23 +29,35 @@ public class Settings_JDBC extends BaseSettings implements Settings
 
     private Log log = LogFactory.getLog(Settings_JDBC.class);
 
+    private HttpServletRequest req = null;
     private String prefix = null;
 
-    // Name of this in session
-    private String sessionName = null;
+    // Which setting this is...
+    private String which = null;
 
-    // Table where this is stored
-    private String tableName = null;
+    // LTI 2.x settings URL
+    private String resource = null;
+
+    // Keep the whole row for later...
+    private Properties row;
 
     public boolean valid = false;
 
-    public Settings_JDBC(Properties row, String prefix, String sessionName, String tableName)
+    public Settings_JDBC(Properties row, String prefix, String which, HttpServletRequest req)
     {
         this.prefix = prefix;
-        this.sessionName = sessionName;
-        this.tableName = tableName;
+        this.which = which;
+        this.req = req;
+        this.row = row;
+        this.resource = StringUtils.stripToNull(row.getProperty(which+"_settings_url"));
+System.out.println(which+" settingsUrl="+this.resource);
+        String settingsJson = row.getProperty(which+"_settings");
+System.out.println(which+" settingsJson="+settingsJson);
+        if ( settingsJson == null || settingsJson.length() < 1 ) return;
+
+        // Parse the existing settings
         try {
-            setSettingsJson(null);
+            setSettingsJson(settingsJson);
             valid = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,61 +65,16 @@ public class Settings_JDBC extends BaseSettings implements Settings
         }
     }
 
-   /**
-     * Retrieve an array of all of the settings
-     *
-     * If there are no settings, return an empty array.  
-     */
-    public Properties getAllSettings()
-    {
-        return null;
-    }
-
     /**
-     * Set all of the settings.
+     * Persist the settings wherever they need to go.
      *
-     * @param props Properties that are serialized in JSON and stored.
-     * Replaces existing settings.  If this is an empty array, this effectively
-     * empties out all the settings.
+     * We expect the extending class to override this.  If this is not overridden,
+     * settings will be in-memory only.
      */
-    public boolean setAllSettings(Properties props)
+    @Override
+    public boolean persistSettings()
     {
-        return false;
-    }
-
-    /**
-     * Set or update a number of keys to new values in link settings.
-     *
-     * @param props An array of key value pairs that are to be updated / added
-     * in the settings.
-     */
-    public boolean updateAllSettings(Properties props)
-    {
-        return false;
-    }
-
-    /**
-     * Retrieve a particular key from the link settings.
-     *
-     * Returns the value found in settings or false if the key was not found.
-     *
-     * @param key - The key to get from the settings.
-     * @param def - What to return if the key is not present
-     */
-    public String getSetting(String key, String def)
-    {
-        return null;
-    }
-
-    /**
-     * Set or update a key to a new value in link settings.
-     *
-     * @params key The key to set in settings.
-     * @params value The value to set for that key
-     */
-    public boolean setSetting(String key, String value)
-    {
-        return false;
+        return true;
     }
 
     /*
