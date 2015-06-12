@@ -30,6 +30,14 @@ public class Settings_JDBC extends BaseSettings implements Settings
     private Log log = LogFactory.getLog(Settings_JDBC.class);
 
     private HttpServletRequest req = null;
+
+    // ID to update
+    private Long id = null;
+
+    // Connection
+    private Connection c = null;
+
+    // Database prefix
     private String prefix = null;
 
     // Which setting this is...
@@ -43,16 +51,17 @@ public class Settings_JDBC extends BaseSettings implements Settings
 
     public boolean valid = false;
 
-    public Settings_JDBC(Properties row, String prefix, String which, HttpServletRequest req)
+    public Settings_JDBC(Connection c, Properties row, String prefix, String which, HttpServletRequest req)
     {
+        this.c = c;
+        this.id = new Long(row.getProperty(which+"_id"));
         this.prefix = prefix;
         this.which = which;
         this.req = req;
         this.row = row;
         this.resource = StringUtils.stripToNull(row.getProperty(which+"_settings_url"));
-System.out.println(which+" settingsUrl="+this.resource);
+
         String settingsJson = row.getProperty(which+"_settings");
-System.out.println(which+" settingsJson="+settingsJson);
         if ( settingsJson == null || settingsJson.length() < 1 ) return;
 
         // Parse the existing settings
@@ -66,14 +75,31 @@ System.out.println(which+" settingsJson="+settingsJson);
     }
 
     /**
-     * Persist the settings wherever they need to go.
-     *
-     * We expect the extending class to override this.  If this is not overridden,
-     * settings will be in-memory only.
+     * Persist the settings into the right table and update the LMS
      */
     @Override
     public boolean persistSettings()
     {
+        if ( id == null ) return false;
+
+        String json = getSettingsJson();
+        String sql = "UPDATE {p}lti_"+which+
+                " SET settings = ? WHERE "+which+"_id = ?";
+        sql = setPrefix(sql);
+        log.debug(sql);
+
+        try {
+            PreparedStatement stmt = c.prepareStatement(sql);
+            stmt.setString(1, json);
+            stmt.setLong(2, id);
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+
+        // TODO: Persist resource on LMS
+System.out.println("TODO: Need to persist setting to resource="+resource);
         return true;
     }
 

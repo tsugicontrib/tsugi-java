@@ -100,6 +100,13 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
         BaseLaunch launch = new BaseLaunch();
         String x = null;
 
+        Connection c = getConnection();
+        if ( c == null ) {
+            log.error("Unable to upen database connection");
+            launch.error_message = "Unable to upen database connection";
+            return launch;
+        }
+
         if ( ! TsugiLTIUtils.isRequest(props) ) {
             System.out.println("TODO: Pull in from session");
             if ( session == null ) {  // Test harness
@@ -115,7 +122,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
             x = TsugiUtils.dumpProperties(sess_row);
             System.out.println("Session Properties:");
             System.out.println(x);
-            buildLaunch(launch, req, res, sess_row);
+            buildLaunch(c, launch, req, res, sess_row);
             return launch;
         }
 
@@ -135,12 +142,6 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
         System.out.println("Extracted POST Properties:");
         System.out.println(x);
 
-        Connection c = getConnection();
-        if ( c == null ) {
-            log.error("Unable to upen database connection");
-            launch.error_message = "Unable to upen database connection";
-            return launch;
-        }
         Properties row = loadAllData(c, post);
         if ( row == null ) {
             log.error("Key not found");
@@ -179,7 +180,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
 
 System.out.println("TODO: Make sure to do NONCE cleanup...");
 
-        buildLaunch(launch, req, res, row);
+        buildLaunch(c, launch, req, res, row);
 
         // TODO: Maybe not
         launch.database = new BaseDatabase(c, prefix);
@@ -188,8 +189,8 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
         return launch;
     }
 
-    private void buildLaunch(BaseLaunch launch, HttpServletRequest req, 
-        HttpServletResponse res, Properties row)
+    private void buildLaunch(Connection c, BaseLaunch launch, 
+        HttpServletRequest req, HttpServletResponse res, Properties row)
     {
         launch.request = req;
         launch.response = res;
@@ -200,9 +201,9 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
         }
         launch.result = new BaseResult(row, service);
         // TODO: Make settings real
-        Settings linkSettings = new Settings_JDBC(row, prefix, "link", req);
+        Settings linkSettings = new Settings_JDBC(c, row, prefix, "link", req);
         launch.link = new BaseLink(row, launch.result, linkSettings);
-        Settings contextSettings = new Settings_JDBC(row, prefix, "context", req);
+        Settings contextSettings = new Settings_JDBC(c, row, prefix, "context", req);
         launch.context = new BaseContext(row, contextSettings);
         launch.user = new BaseUser(row);
         launch.output = new BaseOutput(req, res);

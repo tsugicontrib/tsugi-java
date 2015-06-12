@@ -1,6 +1,7 @@
 package org.tsugi;
 
 import java.util.Properties;
+import java.io.IOException;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -99,7 +100,7 @@ public class TsugiTest {
     }
     
     @Test
-    public void testThing() {
+    public void testLaunchBasics() {
         Properties f = fakePost();
         assertTrue(launch.getContext().getId() > 0 );
         assertTrue(launch.getUser().getId() > 0 );
@@ -111,6 +112,20 @@ public class TsugiTest {
         assertEquals(f.getProperty("resource_link_title"), launch.getLink().getTitle());
         assertEquals(f.getProperty("lis_result_sourcedid"), launch.getResult().getSourceDID());
         assertEquals(f.getProperty("lis_outcome_service_url"), launch.getService().getURL());
+    }
+
+    @Test
+    public void testSettings() {
+        Settings contextSettings = launch.getContext().getSettings();
+        contextSettings.setSetting("zap", "1234");
+        Settings linkSettings = launch.getLink().getSettings();
+        try {
+            linkSettings.setSettingsJson("{ \"abc\" : 123 }");
+        } catch (IOException ex) {
+            System.out.println("Unexpected exception parsing JSON");
+            ex.printStackTrace();
+            assertTrue(false);
+        }
     }
 
     public static Properties fakePost() {
