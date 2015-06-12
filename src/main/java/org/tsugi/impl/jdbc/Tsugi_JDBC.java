@@ -108,7 +108,6 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
         }
 
         if ( ! TsugiLTIUtils.isRequest(props) ) {
-            System.out.println("TODO: Pull in from session");
             if ( session == null ) {  // Test harness
                 launch.error_message = "This tool must be launched using LTI";
                 return launch;
