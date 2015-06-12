@@ -17,7 +17,7 @@ public interface Settings {
      * @param json Properties that are serialized in JSON and stored.
      * Replaces existing settings.  
      */
-    public boolean setSettingsJson(String json);
+    public boolean setSettingsJson(String json) throws java.io.IOException;
 
    /**
      * Retrieve an array of all of the settings

@@ -37,12 +37,20 @@ public class Settings_JDBC extends BaseSettings implements Settings
     // Table where this is stored
     private String tableName = null;
 
-    public Settings_JDBC(String prefix, String sessionName, String tableName)
+    public boolean valid = false;
+
+    public Settings_JDBC(Properties row, String prefix, String sessionName, String tableName)
     {
         this.prefix = prefix;
         this.sessionName = sessionName;
         this.tableName = tableName;
-        setSettingsJson(null);
+        try {
+            setSettingsJson(null);
+            valid = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            valid = false;
+        }
     }
 
    /**

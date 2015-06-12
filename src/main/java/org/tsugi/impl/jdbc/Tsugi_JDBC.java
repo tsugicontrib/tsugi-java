@@ -199,7 +199,7 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
             service = new BaseService(row);
         }
         launch.result = new BaseResult(row, service);
-        // Make settings real
+        // TODO: Make settings real
         // Settings linkSettings = new JDBC_Settings(prefix, 
         launch.link = new BaseLink(row, launch.result, null);
         launch.context = new BaseContext(row, null);
