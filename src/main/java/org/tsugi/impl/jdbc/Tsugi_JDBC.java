@@ -199,8 +199,10 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
             service = new BaseService(row);
         }
         launch.result = new BaseResult(row, service);
-        launch.link = new BaseLink(row, launch.result);
-        launch.context = new BaseContext(row);
+        // Make settings real
+        // Settings linkSettings = new JDBC_Settings(prefix, 
+        launch.link = new BaseLink(row, launch.result, null);
+        launch.context = new BaseContext(row, null);
         launch.user = new BaseUser(row);
         launch.output = new BaseOutput(req, res);
 

@@ -12,7 +12,7 @@ package org.tsugi;
  * like "view profile" or "show all courses"
 
  */
-public interface Context extends Settings {
+public interface Context {
 
     // TODO: - $Context->lang - The context language choice.
 
@@ -25,4 +25,9 @@ public interface Context extends Settings {
      * The context title
      */
     public String getTitle();
+
+    /**
+     * The context settings
+     */
+    public Settings getSettings();
 }

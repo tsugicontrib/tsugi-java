@@ -4,6 +4,7 @@ package org.tsugi.base;
 import java.util.Properties;
 
 import org.tsugi.Context;
+import org.tsugi.Settings;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,14 +26,16 @@ public class BaseContext implements Context {
 
     public Long id;
     public String title;
+    public Settings settings;
 
     /**
      * Constructor 
      */
-    public BaseContext(Properties row) 
+    public BaseContext(Properties row, Settings settings)
     {
         id = new Long(row.getProperty("context_id"));
         title = StringUtils.stripToNull(row.getProperty("context_title"));
+        this.settings = settings;
     }
 
     /**
@@ -49,6 +52,14 @@ public class BaseContext implements Context {
     public String getTitle()
     {
         return title;
+    }
+
+    /**
+     * The context Settings
+     */
+    public Settings getSettings()
+    {
+        return settings;
     }
 
 }
