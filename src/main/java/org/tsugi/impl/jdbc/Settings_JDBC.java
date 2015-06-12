@@ -82,6 +82,7 @@ public class Settings_JDBC extends BaseSettings implements Settings
     {
         if ( id == null ) return false;
 
+        // Persist settings to the database
         String json = getSettingsJson();
         String sql = "UPDATE {p}lti_"+which+
                 " SET settings = ? WHERE "+which+"_id = ?";
@@ -98,8 +99,20 @@ public class Settings_JDBC extends BaseSettings implements Settings
             return false;
         }
 
+        // Persist settings to the row in the session for 
+        // the next request/response cycle
+        
+        if ( req != null ) {  // Allow for testing
+            HttpSession session = req.getSession();
+            Properties sess_row = (Properties) session.getAttribute("lti_row");
+            if ( sess_row != null ) {
+                sess_row.setProperty(which+"_settings",json);
+System.out.println("Persisted settings in session for "+which);
+            }
+        }
+
         // TODO: Persist resource on LMS
-System.out.println("TODO: Need to persist setting to resource="+resource);
+System.out.println("TODO: Need to persist settings to resource="+resource);
         return true;
     }
 
