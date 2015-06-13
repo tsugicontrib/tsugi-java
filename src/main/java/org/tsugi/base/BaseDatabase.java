@@ -4,6 +4,7 @@ package org.tsugi.base;
 import java.util.Properties;
 import java.util.List;
 
+import org.tsugi.Launch;
 import org.tsugi.Database;
 
 import java.sql.Connection;
@@ -22,16 +23,26 @@ public class BaseDatabase implements Database {
 
     private Log log = LogFactory.getLog(BaseDatabase.class);
 
+    Launch launch = null;
     Connection c = null;
     String prefix = null;
 
     /**
      * Constructor 
      */
-    public BaseDatabase(Connection c, String prefix)
+    public BaseDatabase(Launch launch, Connection c, String prefix)
     {
+        this.launch = launch;
         this.c = c;
         this.prefix = prefix;
+    }
+
+    /**
+     * Get the launch associated with this object
+     */
+    public Launch getLaunch()
+    {
+        return launch;
     }
 
     /**

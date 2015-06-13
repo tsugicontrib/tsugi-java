@@ -182,7 +182,7 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
         buildLaunch(c, launch, req, res, row);
 
         // TODO: Maybe not
-        launch.database = new BaseDatabase(c, prefix);
+        launch.database = new BaseDatabase(launch, c, prefix);
 
         if ( session != null ) session.setAttribute("lti_row", row);
         return launch;
@@ -193,19 +193,22 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
     {
         launch.request = req;
         launch.response = res;
+        if ( req != null ) {
+            launch.session = req.getSession();
+        }
         // Create our new objects
         Service service = null;
         if ( StringUtils.isNotBlank(row.getProperty("service_id")) ) {
-            service = new BaseService(row);
+            service = new BaseService(launch, row);
         }
-        launch.result = new BaseResult(row, service);
+        launch.result = new BaseResult(launch, row, service);
         // TODO: Make settings real
-        Settings linkSettings = new Settings_JDBC(c, row, prefix, "link", req);
-        launch.link = new BaseLink(row, launch.result, linkSettings);
-        Settings contextSettings = new Settings_JDBC(c, row, prefix, "context", req);
-        launch.context = new BaseContext(row, contextSettings);
-        launch.user = new BaseUser(row);
-        launch.output = new BaseOutput(req, res);
+        Settings linkSettings = new Settings_JDBC(launch, c, row, prefix, "link", req);
+        launch.link = new BaseLink(launch, row, launch.result, linkSettings);
+        Settings contextSettings = new Settings_JDBC(launch, c, row, prefix, "context", req);
+        launch.context = new BaseContext(launch, row, contextSettings);
+        launch.user = new BaseUser(launch, row);
+        launch.output = new BaseOutput(launch, req, res);
 
         launch.valid = true;
     }
@@ -231,7 +234,7 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
             "u.user_id, u.displayname AS user_displayname, u.email AS user_email, user_key,\n"+
             "u.subscribe AS subscribe, u.user_sha256 AS user_sha256,\n"+
             "m.membership_id, m.role, m.role_override,\n"+
-            "r.result_id, r.grade, r.result_url, r.sourcedid";
+            "r.result_id, r.grade, r.note AS result_comment, r.result_url, r.sourcedid";
 
         if ( StringUtils.isNotBlank(post.getProperty("service")) ) {
             sql += ",\n"+

@@ -8,6 +8,12 @@ package org.tsugi;
  * If this is an anonymous launch the User will be null.
  */
 public interface User {
+
+    /**
+     * Get the launch associated with this object
+     */
+    public Launch getLaunch();
+
     /**
      * The integer primary key for this user in this instance of Tsugi.
      */

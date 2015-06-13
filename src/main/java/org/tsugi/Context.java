@@ -17,6 +17,11 @@ public interface Context {
     // TODO: - $Context->lang - The context language choice.
 
     /**
+     * Get the launch associated with this object
+     */
+    public Launch getLaunch();
+
+    /**
      * The integer primary key for this context across this Tsugi instance
      */
     public Long getId();

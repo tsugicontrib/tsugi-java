@@ -11,17 +11,25 @@ import javax.servlet.http.HttpSession;
 
 public class BaseOutput implements Output {
 
+    public Launch launch = null;
     public HttpServletRequest request = null;
     public HttpServletResponse response = null;
     public HttpSession session = null;
 
-    public BaseOutput(HttpServletRequest request, HttpServletResponse response)
+    public BaseOutput(Launch launch, 
+        HttpServletRequest request, HttpServletResponse response)
     {
+        this.launch = launch;
         this.request = request;
         this.response = response;
         if ( request != null ) {  // During unit tests
             this.session = request.getSession();
         }
+    }
+
+    public Launch getLaunch()
+    {
+        return launch;
     }
 
     public void flashSuccess(String message)

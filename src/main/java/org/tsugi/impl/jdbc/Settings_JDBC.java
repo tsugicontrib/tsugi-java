@@ -31,6 +31,9 @@ public class Settings_JDBC extends BaseSettings implements Settings
 
     private HttpServletRequest req = null;
 
+    // Launch associates with this setting
+    private Launch launch = null;
+
     // ID to update
     private Long id = null;
 
@@ -51,8 +54,9 @@ public class Settings_JDBC extends BaseSettings implements Settings
 
     public boolean valid = false;
 
-    public Settings_JDBC(Connection c, Properties row, String prefix, String which, HttpServletRequest req)
+    public Settings_JDBC(Launch launch, Connection c, Properties row, String prefix, String which, HttpServletRequest req)
     {
+        this.launch = launch;
         this.c = c;
         this.id = new Long(row.getProperty(which+"_id"));
         this.prefix = prefix;

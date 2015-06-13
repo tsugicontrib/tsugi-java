@@ -3,6 +3,7 @@ package org.tsugi.base;
 
 import java.util.Properties;
 
+import org.tsugi.Launch;
 import org.tsugi.Context;
 import org.tsugi.Settings;
 
@@ -24,6 +25,7 @@ public class BaseContext implements Context {
 
     // TODO: - $Context->lang - The context language choice.
 
+    public Launch launch = null;
     public Long id;
     public String title;
     public Settings settings;
@@ -31,11 +33,20 @@ public class BaseContext implements Context {
     /**
      * Constructor 
      */
-    public BaseContext(Properties row, Settings settings)
+    public BaseContext(Launch launch, Properties row, Settings settings)
     {
+        this.launch = launch;
         id = new Long(row.getProperty("context_id"));
         title = StringUtils.stripToNull(row.getProperty("context_title"));
         this.settings = settings;
+    }
+
+    /**
+     * Get the launch associated with this object
+     */
+    public Launch getLaunch()
+    {
+        return launch;
     }
 
     /**

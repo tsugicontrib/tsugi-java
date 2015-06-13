@@ -7,6 +7,12 @@ package org.tsugi;
  * common in LTI 2.x.
  */
 public interface Service {
+
+    /**
+     * Get the launch associated with this object
+     */
+    public Launch getLaunch();
+
     /**
      * The integer primary key for this service within this Tsugi instance
      */

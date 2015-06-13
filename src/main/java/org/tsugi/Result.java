@@ -2,8 +2,19 @@
 package org.tsugi;
 
 /**
+ * The data structure for a grade.
+ *
+ * Tsugi insures that this always exists with a local way of
+ * persisting a grade even if the server that launched us has
+ * no way of handling grades from us.
  */
 public interface Result {
+
+    /**
+     * Get the launch associated with this object
+     */
+    public Launch getLaunch();
+
     /**
      * The integer primary key for this result within this Tsugi instance
      */
@@ -13,6 +24,11 @@ public interface Result {
      * Current grade for the resource link
      */
     public Double getGrade();
+
+    /**
+     * Current comment for the resource link
+     */
+    public String getComment();
 
     /**
      * The result URL (LTI 2.x) for this result.  May be null.

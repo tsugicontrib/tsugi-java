@@ -19,6 +19,11 @@ import java.sql.SQLException;
 public interface Database {
 
     /**
+     * Get the launch associated with this object
+     */
+    public Launch getLaunch();
+
+    /**
      * Prepare and execute a SELECT query or die() in the attempt.
      *
      * @param sql The SQL to execute in a string.  If the SQL is badly formed this function will die.

@@ -3,6 +3,7 @@ package org.tsugi.base;
 
 import java.util.Properties;
 
+import org.tsugi.Launch;
 import org.tsugi.Result;
 import org.tsugi.Service;
 
@@ -12,17 +13,20 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class BaseResult implements Result {
 
-    Long id;
-    Double grade;
-    String URL;
-    String sourcedid;
-    Service service;
+    public Launch launch;
+    public Long id;
+    public Double grade;
+    public String comment;
+    public String URL;
+    public String sourcedid;
+    public Service service;
 
     /**
      * Constructor - requires result_id
      */
-    public BaseResult(Properties row, Service service) 
+    public BaseResult(Launch launch, Properties row, Service service) 
     {
+        this.launch = launch;
         id = new Long(row.getProperty("result_id"));
         String sgrade = StringUtils.stripToNull(row.getProperty("grade"));
         if ( sgrade == null ) {
@@ -30,9 +34,15 @@ public class BaseResult implements Result {
         } else {
             grade = new Double(sgrade);
         }
+        String comment = StringUtils.stripToNull(row.getProperty("result_comment"));
         URL = StringUtils.stripToNull(row.getProperty("result_url"));
         sourcedid = StringUtils.stripToNull(row.getProperty("sourcedid"));
         this.service = service;
+    }
+
+    public Launch getLaunch()
+    {
+        return launch;
     }
 
     /**
@@ -50,6 +60,15 @@ public class BaseResult implements Result {
     {
         return grade;
     }
+
+    /**
+     * Current comment for the link
+     */
+    public String getComment()
+    {
+        return comment;
+    }
+
 
     /**
      * The result URL (LTI 2.x) for this result.  May be null.

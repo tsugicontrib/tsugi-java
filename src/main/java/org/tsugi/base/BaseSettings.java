@@ -8,6 +8,7 @@ import java.util.Map;
 
 import java.io.IOException;
 
+import org.tsugi.Launch;
 import org.tsugi.Settings;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,11 +20,18 @@ import com.fasterxml.jackson.databind.ObjectWriter;
  */
 public class BaseSettings implements Settings {
 
+    public Launch launch = null;
+
     // These must be set in the implementing class
     public Properties settings = new Properties();
 
     // Constructor is only in the implementing class so as 
     // to allow flexibility in method signature
+
+    public Launch getLaunch()
+    {
+        return launch;
+    }
 
     /**
      * Persist the settings wherever they need to go.

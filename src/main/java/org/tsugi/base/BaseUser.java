@@ -3,6 +3,7 @@ package org.tsugi.base;
 
 import java.util.Properties;
 
+import org.tsugi.Launch;
 import org.tsugi.User;
 
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class BaseUser implements User {
 
+    public Launch launch;
     public Long id;
     public String email;
     public String displayname;
@@ -19,12 +21,18 @@ public class BaseUser implements User {
     /*
      * Constructor
      */
-    public BaseUser(Properties row)
+    public BaseUser(Launch launch, Properties row)
     {
+        this.launch = launch;
         id = new Long(row.getProperty("user_id"));
         email = StringUtils.stripToNull(row.getProperty("user_email"));
         displayname = StringUtils.stripToNull(row.getProperty("user_displayname"));
         instructor = "1".equals(row.getProperty("role"));
+    }
+
+    public Launch getLaunch()
+    {
+        return launch;
     }
 
     /**

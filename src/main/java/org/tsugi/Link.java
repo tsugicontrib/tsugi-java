@@ -4,6 +4,12 @@ package org.tsugi;
 /**
  */
 public interface Link {
+
+    /**
+     * Get the launch associated with this object
+     */
+    public Launch getLaunch();
+
     /**
      * The integer primary key for the user within this instance of Tsugi
      */

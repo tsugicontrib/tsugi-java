@@ -7,6 +7,11 @@ import java.util.Properties;
  */
 public interface Settings {
 
+    /**
+     * Get the launch associated with this object
+     */
+    public Launch getLaunch();
+
    /**
      * Retrieve an JSON string of all of the settings
      */

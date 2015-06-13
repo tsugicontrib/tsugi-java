@@ -8,4 +8,9 @@ import java.sql.ResultSet;
  */
 public interface Caliper {
 
+    /**
+     * Get the launch associated with this object
+     */
+    public Launch getLaunch();
+
 }

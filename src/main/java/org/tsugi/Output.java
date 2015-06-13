@@ -58,6 +58,11 @@ public interface Output {
     public final String JQUERY = "jquery";
     public final String BOOTSTRAP = "bootstrap";
 
+    /**
+     * Get the launch associated with this object
+     */
+    public Launch getLaunch();
+
     // TODO: Add documentation to the methods
     public void flashSuccess(String message);
 
