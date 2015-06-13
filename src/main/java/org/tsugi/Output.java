@@ -150,7 +150,7 @@ public interface Output {
      * @return String Text to include in a form.  May be the 
      * empty string if nothing is needed by the framework.
      **/
-    public String getFormHidden(String path);
+    public String getHidden();
 
     /** 
      * Get a URL to the 'static' folder within this servlet

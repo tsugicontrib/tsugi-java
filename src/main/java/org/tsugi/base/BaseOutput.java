@@ -192,28 +192,33 @@ public class BaseOutput implements Output {
 
     public String getGetUrl(String path)
     {
-        return null;
+        String retval = request.getContextPath();
+        String sp = request.getServletPath();
+        if ( sp != null ) retval = retval + sp;
+        if ( path != null ) retval = retval + "/" + path;
+        return retval;
     }
 
     public String getPostUrl(String path)
     {
-        return null;
+        return getGetUrl(path); 
     }
 
-    public String getFormHidden(String path)
+    public String getHidden()
     {
-        return null;
+        return "<!-- hidden -->\n";
     }
 
     public String getStaticUrl()
     {
-        return null;
+        String retval = request.getContextPath() + "/static";
+        return retval;
     }
 
     public String getSpinnerUrl() 
     {
-        String statpath = request.getContextPath();
-        return statpath + "/static/img/spinner.gif";
+        String statpath = getStaticUrl() + "/img/spinner.gif";
+        return statpath;
     }
 
 }
