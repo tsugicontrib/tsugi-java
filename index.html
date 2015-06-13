@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <title>Tsugi-java by csev</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Tsugi-java</h1>
+        <h2>The Java Version of Tsugi API and Default Implementation</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/csev/tsugi-java/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/csev/tsugi-java/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/csev/tsugi-java" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>
+<a id="tsugi-for-java---library-code" class="anchor" href="#tsugi-for-java---library-code" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tsugi for Java - Library Code</h1>
+
+<p>This is a Java version of the PHP Tsugi application 
+(<a href="https://github.com/csev/tsugi">https://github.com/csev/tsugi</a>).  This repository is the 
+API and base JDBC implementation.</p>
+
+<h2>
+<a id="build" class="anchor" href="#build" aria-hidden="true"><span class="octicon octicon-link"></span></a>Build</h2>
+
+<p>This will produces a jar file and drops it into your maven repository. </p>
+
+<pre><code>mvn install
+</code></pre>
+
+<h2>
+<a id="database" class="anchor" href="#database" aria-hidden="true"><span class="octicon octicon-link"></span></a>Database</h2>
+
+<p>This is expecting that PHP Tsugi already is installed running 
+and its database is created and available on localhost:8889
+using the default account, password, and database name 
+and that the tables already exist.
+If you want to change this, edit the file</p>
+
+<pre><code>src/main/resources/tsugi.properties
+</code></pre>
+
+<h2>
+<a id="git-details" class="anchor" href="#git-details" aria-hidden="true"><span class="octicon octicon-link"></span></a>Git Details</h2>
+
+<p>If you forked my repo and want to grab the latest changes, do 
+the following once:</p>
+
+<pre><code>git remote add upstream https://github.com/csev/tsugi-java
+</code></pre>
+
+<p>Then from time to time when you want to pull mods and update your fork:</p>
+
+<pre><code>git pull upstream master
+git push origin master
+</code></pre>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
