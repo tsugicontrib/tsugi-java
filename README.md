@@ -27,15 +27,32 @@ Generating JavaDocs
 
 Make sure you are in master:
 
+    git checkout master
+    git status (there should be no pending changes)
+
     mvn javadoc:javadoc
+
+Make sure you are happy by looking at:
+
+    apidocs/index.html
+
+When you are happy:
+
     tar cfv apidocs.tar apidocs
     git checkout gh-branches
     tar xfv apidocs.tar
+    rm apidocs.tar
+
     git commit -a
     git push
-    rm apidocs.tar
     git checkout master
 
+A sweet one-line version of the four steps is:
+
+    tar cfv apidocs.tar apidocs; git checkout gh-branches; tar xfv apidocs.tar; rm apidocs.tar
+
+For those of us who like to say things like "!tar" in the command line when 
+doing the same things more than one time. :)
 
 Git Details
 -----------
