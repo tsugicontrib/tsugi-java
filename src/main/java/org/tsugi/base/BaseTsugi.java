@@ -63,6 +63,12 @@ public abstract class BaseTsugi implements Tsugi
         return getLaunch(null, props, null);
     }
 
+   /**
+     * The factory for launches - called at the beginning of each request/response cycle
+     *
+     * This is highly implementation specific and needs to be overriden by the ultimate
+     * implementation class.
+     */
     public abstract Launch getLaunch(HttpServletRequest req, Properties props, HttpServletResponse res);
 
 
@@ -155,7 +161,6 @@ public abstract class BaseTsugi implements Tsugi
 
         return o;
     }
-
 
     /**
      * Check the OAuth Signature

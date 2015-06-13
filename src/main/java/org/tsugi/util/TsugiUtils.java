@@ -35,6 +35,18 @@ public class TsugiUtils {
     }
 
     /*
+     * Indicate whether we are in the midst of unit tests.
+     *
+     * This is controlled by:
+     *
+     *   tsugi.unit.test=true
+     */
+    public static boolean unitTesting()
+    {
+        return "true".equals(System.getProperty("tsugi.unit.test"));
+    }
+
+    /*
      ** Load a properties file from the class path or return null if not found.
      */
     public static Properties loadProperties(String pathname)
@@ -88,6 +100,7 @@ public class TsugiUtils {
         while (keys.hasMoreElements()) {
             String key = (String)keys.nextElement();
             String value = (String)p.get(key);
+            if ( key.indexOf("secret") >= 0 ) value = "** suppressed ("+value.length()+") **";
             if ( sb.length() > 0 ) sb.append("\n");
             sb.append(key);
             sb.append(": ");

@@ -118,14 +118,13 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
         }
 
         BaseLaunch launch = new BaseLaunch();
-        String x = null;
-
         Connection c = getConnection();
         if ( c == null ) {
             log.error("Unable to upen database connection");
             launch.error_message = "Unable to upen database connection";
             return launch;
         }
+        launch.connection = c;
 
         if ( ! TsugiLTIUtils.isRequest(props) ) {
             if ( session == null ) {  // Test harness
@@ -138,28 +137,29 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
                 launch.error_message = "This tool must be launched using LTI";
                 return launch;
             }
-            x = TsugiUtils.dumpProperties(sess_row);
-            System.out.println("Session Properties:");
-            System.out.println(x);
             buildLaunch(c, launch, req, res, sess_row);
             return launch;
         }
 
+        // TODO: Make sure we are in a POST
+
         // Start fresh
         if ( session != null ) session.removeAttribute("lti_row");
-        // x = TsugiUtils.dumpProperties(props);
-        // System.out.println("Input POST Properties:");
-        // System.out.println(x);
 
+        // Pull in the post data
         Properties post = extractPost(props);
+
         if ( post == null ) {
             log.error("Missing essential POST data");
             launch.error_message = "Missing essential POST data";
             return launch;
         }
-        x = TsugiUtils.dumpProperties(post);
-        System.out.println("Extracted POST Properties:");
-        System.out.println(x);
+
+        if ( TsugiUtils.unitTesting() ) {
+            System.out.println("");
+            System.out.println("Extracted POST Properties:");
+            System.out.println(TsugiUtils.dumpProperties(post));
+        }
 
         Properties row = loadAllData(c, post);
         if ( row == null ) {
@@ -168,31 +168,36 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
             return launch;
         }
 
-        x = TsugiUtils.dumpProperties(row);
-        System.out.println("Database Properties:");
-        System.out.println(x);
+        if ( TsugiUtils.unitTesting() ) {
+            System.out.println("");
+            System.out.println("Database Properties:");
+            System.out.println(TsugiUtils.dumpProperties(row));
+        }
 
-        launch.connection = c;
+        boolean validated = false;
+
         if ( req != null ) {
             String key = StringUtils.stripToNull(row.getProperty("key_key"));
             String secret = StringUtils.stripToNull(row.getProperty("secret"));
             String new_secret = StringUtils.stripToNull(row.getProperty("new_secret"));
-            boolean success = false;
             if ( new_secret != null ) {
-                success = checkOAuthSignature(req, key, new_secret);
+                validated = checkOAuthSignature(req, key, new_secret);
             }   
-            if ( !success && secret != null ) {
-                success = checkOAuthSignature(req, key, secret);
+            if ( !validated && secret != null ) {
+                validated = checkOAuthSignature(req, key, secret);
             }
-            if ( !success ) {
+            if ( !validated ) {
                 log.error("OAuth error: "+error_message);
                 log.error("Base string: "+base_string);
                 launch.error_message = error_message;
                 launch.base_string = base_string;
+                launch.valid = false;
                 return launch;
             }
-        } else {
+        } else if ( TsugiUtils.unitTesting() ) {
             log.warn("HttpServletRequest is null - test only");
+        } else {
+            throw new RuntimeException("HttpServletRequest is required unless tsugi.unit.test=true");
         }
 
         adjustData(c, row, post);
@@ -204,7 +209,13 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
         // TODO: Maybe not
         launch.database = new BaseDatabase(launch);
 
-        if ( session != null ) session.setAttribute("lti_row", row);
+        // If this is not a unit test we redirect after LTI launch is good
+        if ( session != null ) {
+            session.setAttribute("lti_row", row);
+            launch.output.postRedirect(null);
+            launch.complete = true;
+        }
+
         return launch;
     }
 
@@ -223,10 +234,11 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
             service = new BaseService(launch, row);
         }
         launch.result = new BaseResult(launch, row, service);
-        // TODO: Make settings real
+
         Settings linkSettings = new Settings_JDBC(launch, c, row, prefix, "link", req);
         launch.link = new BaseLink(launch, row, launch.result, linkSettings);
         Settings contextSettings = new Settings_JDBC(launch, c, row, prefix, "context", req);
+
         launch.context = new BaseContext(launch, row, contextSettings);
         launch.user = new BaseUser(launch, row);
         launch.output = new BaseOutput(launch);

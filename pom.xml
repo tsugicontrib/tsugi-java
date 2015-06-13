@@ -113,6 +113,7 @@
         <version>2.12.4</version>
         <configuration>
           <systemPropertyVariables>
+            <tsugi.unit.test>true</tsugi.unit.test>
             <tsugi.datasource.url>jdbc:mysql://localhost:8889/tsugi</tsugi.datasource.url>
             <tsugi.datasource.username>ltiuser</tsugi.datasource.username>
             <tsugi.datasource.password>ltipassword</tsugi.datasource.password>
