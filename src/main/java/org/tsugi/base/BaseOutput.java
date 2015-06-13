@@ -9,7 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class BaseOutput implements Output {
+
+    private Log log = LogFactory.getLog(BaseOutput.class);
 
     public Launch launch = null;
     public HttpServletRequest request = null;
@@ -202,6 +207,16 @@ public class BaseOutput implements Output {
     public String getPostUrl(String path)
     {
         return getGetUrl(path); 
+    }
+
+    public void postRedirect(String path)
+    {
+        String red_path = getGetUrl(path); 
+        try {
+            response.sendRedirect(red_path);
+        } catch (Exception ex) {
+            throw new java.lang.RuntimeException("Redirect failed:"+red_path, ex);
+        }
     }
 
     public String getHidden()

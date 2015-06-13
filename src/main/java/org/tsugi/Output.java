@@ -140,6 +140,11 @@ public interface Output {
     public String getPostUrl(String path);
 
     /** 
+     * Redirect to a path - can be bull
+     **/
+    public void postRedirect(String path);
+
+    /** 
      * Get any needed hidden form fields
      *
      * This will be properly formatted HTML - most likely one
