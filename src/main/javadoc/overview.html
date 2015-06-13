@@ -24,5 +24,37 @@
     The PHP Tsugi includes the library code, an administration UI, a hosting framework,
     and a number of sample applications.
     </p>
+    <p>
+    A basic outline of a Tsugi application is as follows:
+  <pre><code>
+     PrintWriter out = res.getWriter();
+ 
+     Launch launch = tsugi.getLaunch(req, res);
+     if ( launch.isComplete() ) return;
+
+     Output o = launch.getOutput();
+
+     Properties p = o.header(out);
+     out.println("&lt;title&gt;Sample&lt;/title&gt;");
+     o.bodyStart(out);
+     o.navStart(out); // If you want it..
+     o.flashMessages(out);
+
+     out.println("&lt;pre&gt;");
+     out.println("Welcome to hello world!");
+     out.println("&lt;/pre&gt;");
+
+     o.navEnd(out); // If you started it
+     o.footerStart(out);
+     // Some of my own JavaScript goodness
+     $(document).ready( ... );
+     o.footerEnd(out);
+ </code></pre>
+</p>
+<p>
+A more complete example application is 
+<a href="https://github.com/csev/tsugi-java-servlet/blob/master/src/main/java/org/tsugi/sample/TsugiServlet.java"
+target="_blank">here</a>.
+</p>
   </body>
 </html>
