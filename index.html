@@ -16,7 +16,7 @@
     <header>
       <div class="container">
         <h1>Tsugi-java</h1>
-        <h2>The Java Version of Tsugi API and Default Implementation</h2>
+        <h2>The Java Version of Tsugi API and Default JDBC Implementation</h2>
 
         <section id="downloads">
           <a href="https://github.com/csev/tsugi-java/zipball/master" class="btn">Download as .zip</a>
@@ -31,44 +31,41 @@
         <h1>
 <a id="tsugi-for-java---library-code" class="anchor" href="#tsugi-for-java---library-code" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tsugi for Java - Library Code</h1>
 
-<p>This is a Java version of the PHP Tsugi application 
-(<a href="https://github.com/csev/tsugi">https://github.com/csev/tsugi</a>).  This repository is the 
-API and base JDBC implementation.</p>
+<p>This is a Java API library compatible with the PHP Tsugi application 
+(<a href="http://csev.github.io/tsugi/">http://csev.github.io/tsugi/</a>).  
+It allows you to build portable Java servlets that make use of the various 
+LTI standards through the use of the Tsugi APIs.
+</p>
+<p>
 
 <h2>
-<a id="build" class="anchor" href="#build" aria-hidden="true"><span class="octicon octicon-link"></span></a>Build</h2>
+<a id="build" class="anchor" href="#build" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tsugi-Java API Documentation</h2>
 
-<p>This will produces a jar file and drops it into your maven repository. </p>
-
-<pre><code>mvn install
-</code></pre>
+<p>Open <a href="apidocs/index.html" target="_blank">JavaDoc for the Tsugi-Java API</a> in a new window.</p>
 
 <h2>
-<a id="database" class="anchor" href="#database" aria-hidden="true"><span class="octicon octicon-link"></span></a>Database</h2>
-
-<p>This is expecting that PHP Tsugi already is installed running 
-and its database is created and available on localhost:8889
-using the default account, password, and database name 
-and that the tables already exist.
-If you want to change this, edit the file</p>
-
-<pre><code>src/main/resources/tsugi.properties
-</code></pre>
+<a id="build" class="anchor" href="#build" aria-hidden="true"><span class="octicon octicon-link"></span></a>Sample Servlet</h2>
+A sample Java servlet that uses this library is available at
+(<a href="http://csev.github.io/tsugi-servlet/">http://csev.github.io/tsugi-servlet/</a>).  
+This page has instructions for compiling the library, starting the servlet and testing the servlet
+with PHP Tsugi.
+</p>
 
 <h2>
-<a id="git-details" class="anchor" href="#git-details" aria-hidden="true"><span class="octicon octicon-link"></span></a>Git Details</h2>
+<a id="build" class="anchor" href="#build" aria-hidden="true"><span class="octicon octicon-link"></span></a>Presentations About Tsugi</h2>
+<ul>
+<li>Video Presentation: 
+<a href="https://www.youtube.com/watch?v=R-SCdBaF-WY&list=PLysC4Zd9-FmDiBsX9o4shY48iM4PFLfsQ" target="_blank">
+IMS Digital Revolution</a>
+</li>
+<li>Video Presentation:
+<a href="https://www.youtube.com/watch?v=EfSsFs-2lqg" target="_blank">IMS LTI as Research</a></li>
+<li>Video Presentation: 
+<a href="https://www.youtube.com/watch?v=iDcoWH9PO6I&amp;index=2&amp;list=PLlRFEj9H3Oj5WZUjVjTJVBN18ozYSWMhw"
+target="_blank">Tsugi Overview</a>
+</li>
+</ul>
 
-<p>If you forked my repo and want to grab the latest changes, do 
-the following once:</p>
-
-<pre><code>git remote add upstream https://github.com/csev/tsugi-java
-</code></pre>
-
-<p>Then from time to time when you want to pull mods and update your fork:</p>
-
-<pre><code>git pull upstream master
-git push origin master
-</code></pre>
       </section>
     </div>
 
