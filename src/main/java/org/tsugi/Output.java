@@ -21,14 +21,14 @@ import javax.servlet.http.HttpSession;
   *     Output o = launch.getOutput();
   *
   *     Properties p = o.header(out);
-  *     out.println("&lt;title>Sample&lt;/title>");
+  *     out.println("&lt;title&gt;Sample&lt;/title&gt;");
   *     o.bodyStart(out);
   *     o.navStart(out); // If you want it..
   *     o.flashMessages(out);
   *
-  *     out.println("&lt;pre>");
+  *     out.println("&lt;pre&gt;");
   *     out.println("Welcome to hello world!");
-  *     out.println("&lt;/pre>");
+  *     out.println("&lt;/pre&gt;");
   *
   *     o.navEnd(out); // If you started it
   *     o.footerStart(out);
