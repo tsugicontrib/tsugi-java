@@ -12,6 +12,9 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * The base implementation for the Output interface
+ */
 public class BaseOutput implements Output {
 
     private Log log = LogFactory.getLog(BaseOutput.class);

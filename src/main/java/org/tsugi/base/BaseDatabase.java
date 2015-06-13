@@ -19,6 +19,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * The base implementation for the Database interface
+ */
+
 public class BaseDatabase implements Database {
 
     private Log log = LogFactory.getLog(BaseDatabase.class);

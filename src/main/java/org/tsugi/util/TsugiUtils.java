@@ -17,12 +17,17 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * Utilities to avoid repeating ourselves.
+ */
 public class TsugiUtils {
 
     private static Log log = LogFactory.getLog(TsugiUtils.class);
 
-    /*
-     ** Convienence method Compute the sha256 for a string
+    /**
+     * Convienence method Compute the sha256 for a string
+     *
+     * TODO: Elminate this and just import commons.codec where appropriate.
      */
     public static String sha256(String input) 
     {
@@ -30,7 +35,7 @@ public class TsugiUtils {
     }
 
     /*
-     ** Load a properties file from the class path or trtutn null if not found.
+     ** Load a properties file from the class path or return null if not found.
      */
     public static Properties loadProperties(String pathname)
     {
@@ -118,11 +123,13 @@ public class TsugiUtils {
      * Allow the server's view of the URL to be overridden
      *
      * This can be configured from a global system property named
-     * tsugi.server.url or from that properti from the /tsugi.properties
+     * tsugi.server.url or from that property from the /tsugi.properties
      * file in the classpath.
      *
      * This is most valuable if our server is behind some kind of load balancer
      * that obscures the request URL.
+     *
+     * TODO: Move this to Output
      */
     public static String getOurServletPath(HttpServletRequest request)
     {

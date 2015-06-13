@@ -31,8 +31,12 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.imsglobal.basiclti.BasicLTIUtil;
 
-/*
- ** Implement the code that is common across implementations here. 
+/**
+ * The base implementation for the Tsugi interface
+ *
+ * This contains things like OAuth handling that 
+ * will likely be common across lots of implementations
+ * independent of persistence implementation.
  */
 public abstract class BaseTsugi implements Tsugi 
 {

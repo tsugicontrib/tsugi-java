@@ -10,6 +10,7 @@ import org.tsugi.Service;
 import org.apache.commons.lang3.StringUtils;
 
 /**
+ * The base implementation for the Result interface
  */
 public class BaseResult implements Result {
 

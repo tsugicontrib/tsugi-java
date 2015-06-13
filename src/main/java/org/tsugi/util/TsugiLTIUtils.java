@@ -16,9 +16,8 @@ import org.apache.commons.logging.LogFactory;
 
 import org.imsglobal.basiclti.BasicLTIConstants;
 
-/*
- * This holds capabilabilities that should be back ported to the
- * org.imsglobal classes.
+/**
+ * This holds capabililities that are low level LTI utilities
  */
 public class TsugiLTIUtils {
 

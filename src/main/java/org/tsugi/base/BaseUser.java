@@ -9,6 +9,7 @@ import org.tsugi.User;
 import org.apache.commons.lang3.StringUtils;
 
 /**
+ * The base implementation for the User interface
  */
 public class BaseUser implements User {
 

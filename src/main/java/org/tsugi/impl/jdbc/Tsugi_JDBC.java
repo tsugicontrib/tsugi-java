@@ -24,6 +24,29 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+  * The implementation for Tsugi and JDBC launch factory
+  *
+  * This is where the major work of the JDBC reference implementation
+  * happens.  This is configured by several properties:
+  *
+  * <pre><code>
+  * tsugi.datasource.url=jdbc:mysql://localhost:8889/tsugi
+  * tsugi.datasource.username=ltiuser
+  * tsugi.datasource.password=ltipassword
+  * tsugi.datasource.driverClassName=com.mysql.jdbc.Driver
+  * </code></pre>
+  *
+  * These properties are first checked from the system-wide
+  * properties and then a properties file of 
+  *
+  * /tsugi.properties
+  * 
+  * is read from the class path.  All properties must come
+  * from the same source.
+  *
+  * There is a lot of work that happens in this class.
+  */
 public class Tsugi_JDBC extends BaseTsugi implements Tsugi
 {
 
@@ -32,9 +55,6 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
     // The prefix for all of the tables
     private String prefix = null;
 
-   /**
-     * Get a tsugi-suitable connection
-     */
     public Connection getConnection()
     {
         String jdbc = System.getProperty("tsugi.datasource.url");
@@ -212,11 +232,6 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
         launch.output = new BaseOutput(launch);
 
         launch.valid = true;
-    }
-
-    public String customGet(String varname, String def)
-    {
-        return "Yo";
     }
 
     /**

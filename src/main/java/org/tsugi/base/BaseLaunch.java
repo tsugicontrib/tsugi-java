@@ -13,8 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 
 /**
- * This an opinionated LTI class that defines how Tsugi tools 
- * interact with LTI.
+ * The base implementation for the Launch interface
  */
 
 public class BaseLaunch implements Launch {

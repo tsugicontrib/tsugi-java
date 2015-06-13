@@ -4,6 +4,7 @@ package org.tsugi;
 import java.util.Properties;
 
 /**
+ * This is a class to manage settings associated with the link and context.
  */
 public interface Settings {
 

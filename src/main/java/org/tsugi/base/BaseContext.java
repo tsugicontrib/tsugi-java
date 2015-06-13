@@ -41,33 +41,21 @@ public class BaseContext implements Context {
         this.settings = settings;
     }
 
-    /**
-     * Get the launch associated with this object
-     */
     public Launch getLaunch()
     {
         return launch;
     }
 
-    /**
-     * The integer primary key for this context in the 'lti_context' table.
-     */
     public Long getId()
     {
         return id;
     }
 
-    /**
-     * The context title
-     */
     public String getTitle()
     {
         return title;
     }
 
-    /**
-     * The context Settings
-     */
     public Settings getSettings()
     {
         return settings;

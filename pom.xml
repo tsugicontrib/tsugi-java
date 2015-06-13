@@ -127,6 +127,7 @@
         <version>2.10.3</version>
         <configuration>
           <reportOutputDirectory>apidocs</reportOutputDirectory>
+          <bottom>Copyright 2015- Charles R. Severance and licensed CC-BY Attribution 4.0</bottom>
         </configuration>
       </plugin>
 

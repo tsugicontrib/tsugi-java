@@ -2,6 +2,7 @@
 package org.tsugi;
 
 /**
+ * This captures the information around the LTI resource_link
  */
 public interface Link {
 

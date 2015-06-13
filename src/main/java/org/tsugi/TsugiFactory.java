@@ -8,6 +8,35 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * This factory returns the appropriate Tsugi implementation.
+ *
+ * You can configure this Factory using a system-wide property
+ *
+ * <pre><code>
+ * tsugi.factory.tsugiClassName=org.tsugi.impl.jdbc.Tsugi_JDBC
+ * </code></pre>
+ * 
+ * This should only be called once during servlet initialization
+ * and then the Tsugi instance should be used during each 
+ * request / response cycle.  A sample for using this is as follows:
+ *
+ * <pre><code>
+ * public class TsugiServlet extends HttpServlet {
+ * 
+ *     Tsugi tsugi = null;
+ * 
+ *     // Allow overriding from something like Spring
+ *     public void setTsugi(Tsugi tsugi)
+ *     {
+ *         this.tsugi = tsugi;
+ *     }
+ * 
+ *     public void init(ServletConfig config) throws ServletException {
+ *         super.init(config);
+ *         if ( tsugi == null ) tsugi = TsugiFactory.getTsugi();
+ *         System.out.println("Tsugi init="+tsugi);
+ *     }
+ * </code></pre>
+ *
  */
 public class TsugiFactory {
 

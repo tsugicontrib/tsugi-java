@@ -11,6 +11,7 @@ import org.tsugi.Settings;
 import org.apache.commons.lang3.StringUtils;
 
 /**
+ * The base implementation for the Link interface
  */
 public class BaseLink implements Link {
 

@@ -24,6 +24,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+  * The implementation for the JDBC version of the Settings interface
+  */
 public class Settings_JDBC extends BaseSettings implements Settings
 {
 
@@ -80,6 +83,8 @@ public class Settings_JDBC extends BaseSettings implements Settings
 
     /**
      * Persist the settings into the right table and update the LMS
+     *
+     * TODO: Update the LMS
      */
     @Override
     public boolean persistSettings()

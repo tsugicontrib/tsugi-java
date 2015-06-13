@@ -2,11 +2,12 @@
 package org.tsugi;
 
 /**
- * The data structure for a grade.
+ * The data structure for an LTI result.
  *
- * Tsugi insures that this always exists with a local way of
- * persisting a grade even if the server that launched us has
- * no way of handling grades from us.
+ * Tsugi insures that this always exists with a local persisted
+ * a grade even if the server that launched us has
+ * no way of taking grades back from us.  This allows Tsugi tools
+ * to manage grades regardless of the LMS they are launched from.
  */
 public interface Result {
 

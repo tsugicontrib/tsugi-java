@@ -9,8 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 
 /**
- * This in effect the Tsugi "Launch Factory" that allows an application to 
- * setup the launch for each request/response cycle.
+ * This creates or retrieves the launch data on each request.
+ *
+ * This called during every request/response cycle.  When it 
+ * receives an LTI launch request, it sets up all of the data
+ * associated with the launch.  On successive requests, the 
+ * launch data is restored from the session.
  */
 public interface Tsugi {
 
