@@ -182,7 +182,7 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
         buildLaunch(c, launch, req, res, row);
 
         // TODO: Maybe not
-        launch.database = new BaseDatabase(launch, c, prefix);
+        launch.database = new BaseDatabase(launch);
 
         if ( session != null ) session.setAttribute("lti_row", row);
         return launch;
@@ -193,6 +193,7 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
     {
         launch.request = req;
         launch.response = res;
+        launch.prefix = prefix;
         if ( req != null ) {
             launch.session = req.getSession();
         }
@@ -208,7 +209,7 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
         Settings contextSettings = new Settings_JDBC(launch, c, row, prefix, "context", req);
         launch.context = new BaseContext(launch, row, contextSettings);
         launch.user = new BaseUser(launch, row);
-        launch.output = new BaseOutput(launch, req, res);
+        launch.output = new BaseOutput(launch);
 
         launch.valid = true;
     }

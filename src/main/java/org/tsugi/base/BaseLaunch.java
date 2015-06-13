@@ -24,6 +24,7 @@ public class BaseLaunch implements Launch {
     public HttpSession session = null;
 
     public Connection connection = null;
+    public String prefix = null;
     public User user = null;
     public Context context = null;
     public Link link = null;
@@ -116,6 +117,14 @@ public class BaseLaunch implements Launch {
     public Connection getConnection()
     {
         return connection;
+    }
+
+    /**
+     * Get the database table prefix associated with the launch.
+     */
+    public String getPrefix()
+    {
+        return prefix;
     }
 
     /**

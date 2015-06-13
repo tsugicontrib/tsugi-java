@@ -30,11 +30,11 @@ public class BaseDatabase implements Database {
     /**
      * Constructor 
      */
-    public BaseDatabase(Launch launch, Connection c, String prefix)
+    public BaseDatabase(Launch launch)
     {
         this.launch = launch;
-        this.c = c;
-        this.prefix = prefix;
+        this.c = launch.getConnection();
+        this.prefix = launch.getPrefix();
     }
 
     /**

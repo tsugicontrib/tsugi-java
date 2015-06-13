@@ -16,12 +16,11 @@ public class BaseOutput implements Output {
     public HttpServletResponse response = null;
     public HttpSession session = null;
 
-    public BaseOutput(Launch launch, 
-        HttpServletRequest request, HttpServletResponse response)
+    public BaseOutput(Launch launch)
     {
         this.launch = launch;
-        this.request = request;
-        this.response = response;
+        this.request = launch.getRequest();
+        this.response = launch.getResponse();
         if ( request != null ) {  // During unit tests
             this.session = request.getSession();
         }

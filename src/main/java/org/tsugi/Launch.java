@@ -59,6 +59,11 @@ public interface Launch {
      */
     public Connection getConnection();
 
+    /**
+     * Return the database prefix used by Tsugi.
+     */
+    public String getPrefix();
+
     // Deprecated for now
     // /**
     //  * Return the database helper class used by Tsugi.
