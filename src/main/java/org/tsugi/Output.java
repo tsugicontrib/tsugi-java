@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 /**
   * A Tsugi application makes use of this class as follows:
   *
+  * <pre><code>
   *     PrintWriter out = res.getWriter();
   *
   *     Launch launch = tsugi.getLaunch(req, res);
@@ -20,20 +21,21 @@ import javax.servlet.http.HttpSession;
   *     Output o = launch.getOutput();
   *
   *     Properties p = o.header(out);
-  *     out.println("<title>Sample</title>");
+  *     out.println("&lt;title>Sample&lt;/title>");
   *     o.bodyStart(out);
   *     o.navStart(out); // If you want it..
   *     o.flashMessages(out);
   *
-  *     out.println("<pre>");
+  *     out.println("&lt;pre>");
   *     out.println("Welcome to hello world!");
-  *     out.println("</pre>");
+  *     out.println("&lt;/pre>");
   *
   *     o.navEnd(out); // If you started it
   *     o.footerStart(out);
   *     // Some of my own JavaScript goodness
   *     $(document).ready( ... );
   *     o.footerEnd(out);
+  * </code></pre>
   *
   * The header() only includes the CSS for the libraries.  The 
   * the JavaScript librarys are included by footerStart().  This

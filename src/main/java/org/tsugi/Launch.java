@@ -8,8 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;;
 
 /**
- * This captures all of the data associates with
- * interact with LTI.  This
+ * This captures all of the data associated with the LTI Launch.
  */
 
 public interface Launch {
@@ -94,9 +93,11 @@ public interface Launch {
      *
      * This is used as follows:
      *
+     *<pre><code>
      *      public void doPost (...)
      *      Launch launch = tsugi.getLaunch(req, res);
      *      if ( launch.isComplete() ) return;
+     *</code></pre>
      *
      * This allows the Tsugi framework to do things like redirect back
      * to itself.
