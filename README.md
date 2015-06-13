@@ -22,6 +22,21 @@ If you want to change this, edit the file
 
     src/main/resources/tsugi.properties
 
+Generating JavaDocs
+-------------------
+
+Make sure you are in master:
+
+    mvn javadoc:javadoc
+    tar cfv apidocs.tar apidocs
+    git checkout gh-branches
+    tar xfv apidocs.tar
+    git commit -a
+    git push
+    rm apidocs.tar
+    git checkout master
+
+
 Git Details
 -----------
 
