@@ -16,6 +16,7 @@ public interface Tsugi {
 
    /**
      * Return a database connection for use by Tsugi.
+     *
      * This should only be used for maintenance and non-launch 
      * related database access.  The normal path is to get the 
      * launch and then pull the connection from the Launch structure.
@@ -30,6 +31,10 @@ public interface Tsugi {
 
    /**
      * Get the launch information for the current session
+     * 
+     * This method should only be used in unit tests and will
+     * throw a RuntimeException if used when unit tests are not
+     * running.
      */
     public Launch getLaunch(Properties props);
 }

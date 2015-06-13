@@ -5,7 +5,7 @@ package org.tsugi;
  */
 public interface Link {
     /**
-     * The integer primary key for this user in the 'lti_link' table.
+     * The integer primary key for the user within this instance of Tsugi
      */
     public Long getId();
 

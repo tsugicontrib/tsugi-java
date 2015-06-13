@@ -2,7 +2,7 @@
 package org.tsugi;
 
 /**
- * This is a class to provide access to the resource context level data.
+ * This is a class to provide access to the context level data.
  *
  * This data comes from the LTI launch from the LMS. 
  * A context is the equivalent of a "class" or course.   A context
@@ -17,7 +17,7 @@ public interface Context {
     // TODO: - $Context->lang - The context language choice.
 
     /**
-     * The integer primary key for this context in the 'lti_context' table.
+     * The integer primary key for this context across this Tsugi instance
      */
     public Long getId();
 

@@ -21,6 +21,7 @@ public class BaseLaunch implements Launch {
 
     public HttpServletRequest request = null;
     public HttpServletResponse response = null;
+    public HttpSession session = null;
 
     public Connection connection = null;
     public User user = null;
@@ -55,6 +56,17 @@ public class BaseLaunch implements Launch {
     public HttpServletResponse getResponse()
     {
         return response;
+    }
+
+    /**
+     * Get the HttpSession associated with the launch.
+     */
+    public HttpSession getSession()
+    {
+        if ( session != null ) return session;
+        if ( request == null ) return null;
+        session = request.getSession();
+        return session;
     }
 
     /**

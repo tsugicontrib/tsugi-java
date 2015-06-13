@@ -14,7 +14,10 @@ public class TsugiFactory {
     private static Log log = LogFactory.getLog(TsugiFactory.class);
 
    /**
-     * Return the implementation.
+     * Return the Appropriate Tsugi implementation.
+     *
+     * Can be overridden by setting the "tsugi.factory.tsugiClassName"
+     * in the system-wide properties.
      */
     public static Tsugi getTsugi() {
         String className = System.getProperty("tsugi.factory.tsugiClassName");

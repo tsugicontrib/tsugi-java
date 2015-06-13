@@ -5,10 +5,11 @@ import java.sql.Connection;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;;
 
 /**
- * This an opinionated LTI class that defines how Tsugi tools 
- * interact with LTI.
+ * This captures all of the data associates with
+ * interact with LTI.  This
  */
 
 public interface Launch {
@@ -22,6 +23,11 @@ public interface Launch {
      * Get the HttpResponse associated with the launch.
      */
     public HttpServletResponse getResponse();
+
+    /**
+     * Get the HttpSession associated with the launch.
+     */
+    public HttpSession getSession();
 
     /**
      * Get the User associated with the launch.
@@ -53,10 +59,11 @@ public interface Launch {
      */
     public Connection getConnection();
 
-    /**
-     * Return the database helper class used by Tsugi.
-     */
-    public Database DB();
+    // Deprecated for now
+    // /**
+    //  * Return the database helper class used by Tsugi.
+    //  */
+    // public Database DB();
 
     /**
      * Return the database helper class used by Tsugi.
@@ -64,22 +71,38 @@ public interface Launch {
     public Output getOutput();
 
     /**
-     * Get the base string
+     * Get the base string from the launch.
+     *
+     * @return This is null if it is not the original launch.
+     * it is not restored when the launch is restored from 
+     * the session.
      */
     public String getBaseString();
 
     /**
-     * Get the error message
+     * Get the error message if something went wrong with the setup
      */
     public String getErrorMessage();
 
     /**
      * Indicate if this request is completely handled
+     *
+     * This is used as follows:
+     *
+     *      public void doPost (...)
+     *      Launch launch = tsugi.getLaunch(req, res);
+     *      if ( launch.isComplete() ) return;
+     *
+     * This allows the Tsugi framework to do things like redirect back
+     * to itself.
      */
     public boolean isComplete();
 
     /**
      * Indicate if this request is valid
+     *
+     * This fails if the LTI Launch was malformed or the session data
+     * is corrupted.
      */
     public boolean isValid();
 

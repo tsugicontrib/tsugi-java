@@ -8,12 +8,12 @@ package org.tsugi;
  */
 public interface Service {
     /**
-     * The integer primary key for this result in the 'lti_service' table.
+     * The integer primary key for this service within this Tsugi instance
      */
     public Long getId();
 
     /**
-     * URL for the link
+     * URL for the service link - should not be null
      */
     public String getURL();
 

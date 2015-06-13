@@ -183,6 +183,26 @@ public class BaseOutput implements Output {
         out.println("</html>");
     }
 
+    public String getGetUrl(String path)
+    {
+        return null;
+    }
+
+    public String getPostUrl(String path)
+    {
+        return null;
+    }
+
+    public String getFormHidden(String path)
+    {
+        return null;
+    }
+
+    public String getStaticUrl()
+    {
+        return null;
+    }
+
     public String getSpinnerUrl() 
     {
         String statpath = request.getContextPath();

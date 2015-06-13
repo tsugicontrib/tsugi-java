@@ -6,6 +6,7 @@ import java.util.Properties;
 /**
  */
 public interface Settings {
+
    /**
      * Retrieve an JSON string of all of the settings
      */
@@ -15,7 +16,8 @@ public interface Settings {
      * Set all of the settings from a JSON string
      *
      * @param json Properties that are serialized in JSON and stored.
-     * Replaces existing settings.  
+     * Replaces existing settings.  Persists the new settings if
+     * they can be persisted.
      */
     public boolean setSettingsJson(String json) throws java.io.IOException;
 
@@ -31,7 +33,8 @@ public interface Settings {
      *
      * @param props Properties that are serialized in JSON and stored.
      * Replaces existing settings.  If this is an empty array, this effectively
-     * empties out all the settings.
+     * empties out all the settings.Persists the new settings if
+     * they can be persisted.
      */
     public boolean setSettings(Properties props);
 
@@ -47,6 +50,7 @@ public interface Settings {
      * Retrieve a particular key from the link settings.
      *
      * Returns the value found in settings or false if the key was not found.
+     * Persists the new settings if they can be persisted.
      *
      * @param key - The key to get from the settings.
      * @param def - What to return if the key is not present
@@ -55,6 +59,8 @@ public interface Settings {
 
     /**
      * Set or update a key to a new value in link settings.
+     *
+     * Persists the new settings if they can be persisted.
      *
      * @params key The key to set in settings.
      * @params value The value to set for that key

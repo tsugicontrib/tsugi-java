@@ -10,6 +10,11 @@ import java.sql.SQLException;
 
 /**
  * This is a set of database convienence methods
+ * 
+ * This is a reimplementation of the PDOX library in the PHP Tsugi
+ * but it might not be the best solution since the JDBC 
+ * PreparedStatement is more elegant and may not benefit from this
+ * layer.  So hold off using these wrappers for a bit.
  */
 public interface Database {
 
