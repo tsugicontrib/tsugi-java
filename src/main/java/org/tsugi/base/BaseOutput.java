@@ -166,7 +166,7 @@ public class BaseOutput implements Output {
 
         out.print("<script src=\"");
         out.print(statpath);
-        out.println("/js/handlebars-v3.0.3.js\"></script>");
+        out.println("/handlebars/handlebars-v3.0.3.js\"></script>");
 
         // Serve this locally during early development - Move to CDN when stable
         out.print("<script src=\"");
