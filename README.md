@@ -5,6 +5,11 @@ This is a Java version of the PHP Tsugi application
 (https://github.com/csev/tsugi).  This repository is the 
 API and base JDBC implementation.
 
+API Documentation
+-----------------
+
+<a href="http://csev.github.io/tsugi-java/apidocs/index.html" target="_blank">http://csev.github.io/tsugi-java/apidocs/index.html</a>
+
 Build
 -----
 This will produces a jar file and drops it into your maven repository. 
