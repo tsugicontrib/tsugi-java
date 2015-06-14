@@ -212,7 +212,7 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
         // If this is not a unit test we redirect after LTI launch is good
         if ( session != null ) {
             session.setAttribute("lti_row", row);
-            launch.output.postRedirect(null);
+            launch.postRedirect(null);
             launch.complete = true;
         }
 

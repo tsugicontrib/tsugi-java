@@ -112,4 +112,55 @@ public interface Launch {
      */
     public boolean isValid();
 
+    /** 
+     * Get a GET URL to the current servlet
+     *
+     * We abstract this in case the framework needs to 
+     * point to a URL other than the URL in the request
+     * object.  This URL should be used for AJAX calls
+     * to dynamic data in JavaScript.
+     **/
+    public String getGetUrl(String path);
+
+    /** 
+     * Get a POST URL to the current servlet
+     *
+     * We abstract this in case the framework needs to 
+     * point to a URL other than the URL in the request
+     * object.
+     **/
+    public String getPostUrl(String path);
+
+    /** 
+     * Redirect to a path - can be bull
+     **/
+    public void postRedirect(String path);
+
+    /** 
+     * Get any needed hidden form fields
+     *
+     * This will be properly formatted HTML - most likely one
+     * or more input type="hidden" fields - the framework
+     * may use this to help it maintain context across
+     * request / response cycles.
+     *
+     * @return String Text to include in a form.  May be the 
+     * empty string if nothing is needed by the framework.
+     **/
+    public String getHidden();
+
+    /** 
+     * Get a URL to the 'static' folder within this servlet
+     *
+     * We abstract this because this might be stored in a
+     * CDN for this application. 
+     * TODO: Define the property for this
+     **/
+    public String getStaticUrl();
+
+    /** 
+     * Get a URL to a system-wide spinner image
+     **/
+    public String getSpinnerUrl();
+
 }

@@ -175,4 +175,46 @@ public class BaseLaunch implements Launch {
     }
 
 
+    public String getGetUrl(String path)
+    {
+        String retval = request.getContextPath();
+        String sp = request.getServletPath();
+        if ( sp != null ) retval = retval + sp;
+        if ( path != null ) retval = retval + "/" + path;
+        return retval;
+    }
+
+    public String getPostUrl(String path)
+    {
+        return getGetUrl(path); 
+    }
+
+    public void postRedirect(String path)
+    {
+        String red_path = getGetUrl(path); 
+        try {
+            response.sendRedirect(red_path);
+        } catch (Exception ex) {
+            throw new java.lang.RuntimeException("Redirect failed:"+red_path, ex);
+        }
+    }
+
+    public String getHidden()
+    {
+        return "<!-- hidden -->\n";
+    }
+
+    public String getStaticUrl()
+    {
+        String retval = request.getContextPath() + "/static";
+        return retval;
+    }
+
+    public String getSpinnerUrl() 
+    {
+        String statpath = getStaticUrl() + "/img/spinner.gif";
+        return statpath;
+    }
+
+
 }
