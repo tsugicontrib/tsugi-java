@@ -17,7 +17,11 @@ public class BaseUser implements User {
     public Long id;
     public String email;
     public String displayname;
+    public Integer role;
+    public boolean mentor;  // Not yet supported
     public boolean instructor;
+    public boolean tenantAdmin;
+    public boolean rootAdmin;
 
     /*
      * Constructor
@@ -28,7 +32,11 @@ public class BaseUser implements User {
         id = new Long(row.getProperty("user_id"));
         email = StringUtils.stripToNull(row.getProperty("user_email"));
         displayname = StringUtils.stripToNull(row.getProperty("user_displayname"));
-        instructor = "1".equals(row.getProperty("role"));
+        role = new Integer(row.getProperty("role"));
+        mentor = false;
+        instructor = role >= INSTRUCTOR_ROLE;;
+        tenantAdmin = role >= TENANT_ADMIN_ROLE;
+        rootAdmin = role >= ROOT_ADMIN_ROLE;
     }
 
     public Launch getLaunch()
@@ -36,36 +44,40 @@ public class BaseUser implements User {
         return launch;
     }
 
-    /**
-     * The integer primary key for this user in the 'lti_user' table.
-     */
     public Long getId()
     {
         return id;
     }
 
-    /**
-     * The user's email
-     */
     public String getEmail()
     {
         return email;
     }
 
-    /**
-     * The user's display name
-     */
     public String getDisplayname()
     {
         return displayname;
     }
 
-    /**
-     * Is the user an instructor?
-     */
+    public boolean isMentor()
+    {
+        return mentor;
+    }
+
     public boolean isInstructor()
     {
         return instructor;
     }
+
+    public boolean isTenantAdmin()
+    {
+        return tenantAdmin;
+    }
+
+    public boolean isRootAdmin()
+    {
+        return rootAdmin;
+    }
+
 
 }

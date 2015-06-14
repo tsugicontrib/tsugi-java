@@ -3,6 +3,7 @@ package org.tsugi.base;
 import java.util.Properties;
 
 import org.tsugi.Tsugi;
+import org.tsugi.User;
 import org.tsugi.Launch;
 import org.tsugi.util.TsugiUtils;
 import org.tsugi.util.TsugiLTIUtils;
@@ -134,7 +135,7 @@ public abstract class BaseTsugi implements Tsugi
         }
 
         // Get the role
-        o.setProperty("role", "0");
+        o.setProperty("role", User.LEARNER_ROLE+"");
         String roles = "";
         if ( i.getProperty("custom_membership_role") != null ) { // From LTI 2.x
             roles = i.getProperty("custom_membership_role");
@@ -144,8 +145,8 @@ public abstract class BaseTsugi implements Tsugi
 
         if ( roles.length() > 0 ) {
             roles = roles.toLowerCase();
-            if ( roles.indexOf("instructor") > 0 ) o.setProperty("role", "1");
-            if ( roles.indexOf("administrator") > 0 ) o.setProperty("role", "1");
+            if ( roles.indexOf("instructor") >= 0 ) o.setProperty("role", User.INSTRUCTOR_ROLE+"");
+            if ( roles.indexOf("administrator") >= 0 ) o.setProperty("role", User.TENANT_ADMIN_ROLE+"");
         }
 
         // Lets trim whitespace from all of these properties

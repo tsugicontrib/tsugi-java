@@ -89,21 +89,21 @@ public class BaseOutput implements Output {
         out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
 
         // Path to static assets
-        String statpath = request.getContextPath();
+        String statpath = launch.getStaticUrl();
 
         out.print("<link href=\"");
         out.print(statpath);
-        out.println("/static/css/custom-theme/jquery-ui-1.10.0.custom.css\" rel=\"stylesheet\">");
+        out.println("/css/custom-theme/jquery-ui-1.10.0.custom.css\" rel=\"stylesheet\">");
         props.setProperty(Output.JQUERY_UI,"1.10.0");
 
         out.print("<link href=\"");
         out.print(statpath);
-        out.println("/static/bootstrap-3.1.1/css/bootstrap.min.css\" rel=\"stylesheet\">");
+        out.println("/bootstrap-3.1.1/css/bootstrap.min.css\" rel=\"stylesheet\">");
         props.setProperty(Output.BOOTSTRAP,"3.1.1");
 
         out.print("<link href=\"");
         out.print(statpath);
-        out.println("/static/bootstrap-3.1.1/css/bootstrap-theme.min.css\" rel=\"stylesheet\">");
+        out.println("/bootstrap-3.1.1/css/bootstrap-theme.min.css\" rel=\"stylesheet\">");
 
         out.println("<style> <!-- from navbar.css -->");
         out.println(" body { padding-top: 20px; padding-bottom: 20px; }");
@@ -113,10 +113,10 @@ public class BaseOutput implements Output {
         out.println("<!--[if lt IE 9]>");
         out.print("<script src=\"");
         out.print(statpath);
-        out.println("/static/html5shiv/html5shiv.js\"></script>");
+        out.println("/html5shiv/html5shiv.js\"></script>");
         out.print("<script src=\"");
         out.print(statpath);
-        out.println("/static/respond/respond.min.js\"></script>");
+        out.println("/respond/respond.min.js\"></script>");
         out.println("<![endif]-->");
         boolean done = false;
         if ( session != null ) {
@@ -154,24 +154,24 @@ public class BaseOutput implements Output {
 
     public void footerStart(PrintWriter out)
     {
-        String statpath = request.getContextPath();
+        String statpath = launch.getStaticUrl();
 
         out.print("<script src=\"");
         out.print(statpath);
-        out.println("/static/js/jquery-1.10.2.min.js\"></script>");
+        out.println("/js/jquery-1.10.2.min.js\"></script>");
 
         out.print("<script src=\"");
         out.print(statpath);
-        out.println("/static/bootstrap-3.1.1/js/bootstrap.min.js\"></script>");
+        out.println("/bootstrap-3.1.1/js/bootstrap.min.js\"></script>");
 
         out.print("<script src=\"");
         out.print(statpath);
-        out.println("/static/js/handlebars-v3.0.3.js\"></script>");
+        out.println("/js/handlebars-v3.0.3.js\"></script>");
 
         // Serve this locally during early development - Move to CDN when stable
         out.print("<script src=\"");
         out.print(statpath);
-        out.println("/static/js/tsugiscripts.js\"></script>");
+        out.println("/js/tsugiscripts.js\"></script>");
 
         // TODO: Handle heartbeat
         /*

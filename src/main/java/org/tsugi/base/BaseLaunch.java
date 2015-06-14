@@ -14,10 +14,20 @@ import java.sql.Connection;
 
 /**
  * The base implementation for the Launch interface
+ * 
+ * While each implementation may have its own configuration
+ * options, all implementations handle the following configuration:
+ *
+ * <pre><code>
+ * tsugi.static.path=http://static.tsugi.org/tsugi-static/static
+ * or
+ * tsugi.static.path=http://localhost:8888/tsugi-static/static
+ * </code></pre>
  */
 
 public class BaseLaunch implements Launch {
 
+    public String DEFAULT_STATIC = "http://static.tsugi.org/tsugi-static/static";
     public HttpServletRequest request = null;
     public HttpServletResponse response = null;
     public HttpSession session = null;
@@ -37,10 +47,21 @@ public class BaseLaunch implements Launch {
     public boolean valid = false;
     public boolean complete = false;
 
+    public String staticPath = null;
+
     /**
      * Basic constructor 
      */
-    public BaseLaunch() { }
+    public BaseLaunch() 
+    {
+        staticPath = System.getProperty("tsugi.static.path");
+        if ( staticPath == null ) {
+            Properties props = TsugiUtils.loadProperties("/tsugi.properties");
+            if ( props != null ) { 
+                staticPath = props.getProperty("tsugi.static.path");
+            }
+        }
+    }
 
     /**
      * Get the HttpRequest associated with the launch.
@@ -206,8 +227,8 @@ public class BaseLaunch implements Launch {
 
     public String getStaticUrl()
     {
-        String retval = request.getContextPath() + "/static";
-        return retval;
+        if ( staticPath != null ) return staticPath;
+        return DEFAULT_STATIC;
     }
 
     public String getSpinnerUrl() 
