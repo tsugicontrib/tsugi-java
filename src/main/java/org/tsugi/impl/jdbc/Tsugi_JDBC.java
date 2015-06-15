@@ -241,6 +241,7 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
 
         launch.context = new BaseContext(launch, row, contextSettings);
         launch.user = new BaseUser(launch, row);
+        launch.key = new BaseKey(launch, row);
         launch.output = new BaseOutput(launch);
 
         launch.valid = true;

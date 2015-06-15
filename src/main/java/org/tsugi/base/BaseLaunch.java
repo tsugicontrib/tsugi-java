@@ -34,6 +34,8 @@ public class BaseLaunch implements Launch {
 
     public Connection connection = null;
     public String prefix = null;
+
+    public Key key = null;
     public User user = null;
     public Context context = null;
     public Link link = null;
