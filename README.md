@@ -44,7 +44,7 @@ Make sure you are happy by looking at:
 When you are happy:
 
     tar cfv apidocs.tar apidocs
-    git checkout gh-branches
+    git checkout gh-pages
     tar xfv apidocs.tar
     rm apidocs.tar
 
@@ -54,7 +54,7 @@ When you are happy:
 
 A sweet one-line version of the four steps is:
 
-    tar cfv apidocs.tar apidocs; git checkout gh-branches; tar xfv apidocs.tar; rm apidocs.tar
+    tar cfv apidocs.tar apidocs; git checkout gh-pages; tar xfv apidocs.tar; rm apidocs.tar
 
 For those of us who like to say things like "!tar" in the command line when 
 doing the same things more than one time. :)
