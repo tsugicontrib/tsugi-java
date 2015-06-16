@@ -29,8 +29,22 @@ If you want to change this, edit the file
 
     src/main/resources/tsugi.properties
 
-Generating JavaDocs
--------------------
+The Sample Servlet
+------------------
+
+Once you have tsugi-java checked out and passing the unit tests, it is time to play with the sample
+servlet at:
+
+    https://github.com/csev/tsugi-java-servlet
+
+And follow the instructions in its README.md - not that there is some overlap because it tells you to first install 
+and configure this repository (java-tsugi).
+
+    https://github.com/csev/tsugi-java-servlet/blob/master/README.md
+
+
+Generating Tsugi API JavaDocs
+-----------------------------
 
 Make sure you are in master:
 
