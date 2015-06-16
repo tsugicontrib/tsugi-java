@@ -3,7 +3,9 @@ Tsugi for Java - Library Code
 
 This is a Java version of the PHP Tsugi application 
 (https://github.com/csev/tsugi).  This repository is the 
-API and base JDBC implementation.
+API and base JDBC implementation.  I have recorded a simple
+<a href="https://www.youtube.com/watch?v=R2hsu0xusKo&list=PLlRFEj9H3Oj5WZUjVjTJVBN18ozYSWMhw&index=10"
+target="_blank">Video Introduction to Java Tsugi</a>.
 
 API Documentation
 -----------------
