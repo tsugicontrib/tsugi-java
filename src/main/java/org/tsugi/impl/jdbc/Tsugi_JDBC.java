@@ -202,6 +202,13 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
 
         adjustData(c, row, post);
 
+        if ( TsugiUtils.unitTesting() ) {
+            System.out.println("");
+            System.out.println("Final Properties:");
+            System.out.println(TsugiUtils.dumpProperties(row));
+        }
+
+
 System.out.println("TODO: Make sure to do NONCE cleanup...");
 
         buildLaunch(c, launch, req, res, row);
@@ -473,7 +480,7 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
 
         // Connect an LTI 1.x service URL to the key
         String oldserviceid = StringUtils.stripToNull(row.getProperty("service_id"));
-        if ( StringUtils.isNotBlank(row.getProperty("service")) ) {
+        if ( StringUtils.isNotBlank(post.getProperty("service")) ) {
 
             if ( oldserviceid == null ) {
                 sql = "INSERT INTO {p}lti_service \n" +

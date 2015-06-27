@@ -1,7 +1,9 @@
 package org.tsugi.util;
 
 import java.util.Properties;
-import java.util.Enumeration;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.Iterator;
 import java.lang.StringBuffer;
 
 import java.io.InputStream;
@@ -96,10 +98,12 @@ public class TsugiUtils {
         if ( p == null ) return "Null Properties";
         StringBuffer sb = new StringBuffer();
 
-        Enumeration keys = p.keys();
-        while (keys.hasMoreElements()) {
-            String key = (String)keys.nextElement();
-            String value = (String)p.get(key);
+        TreeMap sm = new TreeMap(p);
+        Set keySet = sm.keySet();
+        Iterator iter = keySet.iterator();
+        while (iter.hasNext()) {
+            String key = (String)iter.next();
+            String value = (String)sm.get(key);
             if ( key.indexOf("secret") >= 0 ) value = "** suppressed ("+value.length()+") **";
             if ( sb.length() > 0 ) sb.append("\n");
             sb.append(key);
@@ -115,7 +119,7 @@ public class TsugiUtils {
      */
     public static void copy(Properties to, Properties from, String key) 
     {
-        copy(to,key,from,key);
+        copy(to,key,from,key, null);
     }
 
     /**
@@ -123,8 +127,19 @@ public class TsugiUtils {
      */
     public static void copy(Properties to, String to_key, Properties from, String from_key) 
     {
+        copy(to,to_key,from,from_key,null);
+    }
+
+    /**
+     * Copy a property from one list to another
+     */
+    public static void copy(Properties to, String to_key, Properties from, String from_key, String from_key_2) 
+    {
         if ( from_key == null || to_key == null) return;
         String value = from.getProperty(from_key);
+        if ( value == null && from_key_2 != null) {
+            value = from.getProperty(from_key_2);
+        }
         if ( value == null ) {
             to.remove(to_key);
         } else {

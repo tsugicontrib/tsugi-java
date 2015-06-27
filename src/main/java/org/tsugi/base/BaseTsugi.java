@@ -84,9 +84,9 @@ public abstract class BaseTsugi implements Tsugi
 
         TsugiUtils.copy(o,"key_key",i,"oauth_consumer_key");
         TsugiUtils.copy(o,"nonce",i,"oauth_nonce");
-        TsugiUtils.copy(o,"context_key",i,"context_id");
         TsugiUtils.copy(o,"link_key",i,"resource_link_id");
-        TsugiUtils.copy(o,"user_key",i,"user_id");
+        TsugiUtils.copy(o,"context_key",i,"context_id", "custom_courseoffering_sourcedid");
+        TsugiUtils.copy(o,"user_key",i,"user_id","custom_person_sourcedid");
 
         // Test for the required parameters.
         if ( o.getProperty("key_key") != null && o.getProperty("nonce") != null && o.getProperty("context_key") != null &&
