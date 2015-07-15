@@ -18,6 +18,10 @@ This will produces a jar file and drops it into your maven repository.
 
     mvn install
 
+The unit tests actually want a live database.  To install without unit tests, use
+
+    mvn -DskipTests install
+
 Database
 --------
 
