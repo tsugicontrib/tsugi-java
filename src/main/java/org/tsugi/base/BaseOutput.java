@@ -79,7 +79,7 @@ public class BaseOutput implements Output {
         if ( response != null ) response.setContentType("text/html; charset=utf-8");
 
         Properties props = new Properties();
-        props.setProperty(Output.HANDLEBARS,"3.0.3"); // JavaScript
+        props.setProperty(Output.HANDLEBARS,"4.0.2"); // JavaScript
         props.setProperty(Output.JQUERY,"1.10.2"); // JavaScript
 
         out.println("<!DOCTYPE html>");
@@ -166,7 +166,7 @@ public class BaseOutput implements Output {
 
         out.print("<script src=\"");
         out.print(statpath);
-        out.println("/handlebars/handlebars-v3.0.3.js\"></script>");
+        out.println("/js/handlebars-v4.0.2.js\"></script>");
 
         // Serve this locally during early development - Move to CDN when stable
         out.print("<script src=\"");
