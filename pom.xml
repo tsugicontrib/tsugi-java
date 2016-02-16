@@ -81,11 +81,10 @@
     </dependency>
 
     <dependency>
-       <groupId>org.sakaiproject.basiclti</groupId>
-       <artifactId>basiclti-util</artifactId>
-       <version>10.4</version>
-      <scope>provided</scope>
-       <!-- <version>11-SNAPSHOT</version> -->
+       <groupId>org.tsugi</groupId>
+       <artifactId>tsugi-util</artifactId>
+       <scope>provided</scope>
+       <version>11-SNAPSHOT</version> 
     </dependency>
 
     <dependency>

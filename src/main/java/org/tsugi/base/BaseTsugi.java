@@ -30,7 +30,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.imsglobal.basiclti.BasicLTIUtil;
+import org.tsugi.basiclti.BasicLTIUtil;
 
 /**
  * The base implementation for the Tsugi interface

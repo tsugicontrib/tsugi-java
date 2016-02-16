@@ -7,6 +7,32 @@ API and base JDBC implementation.  I have recorded a simple
 <a href="https://www.youtube.com/watch?v=R2hsu0xusKo&list=PLlRFEj9H3Oj5WZUjVjTJVBN18ozYSWMhw&index=10"
 target="_blank">Video Introduction to Java Tsugi</a>.
 
+Pre-Requisites
+--------------
+
+You should install Tsugi PHP and set it up:
+
+    https://github.com/csev/tsugi
+
+This sets up all the database tables.   
+
+In order to get the tsugi-util maven artifact into your repo,
+you may need to install and compile Sakai - you do not need 
+to run Sakai:
+
+    https://github.com/csev/sakai-scripts
+
+Alternatively, you could extract the file
+
+    tmp/tsugi-util-repo.jar
+
+And place it in:
+
+    ~/.m2/repository/org/tsugi
+
+Until I get the progres in place to release the tsugi-util jars
+from the Sakai source tree.
+
 API Documentation
 -----------------
 

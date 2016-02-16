@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.imsglobal.basiclti.BasicLTIConstants;
+import org.tsugi.basiclti.BasicLTIConstants;
 
 /**
  * This holds capabililities that are low level LTI utilities
