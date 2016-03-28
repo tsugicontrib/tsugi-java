@@ -119,3 +119,10 @@ Then from time to time when you want to pull mods and update your fork:
     git push origin master
     
 
+Releasing to SonaType
+---------------------
+
+Documentation: 
+
+http://central.sonatype.org/pages/apache-maven.html
+

@@ -68,8 +68,8 @@ public interface Settings {
      *
      * Persists the new settings if they can be persisted.
      *
-     * @params key The key to set in settings.
-     * @params value The value to set for that key
+     * @param key The key to set in settings.
+     * @param value The value to set for that key
      */
     public boolean setSetting(String key, String value);
 

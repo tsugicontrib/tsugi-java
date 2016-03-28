@@ -104,8 +104,7 @@ public interface Database {
      *
      * @param sql The SQL to execute in a string.  If the SQL is badly formed this function will die.
      * @param arr An optional array of the substitition values if needed by the query
-     * @param error_log Indicates whether or not errors are to be logged. Default is TRUE.
-     * @return List<Propertiesi> This is either the rows that was returned or null if no rows were returned.
+     * @return List<Properties> This is either the rows that was returned or null if no rows were returned.
      * If anything goes wrong the errors are logged and a runtime exception is thrown.
      */
     public List<Properties> allRowsDie(String sql, List<String> arr);
