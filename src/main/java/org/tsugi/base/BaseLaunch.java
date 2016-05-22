@@ -19,15 +19,15 @@ import java.sql.Connection;
  * options, all implementations handle the following configuration:
  *
  * <pre><code>
- * tsugi.static.path=http://static.tsugi.org/static
+ * tsugi.static.path=http://static.tsugi.org
  * or
- * tsugi.static.path=http://localhost:8888/tsugi-static/static
+ * tsugi.static.path=http://localhost:8888/tsugi-static
  * </code></pre>
  */
 
 public class BaseLaunch implements Launch {
 
-    public String DEFAULT_STATIC = "http://static.tsugi.org/static";
+    public String DEFAULT_STATIC = "http://static.tsugi.org";
     public HttpServletRequest request = null;
     public HttpServletResponse response = null;
     public HttpSession session = null;

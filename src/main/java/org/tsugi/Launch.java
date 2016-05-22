@@ -132,7 +132,7 @@ public interface Launch {
     public String getPostUrl(String path);
 
     /** 
-     * Redirect to a path - can be bull
+     * Redirect to a path - can be null
      **/
     public void postRedirect(String path);
 
