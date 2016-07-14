@@ -85,7 +85,7 @@
        <groupId>org.tsugi</groupId>
        <artifactId>tsugi-util</artifactId>
        <scope>provided</scope>
-       <version>11-SNAPSHOT</version> 
+       <version>0.1-SNAPSHOT</version> 
     </dependency>
 
     <dependency>

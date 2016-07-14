@@ -33,6 +33,10 @@ And place it in:
 Until I get the progres in place to release the tsugi-util jars
 from the Sakai source tree.
 
+Install the GPG tools:
+
+    https://gpgtools.org/
+
 API Documentation
 -----------------
 
