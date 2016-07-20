@@ -126,6 +126,10 @@ Then from time to time when you want to pull mods and update your fork:
 Releasing to SonaType
 ---------------------
 
+Location:
+
+    https://oss.sonatype.org/#nexus-search;quick~tsugi-util
+
 Documentation: 
 
 http://central.sonatype.org/pages/apache-maven.html

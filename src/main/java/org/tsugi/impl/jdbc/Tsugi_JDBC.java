@@ -345,7 +345,7 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
         String user_email = StringUtils.stripToNull(post.getProperty("user_email"));
 
         if ( StringUtils.isBlank(row.getProperty("user_id")) &&
-            StringUtils.isNotBlank(post.getProperty("link_key") )) {
+            StringUtils.isNotBlank(post.getProperty("user_key") )) {
             sql = "INSERT INTO {p}lti_user \n" +
                 "( user_key, user_sha256, displayname, email, key_id, created_at, updated_at ) VALUES \n" +
                 "( ?,        ?,           ?,           ?,     ?,      NOW(), NOW() )";
