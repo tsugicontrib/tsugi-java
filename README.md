@@ -16,23 +16,6 @@ You should install Tsugi PHP and set it up:
 
 This sets up all the database tables.   
 
-In order to get the tsugi-util maven artifact into your repo,
-you may need to install and compile Sakai - you do not need 
-to run Sakai:
-
-    https://github.com/csev/sakai-scripts
-
-Alternatively, you could extract the file
-
-    tmp/tsugi-util-repo.jar
-
-And place it in:
-
-    ~/.m2/repository/org/tsugi
-
-Until I get the progres in place to release the tsugi-util jars
-from the Sakai source tree.
-
 Install the GPG tools:
 
     https://gpgtools.org/
@@ -109,28 +92,60 @@ A sweet one-line version of the four steps is:
 For those of us who like to say things like "!tar" in the command line when 
 doing the same things more than one time. :)
 
-Git Details
------------
-
-If you forked my repo and want to grab the latest changes, do 
-the following once:
-
-    git remote add upstream https://github.com/csev/tsugi-java
-
-Then from time to time when you want to pull mods and update your fork:
-
-    git pull upstream master
-    git push origin master
-    
-
 Releasing to SonaType
 ---------------------
 
 Location:
 
-    https://oss.sonatype.org/#nexus-search;quick~tsugi-util
+    https://oss.sonatype.org/#nexus-search;quick~tsugi-java
 
 Documentation: 
 
-http://central.sonatype.org/pages/apache-maven.html
+    http://central.sonatype.org/pages/apache-maven.html
+
+Make sure `~/.m2/settings` looks like this:
+
+    <settings>
+      <servers>
+        <server>
+          <id>ossrh</id>
+          <username>drchuck</username>
+          <password>your-sonatype-password</password>
+        </server>
+      </servers>
+    <profiles>
+      <profile>
+         <id>allow-snapshots</id>
+            <activation><activeByDefault>true</activeByDefault></activation>
+         <repositories>
+           <repository>
+             <id>snapshots-repo</id>
+             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+             <releases><enabled>false</enabled></releases>
+             <snapshots><enabled>true</enabled></snapshots>
+           </repository>
+         </repositories>
+       </profile>
+    </profiles>
+    </settings>    
+
+Deploy:
+
+    mvn install deploy
+
+
+Releasing tsugi-util to Sonatype
+--------------------------------
+
+Set up `settings.xml` as described above.
+
+    cd trunk/basiclti/tsugi-util
+    cp pom-tsugi.xml pom.xml 
+    mvn install deploy
+    git checkout pom.xml
+
+
+Check results of the deploy at:
+
+    https://oss.sonatype.org/#nexus-search;quick~tsugi-util
 

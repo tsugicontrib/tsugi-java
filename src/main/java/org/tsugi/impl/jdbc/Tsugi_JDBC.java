@@ -15,6 +15,8 @@ import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import java.net.URLEncoder;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;  
@@ -192,6 +194,24 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
                 launch.error_message = error_message;
                 launch.base_string = base_string;
                 launch.valid = false;
+
+                if ( req.getParameter("launch_presentation_return_url") != null ) {
+                    String returnUrl = req.getParameter("launch_presentation_return_url");
+                    if ( returnUrl.indexOf('?') > 0 ) {
+                        returnUrl += '&';
+                    } else {
+                        returnUrl += '?';
+                    }
+                    try {
+                        returnUrl += "lti_errormsg=" + URLEncoder.encode(launch.getErrorMessage(), "UTF-8");
+                        returnUrl += "&detail=" + URLEncoder.encode(launch.getBaseString(), "UTF-8");
+                        res.sendRedirect(returnUrl);
+                        launch.complete = true;
+                    } catch( Exception e ) {
+                        log.error("Unexpected error on redirect "+e.getMessage());
+                    }
+                }
+
                 return launch;
             }
         } else if ( TsugiUtils.unitTesting() ) {
