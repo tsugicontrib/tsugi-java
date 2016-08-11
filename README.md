@@ -16,14 +16,51 @@ You should install Tsugi PHP and set it up:
 
 This sets up all the database tables.   
 
-Install the GPG tools:
-
-    https://gpgtools.org/
-
 API Documentation
 -----------------
 
 <a href="http://csev.github.io/tsugi-java/apidocs/index.html" target="_blank">http://csev.github.io/tsugi-java/apidocs/index.html</a>
+
+Using from pom.xml
+------------------
+
+This artifact is in Sonatype, add these entries your `pom.xml` as follows:
+
+    <dependency>
+        <groupId>org.tsugi</groupId>
+        <artifactId>tsugi-java</artifactId>
+        <version>0.1-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+       <groupId>org.tsugi</groupId>
+       <artifactId>tsugi-util</artifactId>
+       <version>0.1-SNAPSHOT</version>
+    </dependency>
+
+The `tsugi-util` source code actualy comes from the Sakai source tree but
+contains no Sakai dependencies.
+
+Make sure `~/.m2/settings.xml` includes an entry like this:
+
+    <settings>
+      ..
+      <profiles>
+        <profile>
+           <id>allow-snapshots</id>
+              <activation><activeByDefault>true</activeByDefault></activation>
+           <repositories>
+             <repository>
+               <id>snapshots-repo</id>
+               <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+               <releases><enabled>false</enabled></releases>
+               <snapshots><enabled>true</enabled></snapshots>
+             </repository>
+           </repositories>
+         </profile>
+      </profiles>
+    </settings>    
+
 
 Build
 -----
@@ -95,6 +132,11 @@ doing the same things more than one time. :)
 Releasing to SonaType
 ---------------------
 
+To sign the artifacts, install the GPG tools:
+
+    https://gpgtools.org/
+
+
 Location:
 
     https://oss.sonatype.org/#nexus-search;quick~tsugi-java
@@ -103,7 +145,7 @@ Documentation:
 
     http://central.sonatype.org/pages/apache-maven.html
 
-Make sure `~/.m2/settings` looks like this:
+Make sure `~/.m2/settings.xml` looks like this:
 
     <settings>
       <servers>
@@ -148,4 +190,64 @@ Set up `settings.xml` as described above.
 Check results of the deploy at:
 
     https://oss.sonatype.org/#nexus-search;quick~tsugi-util
+
+Key Making Notes:
+
+    m-c02m92uxfd57:tsugi-util csev$ gpg --gen-key
+    gpg (GnuPG/MacGPG2) 2.0.30; Copyright (C) 2015 Free Software Foundation, Inc.
+    This is free software: you are free to change and redistribute it.
+    There is NO WARRANTY, to the extent permitted by law.
+
+    Please select what kind of key you want:
+    (1) RSA and RSA (default)
+    (2) DSA and Elgamal
+    (3) DSA (sign only)
+    (4) RSA (sign only)
+    Your selection? 1
+    RSA keys may be between 1024 and 4096 bits long.
+    What keysize do you want? (2048) 
+    Requested keysize is 2048 bits   
+    Please specify how long the key should be valid.
+         0 = key does not expire
+      <n>  = key expires in n days
+      <n>w = key expires in n weeks
+      <n>m = key expires in n months
+      <n>y = key expires in n years
+    Key is valid for? (0) 0
+    Key does not expire at all
+    Is this correct? (y/N) y
+
+    GnuPG needs to construct a user ID to identify your key.
+
+    Real name: Charles Severance
+    Email address: drchuck@gmail.com
+    Comment: For Sonatype           
+    You selected this USER-ID:
+    "Charles Severance (For Sonatype) <drchuck@gmail.com>"
+
+    Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? O
+    You need a Passphrase to protect your secret key.    
+
+    We need to generate a lot of random bytes. It is a good idea to perform
+    some other action (type on the keyboard, move the mouse, utilize the
+    disks) during the prime generation; this gives the random number
+    generator a better chance to gain enough entropy.
+    We need to generate a lot of random bytes. It is a good idea to perform
+    some other action (type on the keyboard, move the mouse, utilize the
+    disks) during the prime generation; this gives the random number
+    generator a better chance to gain enough entropy.
+    gpg: key BCDACC58 marked as ultimately trusted
+    public and secret key created and signed.
+
+    gpg: checking the trustdb
+    gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
+    gpg: depth: 0  valid:   3  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 3u
+    gpg: next trustdb check due at 2018-08-19
+    pub   2048R/BCDACC58 2016-07-26
+      Key fingerprint = 0A6A FE01 ...
+    uid       [ultimate] Charles Severance (For Sonatype) <drchuck@gmail.com>
+    sub   2048R/9B8D98F2 2016-07-26
+
+    m-c02m92uxfd57:tsugi-util csev$ gpg --keyserver hkp://pool.sks-keyservers.net --send-keys BCDACC58
+    gpg: sending key BCDACC58 to hkp server pool.sks-keyservers.net
 
