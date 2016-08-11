@@ -38,10 +38,21 @@ This artifact is in Sonatype, add these entries your `pom.xml` as follows:
        <version>0.1-SNAPSHOT</version>
     </dependency>
 
-The `tsugi-util` source code actualy comes from the Sakai source tree but
-contains no Sakai dependencies.
+In order to get the snapshot versions ass this to your `pom.xml`:
 
-Make sure `~/.m2/settings.xml` includes an entry like this:
+    <repositories>
+       <repository>
+         <id>ossrh</id>
+         <name>Sonatype</name>
+         <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+         <layout>default</layout>
+         <snapshots>
+           <enabled>true</enabled>
+         </snapshots>
+       </repository>
+     </repositories>
+
+Or you can put this in your`~/.m2/settings.xml`:
 
     <settings>
       ..
@@ -97,7 +108,6 @@ The unit tests actually want a live database.  To install without unit tests, us
     mvn -DskipTests install
 
 
-
 Generating Tsugi API JavaDocs
 -----------------------------
 
@@ -138,13 +148,10 @@ To sign the artifacts, install the GPG tools:
     https://gpgtools.org/
 
 
-Location:
+Locations:
 
+    https://oss.sonatype.org/#nexus-search;quick~tsugi-util
     https://oss.sonatype.org/#nexus-search;quick~tsugi-java
-
-Documentation: 
-
-    http://central.sonatype.org/pages/apache-maven.html
 
 Make sure `~/.m2/settings.xml` looks like this:
 
@@ -176,9 +183,16 @@ Deploy:
 
     mvn install deploy
 
+Documentation: 
+
+    http://central.sonatype.org/pages/apache-maven.html
 
 Releasing tsugi-util to Sonatype
 --------------------------------
+
+Note that the tsugi-util code is released from the Sakai source tree into Sonatype:
+
+    https://github.com/sakaiproject/sakai/blob/master/basiclti/tsugi-util/README.md
 
 Set up `settings.xml` as described above.
 
@@ -191,6 +205,10 @@ Set up `settings.xml` as described above.
 Check results of the deploy at:
 
     https://oss.sonatype.org/#nexus-search;quick~tsugi-util
+
+After a while the files migrate to:
+
+    https://oss.sonatype.org/content/repositories/snapshots/org/tsugi/
 
 Key Making Notes:
 
