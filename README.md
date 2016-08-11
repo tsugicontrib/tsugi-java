@@ -62,24 +62,13 @@ Make sure `~/.m2/settings.xml` includes an entry like this:
     </settings>    
 
 
-Build
------
-This will produces a jar file and drops it into your maven repository. 
-
-    mvn install
-
-The unit tests actually want a live database.  To install without unit tests, use
-
-    mvn -DskipTests install
-
-Database
---------
+Database Setup
+--------------
 
 This is expecting that PHP Tsugi already is installed running 
 and its database is created and available on localhost:8889
 using the default account, password, and database name 
-and that the tables already exist.
-If you want to change this, edit the file
+and that the tables already exist.  If you want to change this, edit the file
 
     src/main/resources/tsugi.properties
 
@@ -95,6 +84,18 @@ And follow the instructions in its README.md - not that there is some overlap be
 and configure this repository (java-tsugi).
 
     https://github.com/csev/tsugi-java-servlet/blob/master/README.md
+
+Building from Source
+--------------------
+
+To produce a jar file and drops it into your maven repository. 
+
+    mvn install
+
+The unit tests actually want a live database.  To install without unit tests, use
+
+    mvn -DskipTests install
+
 
 
 Generating Tsugi API JavaDocs
