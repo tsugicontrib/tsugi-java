@@ -1,8 +1,8 @@
 Tsugi for Java - Library Code
 =============================
 
-This is a Java version of the PHP Tsugi application 
-(https://github.com/csev/tsugi).  This repository is the 
+This is a Java version of the PHP Tsugi API 
+(https://github.com/csev/tsugi-php).  This repository is the 
 API and base JDBC implementation.  I have recorded a simple
 <a href="https://www.youtube.com/watch?v=R2hsu0xusKo&list=PLlRFEj9H3Oj5WZUjVjTJVBN18ozYSWMhw&index=10"
 target="_blank">Video Introduction to Java Tsugi</a>.
@@ -107,7 +107,6 @@ The unit tests actually want a live database.  To install without unit tests, us
 
     mvn -DskipTests install
 
-
 Generating Tsugi API JavaDocs
 -----------------------------
 
@@ -139,6 +138,17 @@ A sweet one-line version of the four steps is:
 
 For those of us who like to say things like "!tar" in the command line when 
 doing the same things more than one time. :)
+
+Other Source Code
+-----------------
+
+A Sample servlet using this code
+
+https://github.com/tsugiproject/tsugi-java-servlet
+
+Tsugi low-level API library this depends on (formerly sakai-basicltiutil)
+
+https://github.com/tsugiproject/tsugi-util
 
 Releasing to SonaType
 ---------------------
@@ -269,4 +279,3 @@ Key Making Notes:
 
     m-c02m92uxfd57:tsugi-util csev$ gpg --keyserver hkp://pool.sks-keyservers.net --send-keys BCDACC58
     gpg: sending key BCDACC58 to hkp server pool.sks-keyservers.net
-
