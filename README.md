@@ -193,7 +193,7 @@ Make sure `~/.m2/settings.xml` looks like this:
 
 Deploy:
 
-    mvn install deploy -Dgpg.passphrase=Whatever clean
+    mvn clean install deploy -Dgpg.passphrase=Whatever clean
 
 Documentation: 
 
