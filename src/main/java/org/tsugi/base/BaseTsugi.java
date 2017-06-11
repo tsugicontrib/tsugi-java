@@ -25,7 +25,7 @@ import net.oauth.signature.OAuthSignatureMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log; 
+import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.apache.commons.lang3.StringUtils;
@@ -35,11 +35,11 @@ import org.tsugi.basiclti.BasicLTIUtil;
 /**
  * The base implementation for the Tsugi interface
  *
- * This contains things like OAuth handling that 
+ * This contains things like OAuth handling that
  * will likely be common across lots of implementations
  * independent of persistence implementation.
  */
-public abstract class BaseTsugi implements Tsugi 
+public abstract class BaseTsugi implements Tsugi
 {
 
     private Log log = LogFactory.getLog(BaseTsugi.class);
@@ -105,13 +105,19 @@ public abstract class BaseTsugi implements Tsugi
         TsugiUtils.copy(o,"link_settings_url",i,"custom_link_settings_url");
         TsugiUtils.copy(o,"context_settings_url",i,"custom_context_settings_url");
 
+        // LTI 1.x / 2.x Service endpoints
+        TsugiUtils.copy(o,"ext_memberships_id",i,"ext_memberships_id");
+        TsugiUtils.copy(o,"ext_memberships_url",i,"ext_memberships_url");
+        TsugiUtils.copy(o,"lineitems_url",i,"lineitems_url","custom_lineitems_url");
+        TsugiUtils.copy(o,"memberships_url",i,"memberships_url", "custom_memberships_url");
+
+        // Context
         TsugiUtils.copy(o,"context_title",i,"context_title");
         TsugiUtils.copy(o,"link_title",i,"resource_link_title");
 
-        // Getting email from LTI 1.x and LTI 2.x
-        String email = i.getProperty("lis_person_contact_email_primary");
-        if ( email == null ) email = i.getProperty("custom_person_email_primary");
-        if ( email != null ) o.setProperty("user_email", email);
+        // Getting email and image from LTI 1.x and LTI 2.x
+        TsugiUtils.copy(o,"user_email",i,"lis_person_contact_email_primary", "custom_person_email_primary");
+        TsugiUtils.copy(o,"user_image",i,"user_image", "custom_user_image");
 
         // Displayname from LTI 2.x
         if ( i.getProperty("person_name_full") != null ) {

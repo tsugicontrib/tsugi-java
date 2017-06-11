@@ -19,7 +19,7 @@ import java.net.URLEncoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;  
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -40,10 +40,10 @@ import org.apache.commons.logging.LogFactory;
   * </code></pre>
   *
   * These properties are first checked from the system-wide
-  * properties and then a properties file of 
+  * properties and then a properties file of
   *
   * /tsugi.properties
-  * 
+  *
   * is read from the class path.  All properties must come
   * from the same source.
   *
@@ -113,7 +113,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
      */
     public Launch getLaunch(HttpServletRequest req, Properties props, HttpServletResponse res)
     {
-        
+
         HttpSession session = null;
         if ( req != null ) {  // Allow for testing
             session = req.getSession();
@@ -184,7 +184,7 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
             String new_secret = StringUtils.stripToNull(row.getProperty("new_secret"));
             if ( new_secret != null ) {
                 validated = checkOAuthSignature(req, key, new_secret);
-            }   
+            }
             if ( !validated && secret != null ) {
                 validated = checkOAuthSignature(req, key, secret);
             }
@@ -246,7 +246,7 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
         return launch;
     }
 
-    private void buildLaunch(Connection c, BaseLaunch launch, 
+    private void buildLaunch(Connection c, BaseLaunch launch,
         HttpServletRequest req, HttpServletResponse res, Properties row)
     {
         launch.request = req;
@@ -286,8 +286,10 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
             "SELECT k.key_id, k.key_key, k.secret, k.new_secret, c.settings_url AS key_settings_url, \n" +
             "n.nonce, \n" +
             "c.context_id, c.title AS context_title, context_sha256, c.settings AS context_settings, c.settings_url AS context_settings_url,\n"+
+            "c.ext_memberships_id AS ext_memberships_id, c.ext_memberships_url AS ext_memberships_url,\n"+
+            "c.lineitems_url AS lineitems_url, c.memberships_url AS memberships_url,\n"+
             "l.link_id, l.title AS link_title, l.settings AS link_settings, l.settings_url AS link_settings_url,\n"+
-            "u.user_id, u.displayname AS user_displayname, u.email AS user_email, user_key,\n"+
+            "u.user_id, u.displayname AS user_displayname, u.email AS user_email, user_key, u.image AS user_image,\n"+
             "u.subscribe AS subscribe, u.user_sha256 AS user_sha256,\n"+
             "m.membership_id, m.role, m.role_override,\n"+
             "r.result_id, r.grade, r.note AS result_comment, r.result_url, r.sourcedid";
@@ -643,6 +645,31 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
             }
         }
 
+        // Grab the context scoped service URLs...
+        String[] context_services = {"ext_memberships_id", "ext_memberships_url", "lineitems_url", "memberships_url"};
+        if ( StringUtils.isNotBlank(row.getProperty("context_id")) ) {
+                for (String context_service: context_services) {
+                        if ( StringUtils.isNotBlank(post.getProperty(context_service)) &&
+                                ! StringUtils.equals(row.getProperty(context_service), post.getProperty(context_service)) ) {
+                                sql = "UPDATE {p}lti_context SET "+context_service+" = ? WHERE context_id = ?";
+                                sql = setPrefix(sql);
+                                log.debug(sql);
+
+                                try {
+                                        PreparedStatement stmt = c.prepareStatement(sql);
+                                        stmt.setString(1, post.getProperty(context_service));
+                                        stmt.setString(2, row.getProperty("context_id"));
+
+                                        stmt.executeUpdate();
+                                        TsugiUtils.copy(row, post, context_service);
+                                } catch (SQLException ex) {
+                                        ex.printStackTrace();
+                                        return;
+                                }
+                        }
+                }
+        }
+
         if ( StringUtils.isNotBlank(row.getProperty("link_id")) &&
              StringUtils.isNotBlank(post.getProperty("link_title")) &&
             ! StringUtils.equals(row.getProperty("link_title"), post.getProperty("link_title")) ) {
@@ -664,48 +691,31 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
             }
         }
 
-        if ( StringUtils.isNotBlank(row.getProperty("user_id")) &&
-             StringUtils.isNotBlank(post.getProperty("user_displayname")) &&
-            ! StringUtils.equals(row.getProperty("user_displayname"), post.getProperty("user_displayname") )) {
+        // Grab the user scoped fields...
+        String[] user_fields = {"displayname", "email", "image"};
+        if ( StringUtils.isNotBlank(row.getProperty("user_id")) ) {
+                for (String u_field: user_fields) {
+                        String user_field = "user_"+u_field;
+                        if ( StringUtils.isNotBlank(post.getProperty(user_field)) &&
+                                ! StringUtils.equals(row.getProperty(user_field), post.getProperty(user_field)) ) {
+                                sql = "UPDATE {p}lti_user SET "+u_field+" = ? WHERE user_id = ?";
+                                sql = setPrefix(sql);
+                                log.debug(sql);
 
-            sql = "UPDATE {p}lti_user SET displayname = ? WHERE user_id = ?";
-            sql = setPrefix(sql);
-            log.debug(sql);
+                                try {
+                                        PreparedStatement stmt = c.prepareStatement(sql);
+                                        stmt.setString(1, post.getProperty(user_field));
+                                        stmt.setString(2, row.getProperty("user_id"));
 
-            try {
-                PreparedStatement stmt = c.prepareStatement(sql);
-                stmt.setString(1, post.getProperty("user_displayname"));
-                stmt.setString(2, row.getProperty("user_id"));
-
-                stmt.executeUpdate();
-                TsugiUtils.copy(row, post, "user_displayname");
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-                return;
-            }
+                                        stmt.executeUpdate();
+                                        TsugiUtils.copy(row, post, user_field);
+                                } catch (SQLException ex) {
+                                        ex.printStackTrace();
+                                        return;
+                                }
+                        }
+                }
         }
-
-        if ( StringUtils.isNotBlank(row.getProperty("user_id")) &&
-             StringUtils.isNotBlank(post.getProperty("user_email")) &&
-            ! StringUtils.equals(row.getProperty("user_email"), post.getProperty("user_email")) ) {
-
-            sql = "UPDATE {p}lti_user SET email = ? WHERE user_id = ?";
-            sql = setPrefix(sql);
-            log.debug(sql);
-
-            try {
-                PreparedStatement stmt = c.prepareStatement(sql);
-                stmt.setString(1, post.getProperty("user_email"));
-                stmt.setString(2, row.getProperty("user_id"));
-
-                stmt.executeUpdate();
-                TsugiUtils.copy(row, post, "user_email");
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-                return;
-            }
-        }
-
 
         if ( StringUtils.isNotBlank(row.getProperty("membership_id")) &&
              StringUtils.isNotBlank(post.getProperty("role")) &&

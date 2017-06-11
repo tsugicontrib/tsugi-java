@@ -42,6 +42,17 @@ public class BaseDatabase implements Database {
     }
 
     /**
+     * Constructor without a launch
+     */
+    public BaseDatabase(Connection c, String prefix)
+    {
+        this.launch = null;
+        this.c = c;
+        this.prefix = prefix;
+    }
+
+
+    /**
      * Get the launch associated with this object
      */
     public Launch getLaunch()
