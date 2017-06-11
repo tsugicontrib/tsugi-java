@@ -5,7 +5,7 @@
 
   <groupId>org.tsugi</groupId>
   <artifactId>tsugi-java</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.2-SNAPSHOT</version>
   <inceptionYear>2014</inceptionYear>
   <packaging>jar</packaging>
 
@@ -85,7 +85,7 @@
        <groupId>org.tsugi</groupId>
        <artifactId>tsugi-util</artifactId>
        <scope>provided</scope>
-       <version>0.1-SNAPSHOT</version> 
+       <version>0.2-SNAPSHOT</version> 
     </dependency>
 
     <dependency>

@@ -31,13 +31,13 @@ This artifact is in Sonatype, add these entries your `pom.xml` as follows:
     <dependency>
         <groupId>org.tsugi</groupId>
         <artifactId>tsugi-java</artifactId>
-        <version>0.1-SNAPSHOT</version>
+        <version>0.2-SNAPSHOT</version>
     </dependency>
 
     <dependency>
        <groupId>org.tsugi</groupId>
        <artifactId>tsugi-util</artifactId>
-       <version>0.1-SNAPSHOT</version>
+       <version>0.2-SNAPSHOT</version>
     </dependency>
 
 In order to get the snapshot versions ass this to your `pom.xml`:
@@ -193,7 +193,7 @@ Make sure `~/.m2/settings.xml` looks like this:
 
 Deploy:
 
-    mvn install deploy
+    mvn install deploy -Dgpg.passphrase=Whatever clean
 
 Documentation: 
 
