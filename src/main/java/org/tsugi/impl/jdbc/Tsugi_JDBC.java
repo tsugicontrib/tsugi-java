@@ -299,6 +299,7 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
             "s.service_id, s.service_key AS service";
         }
 
+        // Add the Joins
         sql +="\nFROM {p}lti_key AS k\n"+
             "LEFT JOIN {p}lti_nonce AS n ON k.key_id = n.key_id AND n.nonce = ?\n" + // :nonce 1
             "LEFT JOIN {p}lti_context AS c ON k.key_id = c.key_id AND c.context_sha256 = ?\n" + // :context 2
@@ -312,7 +313,21 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
             "LEFT JOIN {p}lti_service AS s ON k.key_id = s.key_id AND s.service_sha256 = ?"; // :service 5
         }
 
-        sql += "\nWHERE k.key_sha256 = ? LIMIT 1\n";  // :key 6 or 5
+        sql += "\nWHERE k.key_sha256 = ?\n";  // :key 6 or 5
+
+        sql += " AND COALESCE(k.deleted,0) = 0\n" +
+            "AND COALESCE(c.deleted,0) = 0\n" +
+            "AND COALESCE(l.deleted,0) = 0\n" +
+            "AND COALESCE(u.deleted,0) = 0\n" +
+            "AND COALESCE(m.deleted,0) = 0\n" +
+            "AND COALESCE(r.deleted,0) = 0\n";
+
+        if ( StringUtils.isNotBlank(post.getProperty("service")) ) {
+            sql += "\n"+
+            "AND COALESCE(s.deleted,0) = 0\n";
+        }
+
+        sql += "LIMIT 1\n";
 
         sql = setPrefix(sql);
         log.trace(sql);

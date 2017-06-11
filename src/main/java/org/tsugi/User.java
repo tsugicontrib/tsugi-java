@@ -10,8 +10,8 @@ package org.tsugi;
 public interface User {
 
     public final int LEARNER_ROLE = 0;
-    public final int INSTRUCTOR_ROLE = 1;
-    public final int TENANT_ADMIN_ROLE = 1000;
+    public final int INSTRUCTOR_ROLE = 1000;
+    public final int TENANT_ADMIN_ROLE = 5000;
     public final int ROOT_ADMIN_ROLE = 10000;
 
     /**
