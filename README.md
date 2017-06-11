@@ -101,11 +101,11 @@ Building from Source
 
 To produce a jar file and drops it into your maven repository. 
 
-    mvn install
+    mvn clean install
 
 The unit tests actually want a live database.  To install without unit tests, use
 
-    mvn -DskipTests install
+    mvn -DskipTests clean install
 
 Generating Tsugi API JavaDocs
 -----------------------------
