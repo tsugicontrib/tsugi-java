@@ -54,37 +54,20 @@ public class TsugiTest {
         stmt.setString(1, post.getProperty("context_id"));
         stmt.executeUpdate();
         
-        launch = tsugi.getLaunch(post);
         meta = c.getMetaData();
         String URL = meta.getURL();
         localhost = URL.indexOf("//localhost") > 0 || URL.startsWith("jdbc:h2:");
-    }
 
-    @Test
-    public void testMetaData() throws Exception {
-        // We will blow up one test if the database is not connected
-        if ( c == null || meta == null ) {
-            assertTrue(false);
-            return;
-        }
-
-        String productName = meta.getDatabaseProductName();
-        String productVersion = meta.getDatabaseProductVersion();
-        String URL = meta.getURL();
-        System.out.println("Connection product=" + productName+" version=" + productVersion);
-        System.out.println("Connection URL=" + URL + ((localhost) ? " (localhost)" : ""));
-    }
-
-    @Test
-    public void testKey() throws Exception {
-        assumeNotNull(launch);
-        String query = "SELECT key_id FROM lti_key WHERE key_sha256 = ? LIMIT 1;";
-        PreparedStatement stmt = c.prepareStatement(query);
+        // Make sure we have a key
+        query = "SELECT key_id FROM lti_key WHERE key_sha256 = ? LIMIT 1;";
+        stmt = c.prepareStatement(query);
         stmt.setString(1, unitTestKeySha256);
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
             key_id = rs.getLong("key_id");
             System.out.println("Found key_id="+key_id);
+            // Run the first launch
+            launch = tsugi.getLaunch(post);
             return;
         }
 
@@ -106,12 +89,28 @@ public class TsugiTest {
             System.out.println("Inserted key_id="+key_id);
         }
 
-
+        // Run the first launch
+        launch = tsugi.getLaunch(post);
     }
-    
+
+    @Test
+    public void testMetaData() throws Exception {
+        // We will blow up one test if the database is not connected
+        if ( c == null || meta == null ) {
+            assertTrue(false);
+            return;
+        }
+
+        String productName = meta.getDatabaseProductName();
+        String productVersion = meta.getDatabaseProductVersion();
+        String URL = meta.getURL();
+        System.out.println("Connection product=" + productName+" version=" + productVersion);
+        System.out.println("Connection URL=" + URL + ((localhost) ? " (localhost)" : ""));
+    }
+
     @Test
     public void testFirstLaunchBasics() {
-        assumeNotNull(launch);
+        assertNotNull(launch);
         Properties f = fakePost1();
         assertTrue(launch.getContext().getId() > 0 );
         assertTrue(launch.getUser().getId() > 0 );
@@ -138,6 +137,7 @@ public class TsugiTest {
         assertFalse(launch2.getUser().isTenantAdmin());
         assertFalse(launch2.getUser().isRootAdmin());
 
+        assertNotNull(launch);
         assertEquals(launch.getContext().getId(), launch2.getContext().getId() );
         assertEquals(launch.getUser().getId(), launch2.getUser().getId() );
         assertEquals(launch.getLink().getId(), launch2.getLink().getId() );
@@ -161,6 +161,7 @@ public class TsugiTest {
         assertNotNull(launch2);
         assertFalse(launch2.getUser().isTenantAdmin());
         assertFalse(launch2.getUser().isRootAdmin());
+        assertNotNull(launch);
         assertEquals(launch.getContext().getId(), launch2.getContext().getId() );
         assertEquals(launch.getUser().getId(), launch2.getUser().getId() );
         assertEquals(launch.getLink().getId(), launch2.getLink().getId() );
