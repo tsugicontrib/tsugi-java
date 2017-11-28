@@ -4,7 +4,7 @@ Tsugi for Java - Library Code
 [![Apereo Incubating badge](https://img.shields.io/badge/apereo-incubating-blue.svg?logo=data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAABmJLR0QA%2FwD%2FAP%2BgvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QUTEi0ybN9p9wAAAiVJREFUKM9lkstLlGEUxn%2Fv%2B31joou0GTFKyswkKrrYdaEQ4cZAy4VQUS2iqH%2BrdUSNYmK0EM3IkjaChnmZKR0dHS0vpN%2FMe97TIqfMDpzN4XkeDg8%2Fw45R1XNAu%2Fe%2BGTgAqLX2KzAQRVGytLR0jN2jqo9FZFRVvfded66KehH5oKr3dpueiMiK915FRBeXcjo9k9K5zLz%2B3Nz8EyAqX51zdwGMqp738NSonlxf36Cn7zX9b4eYX8gSBAE1Bw9wpLaW%2BL5KWluukYjH31tr71vv%2FU0LJ5xzdL3q5dmLJK7gON5wjEQizsTkFMmeXkbHxtHfD14WkbYQaFZVMzk1zfDHERrPnqGz4wZ1tYfJ5%2FPMLOYYW16ltrqKRDyOMcYATXa7PRayixSc4%2FKFRhrqjxKGIWVlZVQkqpg1pYyvR%2BTFF2s5FFprVVXBAAqq%2F7a9uPKd1NomeTX4HXfrvZ8D2F9dTSwWMjwywueJLxQKBdLfZunue0Mqt8qPyMHf0HRorR0ArtbX1Zkrly7yPNnN1EyafZUVZLJZxjNLlHc%2BIlOxly0RyktC770fDIGX3vuOMAxOt19vJQxD%2BgeHmE6liMVKuNPawlZ9DWu2hG8bW1Tuib0LgqCrCMBDEckWAVjKLetMOq2ZhQV1zulGVFAnohv5wrSq3tpNzwMR%2BSQi%2FyEnIl5Ehpxzt4t6s9McRdGpIChpM8Y3ATXbkKdEZDAIgqQxZrKo%2FQUk5F9Xr20TrQAAAABJRU5ErkJggg%3D%3D)](https://www.apereo.org/content/projects-currently-incubation)
 
 This is a Java version of the PHP Tsugi API 
-(https://github.com/csev/tsugi-php).  This repository is the 
+(https://github.com/tsugiproject/tsugi-php).  This repository is the 
 API and base JDBC implementation.  I have recorded a simple
 <a href="https://www.youtube.com/watch?v=R2hsu0xusKo&list=PLlRFEj9H3Oj5WZUjVjTJVBN18ozYSWMhw&index=10"
 target="_blank">Video Introduction to Java Tsugi</a>.
@@ -14,14 +14,14 @@ Pre-Requisites
 
 You should install Tsugi PHP and set it up:
 
-    https://github.com/csev/tsugi
+    https://github.com/tsugiproject/tsugi
 
 This sets up all the database tables.   
 
 API Documentation
 -----------------
 
-<a href="http://csev.github.io/tsugi-java/apidocs/index.html" target="_blank">http://csev.github.io/tsugi-java/apidocs/index.html</a>
+<a href="http://tsugiproject.github.io/tsugi-java/apidocs/index.html" target="_blank">http://tsugiproject.github.io/tsugi-java/apidocs/index.html</a>
 
 Using from pom.xml
 ------------------
@@ -91,12 +91,12 @@ The Sample Servlet
 Once you have tsugi-java checked out and passing the unit tests, it is time to play with the sample
 servlet at:
 
-    https://github.com/csev/tsugi-java-servlet
+    https://github.com/tsugiproject/tsugi-java-servlet
 
 And follow the instructions in its README.md - not that there is some overlap because it tells you to first install 
 and configure this repository (java-tsugi).
 
-    https://github.com/csev/tsugi-java-servlet/blob/master/README.md
+    https://github.com/tsugiproject/tsugi-java-servlet/blob/master/README.md
 
 Building from Source
 --------------------
