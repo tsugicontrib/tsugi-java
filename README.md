@@ -121,7 +121,7 @@ Make sure you are in master:
 
 Make sure you are happy by looking at:
 
-    apidocs/index.html
+    open target/site/apidocs/index.html
 
 When you are happy:
 
