@@ -85,7 +85,7 @@
        <groupId>org.tsugi</groupId>
        <artifactId>tsugi-util</artifactId>
        <scope>provided</scope>
-       <version>0.2-SNAPSHOT</version> 
+       <version>0.3-SNAPSHOT</version> 
     </dependency>
 
     <dependency>
@@ -127,15 +127,6 @@
             <tsugi.datasource.driverClassName>com.mysql.jdbc.Driver</tsugi.datasource.driverClassName>
             <tsugi.factory.tsugiClassName>org.tsugi.impl.jdbc.Tsugi_JDBC</tsugi.factory.tsugiClassName>
           </systemPropertyVariables>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.10.3</version>
-        <configuration>
-          <reportOutputDirectory>apidocs</reportOutputDirectory>
-          <bottom>Copyright 2015- Charles R. Severance and licensed CC-BY Attribution 4.0</bottom>
         </configuration>
       </plugin>
 
