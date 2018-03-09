@@ -193,7 +193,7 @@ Make sure `~/.m2/settings.xml` looks like this:
 
 Deploy:
 
-    mvn clean javadoc:jar install deploy -Dgpg.passphrase=Whatever
+    mvn -DperformRelease=true clean javadoc:jar install deploy -Dgpg.passphrase=Whatever
     mvn clean # afterwards
 
 Documentation: 
