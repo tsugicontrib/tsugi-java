@@ -24,7 +24,7 @@ public interface Context {
 
     /**
      * The integer primary key for this context across this Tsugi instance
-     * @return The identifier
+     * @return The instance identifier
      */
     public Long getId();
 
