@@ -20,6 +20,7 @@ public interface Database {
 
     /**
      * Get the launch associated with this object
+     * @return The launch object
      */
     public Launch getLaunch();
 
