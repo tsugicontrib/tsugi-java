@@ -41,7 +41,7 @@ public interface Database {
      * @param arr An optional array of the substitition values if needed by the query
      * @return \ResultSet  This is either the real ResultSet from the query call
      * or an SQLErrror is thrown.
-     * @throws SQLException
+     * @throws An SQLException
      */
     public ResultSet selectReturnError(String sql, List<String> arr) throws SQLException;
 
@@ -61,7 +61,7 @@ public interface Database {
      * @param sql The SQL to execute in a string.  If the SQL is badly formed this function will die.
      * @param arr An optional array of the substitition values if needed by the query
      * @return Long This is the new primary key of the inserted row if the insert was successful.
-     * @throws SQLException
+     * @throws An SQLException
      */
     public Long insertReturnError(String sql, List<String> arr) throws SQLException;
 
@@ -81,7 +81,7 @@ public interface Database {
      * @param sql The SQL to execute in a string.  If the SQL is badly formed this function will die.
      * @param arr An optional array of the substitition values if needed by the query
      * @return int The number of rows affected (may be zero)
-     * @throws SQLException
+     * @throws An SQLException
      */
     public int updateReturnError(String sql, List<String> arr) throws SQLException;
 
