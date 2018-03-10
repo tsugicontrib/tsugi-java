@@ -18,21 +18,25 @@ public interface Context {
 
     /**
      * Get the launch associated with this object
+     * @return The launch object
      */
     public Launch getLaunch();
 
     /**
      * The integer primary key for this context across this Tsugi instance
+     * @return The identifier
      */
     public Long getId();
 
     /**
      * The context title
+     * @return The context title
      */
     public String getTitle();
 
     /**
      * The context settings
+     * @return The context settings
      */
     public Settings getSettings();
 }
