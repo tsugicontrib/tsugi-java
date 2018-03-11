@@ -47,6 +47,7 @@ public class TsugiFactory {
      *
      * Can be overridden by setting the "tsugi.factory.tsugiClassName"
      * in the system-wide properties.
+     * @return The appropriate Tsugi implementation
      */
     public static Tsugi getTsugi() {
         String className = System.getProperty("tsugi.factory.tsugiClassName");
