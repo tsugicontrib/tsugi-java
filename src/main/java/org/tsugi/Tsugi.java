@@ -31,6 +31,8 @@ public interface Tsugi {
 
    /**
      * Get the launch information for the current session
+     * @param req Represents a HttpServletRequest object
+     * @param res Represents a HttpServletResponse object
      * @return the launch information for the current session
      */
     public Launch getLaunch(HttpServletRequest req, HttpServletResponse res);
@@ -41,6 +43,7 @@ public interface Tsugi {
      * This method should only be used in unit tests and will
      * throw a RuntimeException if used when unit tests are not
      * running.
+     * @param props Represents a Properties object
      * @return the launch information for the current session
      */
     public Launch getLaunch(Properties props);
