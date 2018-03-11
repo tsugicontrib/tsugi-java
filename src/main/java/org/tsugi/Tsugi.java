@@ -25,11 +25,13 @@ public interface Tsugi {
      * related database access.  The normal path is to get the 
      * launch and then pull the connection from the Launch structure.
      * this way we don't make more connections than we need.
+     * @return A database connection
      */
     public Connection getConnection();
 
    /**
      * Get the launch information for the current session
+     * @return the launch information for the current session
      */
     public Launch getLaunch(HttpServletRequest req, HttpServletResponse res);
 
@@ -39,6 +41,7 @@ public interface Tsugi {
      * This method should only be used in unit tests and will
      * throw a RuntimeException if used when unit tests are not
      * running.
+     * @return the launch information for the current session
      */
     public Launch getLaunch(Properties props);
 }
