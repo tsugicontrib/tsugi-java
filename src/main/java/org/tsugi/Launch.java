@@ -88,7 +88,6 @@ public interface Launch {
 
     /**
      * Get the base string from the launch.
-     * @return The base string from the launch
      *
      * @return This is null if it is not the original launch.
      * it is not restored when the launch is restored from 
@@ -135,6 +134,7 @@ public interface Launch {
      * point to a URL other than the URL in the request
      * object.  This URL should be used for AJAX calls
      * to dynamic data in JavaScript.
+     * @param path Specify the path for the GET URL
      * @return A GET URL to the current servlet
      **/
     public String getGetUrl(String path);
@@ -145,13 +145,15 @@ public interface Launch {
      * We abstract this in case the framework needs to 
      * point to a URL other than the URL in the request
      * object.
+     * @param path Specify the path for the POST URL
      * @return A POST URL to the current servlet
      **/
     public String getPostUrl(String path);
 
     /** 
      * Redirect to a path - can be null
-     * @return Redirect to a path (POST Redirect GET)
+     * @param path Specify the path for the URL
+     * @return Redirect to a path 
      **/
     public void postRedirect(String path);
 
