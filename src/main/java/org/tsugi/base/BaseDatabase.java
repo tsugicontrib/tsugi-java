@@ -251,6 +251,7 @@ public class BaseDatabase implements Database {
      * Scan a result set and return a Properties object with entries for each column.
      * @param rs Represents a ResultSet object
      * @throws SQLException in case of a database error
+     * @return A Properties object with entries for each column
      */
     public static Properties resultsetToProperties(ResultSet rs)
         throws SQLException
