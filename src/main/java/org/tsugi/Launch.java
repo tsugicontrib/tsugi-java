@@ -153,7 +153,6 @@ public interface Launch {
     /** 
      * Redirect to a path - can be null
      * @param path Specify the path for the URL
-     * @return Redirect to a path 
      **/
     public void postRedirect(String path);
 
