@@ -27,6 +27,7 @@ public interface Settings {
      * Replaces existing settings.  Persists the new settings if
      * they can be persisted.
      * @return True if all of the settings from the JSON string are set
+     * @throws java.io.IOException if an IO Error is encountered
      */
     public boolean setSettingsJson(String json) throws java.io.IOException;
 
