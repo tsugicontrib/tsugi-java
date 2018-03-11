@@ -62,6 +62,7 @@ public interface Output {
 
     /**
      * Get the launch associated with this object
+     * @return The launch object
      */
     public Launch getLaunch();
 
@@ -78,6 +79,7 @@ public interface Output {
      * At this point (there may be more in the future) Tsugi provisions
      * Handlebars, Bootstrap, jQjuery, and jQuery-ui.
      *
+     * @param out Represents the PrintWriter object
      * @return A properties list of the software installed and versions.
      */
     public Properties header(PrintWriter out);
@@ -88,6 +90,7 @@ public interface Output {
      * This includes all of the CSS but does not include the
      * JavaScript.  JavaScript is included in footerStart()
      * 
+     * @param out Represents the PrintWriter object
      */
     public void bodyStart(PrintWriter out);
 
@@ -104,21 +107,25 @@ public interface Output {
      * global variables "Handlebars" and "$" pointing at Tsugi's
      * version of these libraries.
      *
+     * @param out Represents the PrintWriter object
      */
     public void footerStart(PrintWriter out);
 
     /**
      * Finish the footer.
+     * @param out Represents the PrintWriter object
      */
     public void footerEnd(PrintWriter out);
 
     /** 
      * Start the side navigation if the tool wants it
+     * @param out Represents the PrintWriter object
      **/
     public void navStart(PrintWriter out);
 
     /** 
      * Complete the side navigation if it was started
+     * @param out Represents the PrintWriter object
      **/
     public void navEnd(PrintWriter out);
 
