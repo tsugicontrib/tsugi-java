@@ -56,7 +56,9 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
 
     // The prefix for all of the tables
     private String prefix = null;
-
+    /*
+     * @return A JDBC Connection object
+    */
     public Connection getConnection()
     {
         String jdbc = System.getProperty("tsugi.datasource.url");
@@ -110,6 +112,9 @@ public class Tsugi_JDBC extends BaseTsugi implements Tsugi
 
    /**
      * Fire up the launch.  If req is null - we behave as if this is a test.
+     * @param req Represents a HttpServletRequest object
+     * @param props Represents a Properties object
+     * @param res Represents a HttpServletResponse object
      */
     public Launch getLaunch(HttpServletRequest req, Properties props, HttpServletResponse res)
     {
@@ -245,7 +250,13 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
 
         return launch;
     }
-
+    /*
+     * @param c Represents a Connection object
+     * @param launch Represents a BaseLaunch object
+     * @param req Represents a HttpServletRequest object
+     * @param res Represents a HttpServletResponse object
+     * @param row Represents a Properties object
+    */
     private void buildLaunch(Connection c, BaseLaunch launch,
         HttpServletRequest req, HttpServletResponse res, Properties row)
     {
@@ -279,6 +290,9 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
      *
      * This data may or may not exist - hence the use of the long
      * LEFT JOIN.
+     * @param c Represents a Connection object
+     * @param post Represents a Properties object
+     * @return The data from the lti_ tables using one long LEFT JOIN as a Properties object
      */
     public Properties loadAllData(Connection c, Properties post)
     {
@@ -372,6 +386,9 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
      * changes.   So in a high percentage of launches we are not seeing
      * any new or updated data and so this code just falls through and
      * does absolutely no SQL.
+     * @param c Represents a DB Connection object
+     * @param row Represents a row Properties object
+     * @param post Represents a POST Properties object
      */
     public void adjustData(Connection c, Properties row, Properties post)
     {
@@ -756,6 +773,8 @@ System.out.println("TODO: Make sure to do NONCE cleanup...");
 
     /*
      ** Fix the prefix {p} inside of a TSUGI SQL query
+     * @param sql Represents a SQL statement
+     * @return The SQL query with a prefix {p}
      */
     public String setPrefix(String sql)
     {
