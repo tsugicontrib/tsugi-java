@@ -49,6 +49,8 @@ public abstract class BaseTsugi implements Tsugi
 
    /**
      * Get the launch information for the current session
+     * @param req Represents a HttpServletRequest object
+     * @param res Represents a HttpServletResponse object
      */
     public Launch getLaunch(HttpServletRequest req, HttpServletResponse res)
     {
@@ -58,6 +60,7 @@ public abstract class BaseTsugi implements Tsugi
 
    /**
      * Get the launch information for the current session with only properties
+     * @param props Represents a Properties object
      */
     public Launch getLaunch(Properties props)
     {
@@ -69,6 +72,9 @@ public abstract class BaseTsugi implements Tsugi
      *
      * This is highly implementation specific and needs to be overriden by the ultimate
      * implementation class.
+     * @param req Represents a HttpServletRequest object
+     * @param props Represents a Properties object
+     * @param res Represents a HttpServletResponse object
      */
     public abstract Launch getLaunch(HttpServletRequest req, Properties props, HttpServletResponse res);
 
@@ -78,6 +84,7 @@ public abstract class BaseTsugi implements Tsugi
      *
      * We follow our naming conventions that match the column names in
      * our lti_ tables.
+     * @param i Represents a Properties object
      */
     public Properties extractPost(Properties i) {
         Properties o = new Properties();
@@ -171,6 +178,9 @@ public abstract class BaseTsugi implements Tsugi
 
     /**
      * Check the OAuth Signature
+     * @param request Represents a HttpServletRequest object
+     * @param oauth_consumer_key Represents an OAuth consumer key
+     * @param oauth_secret Represents an OAuth secret
      */
     public boolean checkOAuthSignature(HttpServletRequest request, String oauth_consumer_key, String oauth_secret)
     {
