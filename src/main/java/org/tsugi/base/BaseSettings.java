@@ -39,6 +39,7 @@ public class BaseSettings implements Settings {
      *
      * We expect the extending class to override this.  If this is not overridden,
      * settings will be in-memory only.
+     * @return True if the settings are persistent
      */
     public boolean persistSettings()
     {

@@ -23,6 +23,10 @@ public class BaseLink implements Link {
 
     /**
      * Constructor
+     * @param launch Represents a Launch object
+     * @param row Represents a Properties object
+     * @param result Represents a Result object
+     * @param settings Represents a Settings object
      */
     public BaseLink(Launch launch, Properties row, Result result, Settings settings)
     {
