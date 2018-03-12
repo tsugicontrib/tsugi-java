@@ -77,6 +77,7 @@ public abstract class BaseTsugi implements Tsugi
      * @param req Represents a HttpServletRequest object
      * @param props Represents a Properties object
      * @param res Represents a HttpServletResponse object
+     * @return A Launch object
      */
     public abstract Launch getLaunch(HttpServletRequest req, Properties props, HttpServletResponse res);
 
