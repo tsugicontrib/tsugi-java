@@ -19,6 +19,8 @@ public class BaseService implements Service {
 
     /**
      * Constructor
+     * @param launch Represents a Launch object
+     * @param row Represents a row object
      */
     public BaseService(Launch launch, Properties row)
     {

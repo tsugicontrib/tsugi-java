@@ -33,6 +33,7 @@ public class BaseDatabase implements Database {
 
     /**
      * Constructor 
+     * @param launch Represents a Launch object
      */
     public BaseDatabase(Launch launch)
     {
@@ -43,6 +44,8 @@ public class BaseDatabase implements Database {
 
     /**
      * Constructor without a launch
+     * @param c Represents a connection to the database 
+     * @param prefix Represents the prefix of the connection
      */
     public BaseDatabase(Connection c, String prefix)
     {
@@ -61,7 +64,9 @@ public class BaseDatabase implements Database {
     }
 
     /**
-     *
+     * @param sql Represents a SQL statement 
+     * @param arr Represents the array of parameters to the SQL statement
+     * @throws SQLException on a select return error
      */
     public ResultSet selectReturnError(String sql, List<String> arr)
         throws SQLException
@@ -94,7 +99,9 @@ public class BaseDatabase implements Database {
     }
 
     /**
-     *
+     * @param sql Represents a SQL statement
+     * @param arr Represents the array of parameters to the SQL statement
+     * @throws SQLException on an insert return error
      */
     public Long insertReturnError(String sql, List<String> arr)
         throws SQLException
@@ -132,7 +139,9 @@ public class BaseDatabase implements Database {
     }
 
     /**
-     *
+     * @param sql Represents a SQL statement
+     * @param arr Represents the array of parameters to the SQL statement
+     * @throws SQLException on an update return error
      */
     public int updateReturnError(String sql, List<String> arr)
         throws SQLException
@@ -163,7 +172,8 @@ public class BaseDatabase implements Database {
     }
 
     /**
-     *
+     * @param sql Represents a SQL statement
+     * @param arr Represents the array of parameters to the SQL statement
      */
     public ResultSet selectDie(String sql, List<String> arr)
     {
@@ -177,7 +187,8 @@ public class BaseDatabase implements Database {
     }
 
     /**
-     *
+     * @param sql Represents a SQL statement
+     * @param arr Represents the array of parameters to the SQL statement
      */
     public Long insertDie(String sql, List<String> arr)
     {
@@ -193,7 +204,8 @@ public class BaseDatabase implements Database {
     }
 
     /**
-     *
+     * @param sql Represents a SQL statement
+     * @param arr Represents the array of parameters to the SQL statement
      */
     public int updateDie(String sql, List<String> arr)
     {
@@ -205,7 +217,8 @@ public class BaseDatabase implements Database {
     }
 
     /**
-     *
+     * @param sql Represents a SQL statement
+     * @param arr Represents the array of parameters to the SQL statement
      */
     public Properties rowDie(String sql, List<String> arr)
     {
@@ -225,7 +238,8 @@ public class BaseDatabase implements Database {
     }
 
     /**
-     *
+     * @param sql Represents a SQL statement
+     * @param arr Represents the array of parameters to the SQL statement
      */
     public List<Properties> allRowsDie(String sql, List<String> arr)
     {
@@ -235,6 +249,9 @@ public class BaseDatabase implements Database {
 
     /**
      * Scan a result set and return a Properties object with entries for each column.
+     * @param rs Represents a ResultSet object
+     * @throws SQLException in case of a database error
+     * @return A Properties object with entries for each column
      */
     public static Properties resultsetToProperties(ResultSet rs)
         throws SQLException
@@ -253,6 +270,7 @@ public class BaseDatabase implements Database {
 
     /*
      ** Fix the prefix {p} inside of a TSUGI SQL query
+     * @param sql Represents a SQL statement
      */
     public String setPrefix(String sql)
     {

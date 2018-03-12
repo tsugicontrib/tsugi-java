@@ -14,16 +14,19 @@ public interface Key {
 
     /**
      * Get the launch associated with this object
+     * @return The launch object
      */
     public Launch getLaunch();
 
     /**
      * The integer primary key for this key across this Tsugi instance
+     * @return The instance identifier
      */
     public Long getId();
 
     /**
      * The key title
+     * @return The key title
      */
     public String getTitle();
 

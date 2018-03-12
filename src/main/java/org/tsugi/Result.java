@@ -13,21 +13,25 @@ public interface Result {
 
     /**
      * Get the launch associated with this object
+     * @return The launch object 
      */
     public Launch getLaunch();
 
     /**
      * The integer primary key for this result within this Tsugi instance
+     * @return The identifier for this result of the instance
      */
     public Long getId();
 
     /**
      * Current grade for the resource link
+     * @return The current grade for the resource link
      */
     public Double getGrade();
 
     /**
      * Current comment for the resource link
+     * @return The current comment for the resource link
      */
     public String getComment();
 

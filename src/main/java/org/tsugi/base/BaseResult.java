@@ -24,6 +24,9 @@ public class BaseResult implements Result {
 
     /**
      * Constructor - requires result_id
+     * @param launch Represents a Launch object
+     * @param row Represents a Properties object
+     * @param service Represents a Service object
      */
     public BaseResult(Launch launch, Properties row, Service service) 
     {

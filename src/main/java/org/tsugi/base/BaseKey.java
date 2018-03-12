@@ -16,6 +16,8 @@ public class BaseKey implements Key {
 
     /**
      * Constructor 
+     * @param launch Represents a Launch object
+     * @param row Represents a Properties object
      */
     public BaseKey(Launch launch, Properties row)
     {

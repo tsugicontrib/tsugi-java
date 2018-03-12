@@ -32,6 +32,9 @@ public class BaseContext implements Context {
 
     /**
      * Constructor 
+     * @param launch Represents a launch object
+     * @param row Represents a Properties object
+     * @param settings Represents a Settings object
      */
     public BaseContext(Launch launch, Properties row, Settings settings)
     {
