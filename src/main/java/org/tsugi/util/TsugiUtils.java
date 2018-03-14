@@ -30,6 +30,8 @@ public class TsugiUtils {
      * Convienence method Compute the sha256 for a string
      *
      * TODO: Elminate this and just import commons.codec where appropriate.
+     * @param input Represents a string input
+     * @return The SHA256 hash for the given string
      */
     public static String sha256(String input) 
     {
@@ -42,6 +44,7 @@ public class TsugiUtils {
      * This is controlled by:
      *
      *   tsugi.unit.test=true
+     * @return True if this is a unit test
      */
     public static boolean unitTesting()
     {
@@ -50,6 +53,8 @@ public class TsugiUtils {
 
     /*
      ** Load a properties file from the class path or return null if not found.
+     * @param pathname Represents the pathname of the properties file 
+     * @return The properties file from the pathname 
      */
     public static Properties loadProperties(String pathname)
     {
@@ -74,6 +79,8 @@ public class TsugiUtils {
 
     /*
      ** Scan a result set and return a Properties object with entries for each column.
+     * @param rs Represents the input result set
+     * @return The Properties object with entries for each column from the result set
      */
     public static Properties resultsetToProperties(ResultSet rs)
         throws SQLException
@@ -92,6 +99,8 @@ public class TsugiUtils {
 
     /*
      ** Create a suitable toString() for Properties.
+     * @param p Represents the input Properties object
+     * @return String representation for the Properties object
      */
     public static String dumpProperties(Properties p)
     {
@@ -116,6 +125,9 @@ public class TsugiUtils {
 
     /*
      ** Copy a property from one list to another
+     * @param to Represents the list to which the given property has been copied
+     * @param from Represents the list from which the given property has been copied
+     * @param Represents the key required for performing the copy
      */
     public static void copy(Properties to, Properties from, String key) 
     {
@@ -124,6 +136,10 @@ public class TsugiUtils {
 
     /**
      * Copy a property from one list to another
+     * @param to Represents the list to which the given property has been copied
+     * @param to_key Represents the key required for pasting the property in the destination
+     * @param from Represents the list from which the given property has been copied
+     * @param from_key Represents the key required for copying the property from the source
      */
     public static void copy(Properties to, String to_key, Properties from, String from_key) 
     {
@@ -132,6 +148,11 @@ public class TsugiUtils {
 
     /**
      * Copy a property from one list to another
+     * @param to Represents the list to which the given property has been copied
+     * @param to_key Represents the key required for pasting the property in the destination
+     * @param from Represents the list from which the given property has been copied
+     * @param from_key Represents the key required for copying the property from the source
+     * @param from_key_2 Represents an alternative key for copying the property from the source
      */
     public static void copy(Properties to, String to_key, Properties from, String from_key, String from_key_2) 
     {
@@ -158,6 +179,8 @@ public class TsugiUtils {
      * that obscures the request URL.
      *
      * TODO: Move this to Output
+     * @param request Represents a HttpServletRequest object
+     * @return The string representation of the URL to be overridden by the server's view 
      */
     public static String getOurServletPath(HttpServletRequest request)
     {
